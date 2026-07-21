@@ -1,0 +1,42 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  padding: 16px;
+  gap: 24px;
+}
+
+.mainContainer {
+  flex: 1;
+  margin-left: 284px; /* Width of sidebar (260px) + gap (24px) */
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Prevents flex children from breaking parent boundaries */
+  transition: var(--transition-smooth);
+}
+
+.content {
+  flex: 1;
+}
+
+.backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(9, 13, 22, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 90;
+}
+
+@media (max-width: 992px) {
+  .mainContainer {
+    margin-left: 0;
+  }
+  
+  .backdrop {
+    display: block;
+  }
+}

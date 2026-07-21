@@ -1,0 +1,7 @@
+/* Standard custom utility overrides if any */
+.container-full {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}

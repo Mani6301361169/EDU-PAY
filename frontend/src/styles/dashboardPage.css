@@ -1,0 +1,58 @@
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.dashboard-page h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #f7f1d0;
+}
+
+.dashboard-page p {
+  margin: 0;
+  color: #e2c46b;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: 0.4rem;
+}
+
+.dashboard-card {
+  padding: 1rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-card h3 {
+  margin: 0 0 0.3rem;
+  color: #f7f1d0;
+}
+
+.dashboard-card .value {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #d4af37;
+}
+
+.dashboard-card .muted {
+  color: #e2c46b;
+  font-size: 0.92rem;
+}
+
+.dashboard-card .danger {
+  color: #f87171;
+}

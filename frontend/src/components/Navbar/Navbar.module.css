@@ -1,0 +1,142 @@
+.navbar {
+  position: fixed;
+  top: 16px;
+  left: 5%;
+  right: 5%;
+  width: 90%;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  border-radius: var(--radius-lg);
+  padding: 0 24px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logoIcon {
+  font-size: 1.8rem;
+  color: var(--accent-blue);
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.logoSub {
+  color: var(--accent-purple);
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.link {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition-smooth);
+}
+
+.link:hover {
+  color: var(--accent-blue);
+}
+
+.themeBtn, .themeBtnMobile {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: var(--transition-smooth);
+  cursor: pointer;
+}
+
+.themeBtn:hover, .themeBtnMobile:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--accent-blue);
+}
+
+.authGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobileRight {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.menuToggle {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 80px;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 35px var(--shadow-glass);
+}
+
+.mobileLink {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-glass);
+}
+
+.mobileAuthGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .navLinks {
+    display: none;
+  }
+  
+  .mobileRight {
+    display: flex;
+  }
+}

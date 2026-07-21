@@ -1,0 +1,129 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.page h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #f7f1d0;
+}
+
+.page p {
+  margin: 0;
+  color: #e2c46b;
+}
+
+.panel {
+  max-width: 520px;
+  padding: 1.2rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.24);
+}
+
+.form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 12px;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.95rem;
+  background: #121212;
+  color: #f7f1d0;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+  color: #060606;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.message {
+  margin: 0;
+  color: #f7c948;
+  font-weight: 600;
+}
+
+.list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.item {
+  padding: 1rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  color: #f7f1d0;
+}
+
+.amount {
+  color: #d4af37;
+  font-weight: 700;
+  margin-top: 0.2rem;
+}
+
+.paymentCard {
+  display: grid;
+  gap: 1rem;
+  max-width: 520px;
+  padding: 1.1rem;
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+}
+
+.qrGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.28rem;
+  width: min(220px, 100%);
+}
+
+.qrCell {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.qrCellFilled {
+  background: #111111;
+}
+
+.paymentDetailsList {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #f7f1d0;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.detailRow span {
+  color: #e2c46b;
+}

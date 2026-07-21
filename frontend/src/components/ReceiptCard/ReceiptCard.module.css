@@ -1,0 +1,139 @@
+.container {
+  padding: 32px;
+  background: var(--bg-glass);
+  max-width: 550px;
+  margin: 0 auto;
+  border: 1px solid var(--border-glass);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.college {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  font-size: 2.2rem;
+  color: var(--accent-blue);
+}
+
+.collegeName {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.subText {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.statusBadge {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--success);
+  border: 1.5px solid rgba(16, 185, 129, 0.3);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.body {
+  margin-bottom: 30px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.val {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.divider {
+  border: 0;
+  border-top: 1.5px dashed var(--border-glass);
+  margin: 20px 0;
+}
+
+.amountSection {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 20px;
+  border-radius: var(--radius-md);
+}
+
+:global([data-theme='dark']) .amountSection {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.totalLabel {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.totalVal {
+  color: var(--accent-blue);
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.error {
+  text-align: center;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .container, .container * {
+    visibility: visible;
+  }
+  .container {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  .actions {
+    display: none;
+  }
+}
