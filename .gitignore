@@ -1,0 +1,32 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+**/.env
+
+# Build outputs
+dist/
+build/
+
+# IDE files
+.vscode/
+.idea/
+
+# Nested git directories
+frontend/.git
+backend/.git
+
+# MacOS files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.swp
+*~
