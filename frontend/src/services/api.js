@@ -13,6 +13,7 @@ export const toStudent = (student) => ({
 export const studentApi = {
   list: async () => (await api.get('/students')).data.map(toStudent),
   create: async (data) => toStudent((await api.post('/students', data)).data),
+  login: async (email, password) => toStudent((await api.post('/students/login', { email, password })).data),
   update: async (id, data) => toStudent((await api.patch(`/students/${id}`, data)).data),
 };
 

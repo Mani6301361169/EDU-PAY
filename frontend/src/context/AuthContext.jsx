@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => { loadData(); }, [loadData]);
 
-  const login = (email, _password, role) => {
+  const login = async (email, password, role) => {
     if (role === 'admin' && email === 'admin@college.edu') {
       const admin = { uid: 'A1', name: 'Dean Admin', email, role: 'admin' };
       setUser(admin);
@@ -44,30 +44,25 @@ export const AuthProvider = ({ children }) => {
       setUser(parent);
       return parent;
     }
-    const student = students.find((item) => item.email === email);
-    if (!student) throw new Error('Student account not found. Please register first.');
+    const student = await studentApi.login(email, password);
     const studentUser = { uid: student._id, name: student.name, email: student.email, role: 'student', studentData: student };
     setUser(studentUser);
     return studentUser;
   };
 
   const registerStudent = async (data) => {
-    try {
-      const student = await studentApi.create({
-        name: data.name,
-        email: data.email,
-        mobile: data.mobile,
-        rollNo: data.rollNo,
-        department: data.dept || data.department,
-        year: data.year,
-        admissionYear: new Date().getFullYear().toString(),
-        password: data.password,
-      });
-      setStudents((current) => [student, ...current]);
-      return student;
-    } catch (error) {
-      throw error;
-    }
+    const student = await studentApi.create({
+      name: data.name,
+      email: data.email,
+      mobile: data.mobile,
+      rollNo: data.rollNo,
+      department: data.dept || data.department,
+      year: data.year,
+      admissionYear: new Date().getFullYear().toString(),
+      password: data.password,
+    });
+    setStudents((current) => [student, ...current]);
+    return student;
   };
 
   const updateProfile = async (id, updatedInfo) => {

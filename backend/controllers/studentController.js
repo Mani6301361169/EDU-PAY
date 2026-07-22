@@ -1,4 +1,5 @@
 import Student from '../models/Student.js';
+import bcrypt from 'bcrypt';
 import asyncHandler from '../utils/asyncHandler.js';
 
 export const listStudents = asyncHandler(async (_request, response) => {
@@ -17,11 +18,35 @@ export const getStudent = asyncHandler(async (request, response) => {
 });
 
 export const createStudent = asyncHandler(async (request, response) => {
+  if (!request.body.password) {
+    const error = new Error('Password is required.');
+    error.statusCode = 400;
+    throw error;
+  }
+
   const student = await Student.create({
     ...request.body,
+    password: await bcrypt.hash(request.body.password, 12),
     studentId: request.body.studentId || `S${Date.now().toString().slice(-8)}`,
   });
-  response.status(201).json(student);
+  const studentData = student.toObject();
+  delete studentData.password;
+  response.status(201).json(studentData);
+});
+
+export const loginStudent = asyncHandler(async (request, response) => {
+  const { email, password } = request.body;
+  const student = await Student.findOne({ email: email?.toLowerCase() }).select('+password');
+
+  if (!student || !password || !(await bcrypt.compare(password, student.password))) {
+    const error = new Error('Invalid email or password.');
+    error.statusCode = 401;
+    throw error;
+  }
+
+  const studentData = student.toObject();
+  delete studentData.password;
+  response.json(studentData);
 });
 
 export const updateStudent = asyncHandler(async (request, response) => {

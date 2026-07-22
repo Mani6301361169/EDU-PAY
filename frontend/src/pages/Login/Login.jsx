@@ -15,11 +15,11 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     try {
-      login(email, password, role);
+      await login(email, password, role);
       navigate(`/${role}/dashboard`);
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
