@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
+import PaymentSuccess from '../../../components/PaymentSuccess/PaymentSuccess';
 import '../../Payments/Payments.module.css';
 
 const qrPattern = Array.from({ length: 36 }, (_, index) => {
@@ -18,6 +19,7 @@ export default function Payment() {
   const [message, setMessage] = useState('');
   const [isReviewing, setIsReviewing] = useState(true);
   const [paymentDetails, setPaymentDetails] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (location.state?.amount !== undefined) {
@@ -39,15 +41,7 @@ export default function Payment() {
       return;
     }
 
-    await recordPayment({
-      student: user?.uid,
-      amount,
-      method: form.method,
-      status: 'Success',
-      feeType: form.feeType,
-      paidAt: new Date().toISOString(),
-    });
-
+    setIsSubmitting(true);
     setPaymentDetails({
       amount,
       feeType: form.feeType,
@@ -60,6 +54,22 @@ export default function Payment() {
     setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
     setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
     setIsReviewing(true);
+
+    try {
+      await recordPayment({
+        student: user?.uid,
+        amount,
+        method: form.method,
+        status: 'Success',
+        feeType: form.feeType,
+        paidAt: new Date().toISOString(),
+      });
+    } catch (error) {
+      setPaymentDetails(null);
+      setMessage('Payment could not be recorded. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -88,12 +98,14 @@ export default function Payment() {
               <option value="Cash">Cash</option>
             </select>
             <input className="input" type="text" value={form.feeType} onChange={(e) => setForm({ ...form, feeType: e.target.value })} placeholder="Fee type" required />
-            <button className="button" type="submit" disabled={loading}>Confirm Payment</button>
+            <button className="button" type="submit" disabled={loading || isSubmitting}>{isSubmitting ? 'Processing...' : 'Confirm Payment'}</button>
           </form>
         )}
       </div>
 
       {message && <p className="message">{message}</p>}
+
+      {paymentDetails && <PaymentSuccess amount={paymentDetails.amount} feeType={paymentDetails.feeType} method={paymentDetails.method} />}
 
       {paymentDetails && (
         <div className="paymentCard">
