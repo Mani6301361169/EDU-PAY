@@ -34,16 +34,16 @@ export default function Dashboard() {
             <p className="muted">{student?.department || 'Department'} • {student?.year || 'Year'}</p>
           </div>
           <div className="dashboard-card">
-            <h3>Total Fee</h3>
-            <p className="value">₹{summary.totalFees.toLocaleString()}</p>
+            <h3>Total Fees Remaining</h3>
+            <p className="value danger">₹{summary.outstandingBalance.toLocaleString()}</p>
           </div>
           <div className="dashboard-card">
-            <h3>Paid</h3>
+            <h3>Amount Paid</h3>
             <p className="value">₹{summary.paidAmount.toLocaleString()}</p>
           </div>
           <div className="dashboard-card">
-            <h3>Outstanding</h3>
-            <p className="value danger">₹{summary.outstandingBalance.toLocaleString()}</p>
+            <h3>Original Total Fee</h3>
+            <p className="value">₹{summary.totalFees.toLocaleString()}</p>
             <button type="button" onClick={handlePayNow} style={{ marginTop: '0.8rem', border: 0, borderRadius: '999px', padding: '0.7rem 1rem', background: 'linear-gradient(135deg, #d4af37 0%, #a67c00 100%)', color: '#060606', fontWeight: 700, cursor: 'pointer' }}>Pay Now</button>
           </div>
         </div>

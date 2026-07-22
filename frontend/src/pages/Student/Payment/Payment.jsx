@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
+import { calculateFeeSummary } from '../../../utils/feeSummary';
 import '../../Payments/Payments.module.css';
 
 const qrPattern = Array.from({ length: 36 }, (_, index) => {
@@ -10,7 +11,9 @@ const qrPattern = Array.from({ length: 36 }, (_, index) => {
 
 export default function Payment() {
   const location = useLocation();
-  const { user, recordPayment, loading } = useAuth();
+  const { user, payments, fees, recordPayment, loading } = useAuth();
+  const student = user?.studentData;
+  const summary = calculateFeeSummary(student, fees, payments.filter((payment) => payment.student?._id === student?._id || payment.student === student?._id));
   const [form, setForm] = useState({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
   const [message, setMessage] = useState('');
   const [isReviewing, setIsReviewing] = useState(true);
@@ -29,10 +32,16 @@ export default function Payment() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMessage('');
+    const amount = Number(form.amount);
+
+    if (amount <= 0 || amount > summary.outstandingBalance) {
+      setMessage(`Enter an amount between ₹1 and ₹${summary.outstandingBalance.toLocaleString()}.`);
+      return;
+    }
 
     await recordPayment({
       student: user?.uid,
-      amount: Number(form.amount),
+      amount,
       method: form.method,
       status: 'Success',
       feeType: form.feeType,
@@ -40,7 +49,7 @@ export default function Payment() {
     });
 
     setPaymentDetails({
-      amount: Number(form.amount),
+      amount,
       feeType: form.feeType,
       method: form.method,
       holder: 'College Fees Portal',
@@ -70,7 +79,7 @@ export default function Payment() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="form">
-            <input className="input" type="number" value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="Amount" required />
+            <input className="input" type="number" min="1" max={summary.outstandingBalance} value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="Amount" required />
             <select className="select" value={form.method} onChange={(e) => setForm({ ...form, method: e.target.value })}>
               <option value="UPI">UPI</option>
               <option value="Net Banking">Net Banking</option>

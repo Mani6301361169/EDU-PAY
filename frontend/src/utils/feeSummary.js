@@ -22,3 +22,21 @@ export const calculateFeeSummary = (student, fees = [], payments = []) => {
     breakdown,
   };
 };
+
+export const getFeeBalances = (student, fees = [], payments = []) => {
+  const breakdown = getStudentFeeBreakdown(student, fees);
+  let paymentToApply = payments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0);
+
+  return breakdown.map((fee) => {
+    const originalAmount = Number(fee.amount || 0);
+    const paidAmount = Math.min(originalAmount, paymentToApply);
+    paymentToApply -= paidAmount;
+
+    return {
+      ...fee,
+      originalAmount,
+      paidAmount,
+      remainingAmount: originalAmount - paidAmount,
+    };
+  });
+};

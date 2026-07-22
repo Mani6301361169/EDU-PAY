@@ -11,14 +11,18 @@ export default function Fees() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMessage('');
-    await api.post('/fees', {
-      ...form,
-      amount: Number(form.amount),
-      active: true,
-    });
-    setForm({ name: '', amount: '', department: 'Computer Science', academicYear: '1st Year', description: '' });
-    setMessage('Fee structure updated successfully.');
-    await refreshData();
+    try {
+      await api.post('/fees', {
+        ...form,
+        amount: Number(form.amount),
+        active: true,
+      });
+      setForm({ name: '', amount: '', department: 'Computer Science', academicYear: '1st Year', description: '' });
+      setMessage('Fee structure saved to MongoDB successfully.');
+      await refreshData();
+    } catch (error) {
+      setMessage(error.response?.data?.message || 'Fee structure could not be saved. Check that the backend API is running.');
+    }
   };
 
   return (

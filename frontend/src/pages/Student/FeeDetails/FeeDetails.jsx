@@ -1,13 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
-import { calculateFeeSummary } from '../../../utils/feeSummary';
+import { calculateFeeSummary, getFeeBalances } from '../../../utils/feeSummary';
 
 export default function FeeDetails() {
   const navigate = useNavigate();
   const { user, fees, payments, loading } = useAuth();
   const student = user?.studentData;
-  const summary = calculateFeeSummary(student, fees, payments.filter((payment) => payment.student?._id === student?._id || payment.student === student?._id));
+  const studentPayments = payments.filter((payment) => payment.student?._id === student?._id || payment.student === student?._id);
+  const summary = calculateFeeSummary(student, fees, studentPayments);
+  const feeBalances = getFeeBalances(student, fees, studentPayments);
 
   const handlePayNow = () => {
     navigate('/student/payments', {
@@ -28,11 +30,17 @@ export default function FeeDetails() {
       ) : (
         <>
           <button type="button" onClick={handlePayNow} style={{ alignSelf: 'flex-start', border: 0, borderRadius: '999px', padding: '0.7rem 1rem', background: 'linear-gradient(135deg, #d4af37 0%, #a67c00 100%)', color: '#060606', fontWeight: 700, cursor: 'pointer' }}>Pay Now</button>
+          <div style={{ marginTop: '1rem', padding: '1rem', borderRadius: '12px', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid rgba(212, 175, 55, 0.28)', color: '#f7f1d0' }}>
+            <strong>Total Fees Remaining: ₹{summary.outstandingBalance.toLocaleString()}</strong>
+            <div style={{ marginTop: '0.35rem' }}>Original Total: ₹{summary.totalFees.toLocaleString()} • Paid: ₹{summary.paidAmount.toLocaleString()}</div>
+          </div>
           <div style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
-            {summary.breakdown.map((fee) => (
+            {feeBalances.map((fee) => (
               <div key={fee._id || fee.id} style={{ padding: '1rem', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%)', border: '1px solid rgba(212, 175, 55, 0.28)', color: '#f7f1d0' }}>
                 <strong>{fee.name}</strong>
-                <div>₹{Number(fee.amount || 0).toLocaleString()}</div>
+                <div style={{ marginTop: '0.35rem' }}>Remaining: ₹{fee.remainingAmount.toLocaleString()}</div>
+                <small>Original: ₹{fee.originalAmount.toLocaleString()} • Paid: ₹{fee.paidAmount.toLocaleString()}</small>
+                <br />
                 <small>{fee.academicYear || student?.year} • {fee.description || 'Department fee'}</small>
               </div>
             ))}

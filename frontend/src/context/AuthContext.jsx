@@ -66,19 +66,7 @@ export const AuthProvider = ({ children }) => {
       setStudents((current) => [student, ...current]);
       return student;
     } catch (error) {
-      const fallbackStudent = {
-        _id: `local-${Date.now()}`,
-        studentId: `S${Date.now().toString().slice(-8)}`,
-        name: data.name,
-        email: data.email,
-        mobile: data.mobile,
-        rollNo: data.rollNo,
-        department: data.dept || data.department,
-        year: data.year,
-        admissionYear: new Date().getFullYear().toString(),
-      };
-      setStudents((current) => [fallbackStudent, ...current]);
-      return fallbackStudent;
+      throw error;
     }
   };
 

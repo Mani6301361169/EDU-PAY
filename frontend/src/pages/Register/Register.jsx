@@ -42,7 +42,7 @@ const Register = () => {
       alert('Registration successful! You can now log in.');
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(err.response?.data?.message || 'Registration could not be saved. Check that the backend API is running and try again.');
     }
   };
 
