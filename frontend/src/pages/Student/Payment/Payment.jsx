@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
@@ -6,6 +7,7 @@ import PaymentSuccess from '../../../components/PaymentSuccess/PaymentSuccess';
 import '../../Payments/Payments.module.css';
 
 const qrPattern = Array.from({ length: 36 }, (_, index) => {
+  // Define a simple pattern for the QR code cells (1 for filled, 0 for empty)
   const pattern = [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0];
   return pattern[index % pattern.length];
 });
