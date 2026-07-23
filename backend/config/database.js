@@ -1,23 +1,19 @@
 import mongoose from "mongoose";
-import { setServers } from "node:dns";
 
 const connectDatabase = async () => {
   try {
-    if (process.env.MONGODB_DNS_SERVER) {
-      setServers([process.env.MONGODB_DNS_SERVER]);
-    }
+    console.log("URI exists:", !!process.env.MONGODB_URI);
+    console.log("DB:", process.env.MONGODB_DB_NAME);
 
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       dbName: process.env.MONGODB_DB_NAME,
     });
 
-    console.log("MongoDB Connected successfully: ");
+    console.log("MongoDB Connected:", conn.connection.host);
   } catch (error) {
-    console.log("========== FULL ERROR ==========");
     console.error(error);
-    console.log("================================");
     process.exit(1);
   }
 };
-;
+
 export default connectDatabase;
