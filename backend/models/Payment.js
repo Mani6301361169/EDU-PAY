@@ -14,5 +14,12 @@ const paymentSchema = new mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
+// Prevent storing empty strings for indexed fields (avoids duplicate-key on '')
+paymentSchema.pre('save', function (next) {
+  if (!this.transactionId) this.transactionId = undefined;
+  if (!this.stripeSessionId) this.stripeSessionId = undefined;
+  if (!this.stripePaymentIntentId) this.stripePaymentIntentId = undefined;
+  next();
+});
 
 export default mongoose.model('Payment', paymentSchema);

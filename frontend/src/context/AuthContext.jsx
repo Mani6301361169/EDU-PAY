@@ -1,7 +1,6 @@
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { feeApi, paymentApi, studentApi } from '../services/api';
-
-const AuthContext = createContext();
+import AuthContext from './authContextBase';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

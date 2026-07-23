@@ -6,8 +6,7 @@ import Button from '../../components/Button/Button';
 import { Link } from 'react-router-dom';
 import { 
   FiArrowRight, FiShield, FiCpu, FiTrendingUp, 
-  FiMail, FiPhone, FiMapPin, FiMessageSquare,
-  FiChevronDown, FiPlusCircle, FiPercent, FiAward 
+  FiMail, FiPhone, FiMapPin, FiChevronDown 
 } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 

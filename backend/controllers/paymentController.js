@@ -12,7 +12,15 @@ export const listPayments = asyncHandler(async (_request, response) => {
 });
 
 export const createPayment = asyncHandler(async (request, response) => {
-  const student = await Student.findById(request.body.student);
+  const { student: studentId, amount, feeType, method, status } = request.body;
+
+  if (!studentId || !amount || !feeType) {
+    const error = new Error('student, amount, and feeType are required.');
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const student = await Student.findById(studentId);
   if (!student) {
     const error = new Error('Student not found.');
     error.statusCode = 404;
@@ -20,10 +28,20 @@ export const createPayment = asyncHandler(async (request, response) => {
   }
 
   const payment = await Payment.create({
-    ...request.body,
-    method: 'Stripe',
-    status: 'Pending',
+    student: studentId,
+    amount,
+    feeType,
+    method: method || 'Stripe',
+    status: status || 'Pending',
+    paidAt: status === 'Success' ? new Date() : undefined,
   });
+
+  if (payment.status === 'Success') {
+    student.paidAmount += Number(payment.amount || 0);
+    student.pendingAmount = Math.max(0, student.pendingAmount - Number(payment.amount || 0));
+    student.feeStatus = student.pendingAmount === 0 ? 'Paid' : 'Pending';
+    await student.save();
+  }
 
   response.status(201).json(await payment.populate('student', 'studentId name email'));
 });

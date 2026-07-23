@@ -44,31 +44,33 @@ export default function Payment() {
     }
 
     setIsSubmitting(true);
-    setPaymentDetails({
-      amount,
-      feeType: form.feeType,
-      method: form.method,
-      holder: 'College Fees Portal',
-      accountNumber: '1234567890',
-      ifsc: 'SBIN0001234',
-      upi: 'collegefees@upi',
-    });
-    setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
-    setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
-    setIsReviewing(true);
-
     try {
-      await recordPayment({
-        student: user?.uid,
+      const savedPayment = await recordPayment({
+        student: student?._id || user?.uid,
         amount,
         method: form.method,
         status: 'Success',
         feeType: form.feeType,
         paidAt: new Date().toISOString(),
       });
+
+      setPaymentDetails({
+        amount,
+        feeType: form.feeType,
+        method: form.method,
+        holder: 'College Fees Portal',
+        accountNumber: '1234567890',
+        ifsc: 'SBIN0001234',
+        upi: 'collegefees@upi',
+        paymentId: savedPayment._id,
+      });
+      setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
+      setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
+      setIsReviewing(true);
     } catch (error) {
+      console.error(error);
       setPaymentDetails(null);
-      setMessage('Payment could not be recorded. Please try again.');
+      setMessage(error.response?.data?.message || error.message || 'Payment could not be recorded. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -78,6 +80,21 @@ export default function Payment() {
     <section className="page">
       <h1>Pay Your Fees</h1>
       <p>Record a fee payment for your student account.</p>
+
+      <div className="summaryGrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem', margin: '1rem 0' }}>
+        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
+          <div style={{ fontSize: '0.9rem', color: '#666' }}>Total Fees</div>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.totalFees.toLocaleString()}</div>
+        </div>
+        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
+          <div style={{ fontSize: '0.9rem', color: '#666' }}>Paid So Far</div>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.paidAmount.toLocaleString()}</div>
+        </div>
+        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
+          <div style={{ fontSize: '0.9rem', color: '#666' }}>Remaining</div>
+          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.outstandingBalance.toLocaleString()}</div>
+        </div>
+      </div>
 
       <div className="panel">
         {isReviewing ? (

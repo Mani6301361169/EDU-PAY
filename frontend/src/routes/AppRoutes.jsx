@@ -1,6 +1,7 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute';
+import PublicRoute from '../components/PublicRoute/PublicRoute';
 import DashboardLayout from '../layouts/DashboardLayout';
 
 // Public pages
@@ -36,70 +37,79 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={
+        <ProtectedRoute>
+          <Home />
+        </ProtectedRoute>
+      } />
+      <Route path="/login" element={
+        <PublicRoute>
+          <Login />
+        </PublicRoute>
+      } />
+      <Route path="/register" element={
+        <PublicRoute>
+          <Register />
+        </PublicRoute>
+      } />
 
-      {/* Student Private Routes */}
+      {/* Protected Routes */}
       <Route
         path="/student/*"
         element={
           <ProtectedRoute allowedRoles={['student']}>
-            <DashboardLayout>
-              <Routes>
-                <Route path="dashboard" element={<StudentDashboard />} />
-                <Route path="fees" element={<StudentFeeDetails />} />
-                <Route path="payments" element={<StudentPayment />} />
-                <Route path="receipts" element={<StudentReceipts />} />
-                <Route path="notifications" element={<StudentNotifications />} />
-                <Route path="profile" element={<StudentProfile />} />
-                <Route path="settings" element={<StudentSettings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </DashboardLayout>
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<StudentDashboard />} />
+        <Route path="fees" element={<StudentFeeDetails />} />
+        <Route path="payments" element={<StudentPayment />} />
+        <Route path="receipts" element={<StudentReceipts />} />
+        <Route path="notifications" element={<StudentNotifications />} />
+        <Route path="profile" element={<StudentProfile />} />
+        <Route path="settings" element={<StudentSettings />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
 
       {/* Parent Private Routes */}
       <Route
         path="/parent/*"
         element={
           <ProtectedRoute allowedRoles={['parent']}>
-            <DashboardLayout>
-              <Routes>
-                <Route path="dashboard" element={<ParentDashboard />} />
-                <Route path="details" element={<ParentStudentDetails />} />
-                <Route path="payments" element={<ParentPayment />} />
-                <Route path="receipts" element={<ParentReceipts />} />
-                <Route path="profile" element={<ParentProfile />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </DashboardLayout>
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<ParentDashboard />} />
+        <Route path="details" element={<ParentStudentDetails />} />
+        <Route path="payments" element={<ParentPayment />} />
+        <Route path="receipts" element={<ParentReceipts />} />
+        <Route path="profile" element={<ParentProfile />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
 
       {/* Admin Private Routes */}
       <Route
         path="/admin/*"
         element={
           <ProtectedRoute allowedRoles={['admin']}>
-            <DashboardLayout>
-              <Routes>
-                <Route path="dashboard" element={<AdminDashboard />} />
-                <Route path="students" element={<AdminStudents />} />
-                <Route path="fees" element={<AdminFees />} />
-                <Route path="payments" element={<StudentReceipts />} /> {/* Admin can view/manage receipts history list */}
-                <Route path="reports" element={<AdminReports />} />
-                <Route path="notifications" element={<StudentNotifications />} />
-                <Route path="settings" element={<AdminSettings />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </DashboardLayout>
+            <DashboardLayout />
           </ProtectedRoute>
         }
-      />
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="students" element={<AdminStudents />} />
+        <Route path="fees" element={<AdminFees />} />
+        <Route path="payments" element={<StudentReceipts />} />
+        <Route path="reports" element={<AdminReports />} />
+        <Route path="notifications" element={<StudentNotifications />} />
+        <Route path="settings" element={<AdminSettings />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
 
       {/* Fallback 404 Route */}
       <Route path="*" element={<NotFound />} />

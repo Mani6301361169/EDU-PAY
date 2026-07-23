@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Topbar from '../components/Topbar/Topbar';
 import styles from './DashboardLayout.module.css';
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -22,7 +23,7 @@ const DashboardLayout = ({ children }) => {
       <div className={styles.mainContainer}>
         <Topbar onMenuToggle={toggleSidebar} />
         <main className={styles.content}>
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

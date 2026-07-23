@@ -42,31 +42,37 @@ export default function Payment() {
     }
 
     setIsSubmitting(true);
-    setPaymentDetails({
-      amount,
-      feeType: form.feeType,
-      method: form.method,
-      holder: 'College Fees Portal',
-      accountNumber: '1234567890',
-      ifsc: 'SBIN0001234',
-      upi: 'collegefees@upi',
-    });
-    setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
-    setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
-    setIsReviewing(true);
-
     try {
-      await recordPayment({
-        student: student?._id || user?.uid,
+      if (!student?._id) {
+        throw new Error('No student found to assign this payment. Please refresh the page or contact support.');
+      }
+
+      const savedPayment = await recordPayment({
+        student: student._id,
         amount,
         method: form.method,
         status: 'Success',
         feeType: form.feeType,
         paidAt: new Date().toISOString(),
       });
+
+      setPaymentDetails({
+        amount,
+        feeType: form.feeType,
+        method: form.method,
+        holder: 'College Fees Portal',
+        accountNumber: '1234567890',
+        ifsc: 'SBIN0001234',
+        upi: 'collegefees@upi',
+        paymentId: savedPayment._id,
+      });
+      setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
+      setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
+      setIsReviewing(true);
     } catch (error) {
+      console.error(error);
       setPaymentDetails(null);
-      setMessage('Payment could not be recorded. Please try again.');
+      setMessage(error.response?.data?.message || error.message || 'Payment could not be recorded. Please try again.');
     } finally {
       setIsSubmitting(false);
     }

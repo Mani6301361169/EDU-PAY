@@ -11,7 +11,7 @@ const connectDatabase = async () => {
       dbName: process.env.MONGODB_DB_NAME,
     });
 
-    console.log("MongoDB Connected:", conn.connection.host);
+    console.log("MongoDB Connected successfully: ");
   } catch (error) {
     console.log("========== FULL ERROR ==========");
     console.error(error);
@@ -19,5 +19,5 @@ const connectDatabase = async () => {
     process.exit(1);
   }
 };
-
+;
 export default connectDatabase;
