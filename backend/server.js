@@ -4,6 +4,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// deployment: set the frontend URL in the environment variable FRONTEND_URL
+
+
+// 
 const port = process.env.PORT || 5000;
 
 try {
