@@ -1,6 +1,121 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { feeApi, paymentApi, studentApi } from '../services/api';
+import { calculateFeeSummary, getFeeBalances } from '../utils/feeSummary';
 import AuthContext from './authContextBase';
+
+const formatDate = (value) => {
+  if (!value) return 'No deadline set';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'No deadline set';
+  return date.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+};
+
+const getRoleStudent = (user, students) => {
+  if (!user) return null;
+
+  if (user.role === 'student') {
+    return students.find((student) => student._id === user.uid || student.email === user.email || student._id === user?.studentData?._id) || user.studentData || null;
+  }
+
+  if (user.role === 'parent') {
+    return students.find((student) => student.email === 'aarav.sharma@college.edu') || students[0] || null;
+  }
+
+  return null;
+};
+
+const buildNotifications = ({ user, students, payments, fees }) => {
+  const notifications = [];
+  const student = getRoleStudent(user, students);
+
+  if (user?.role === 'admin') {
+    students.forEach((entry) => {
+      const studentPayments = payments.filter((payment) => payment.student?._id === entry._id || payment.student === entry._id);
+      const summary = calculateFeeSummary(entry, fees, studentPayments);
+      const balances = getFeeBalances(entry, fees, studentPayments);
+
+      balances.forEach((fee) => {
+        if (!fee?.active || fee.remainingAmount <= 0) return;
+        notifications.push({
+          id: `due-${entry._id}-${fee._id}`,
+          title: `${entry.name}: ${fee.name} pending`,
+          message: `${entry.name} still has ₹${Number(fee.remainingAmount || 0).toLocaleString()} pending for ${fee.name}. Deadline: ${formatDate(fee.dueDate)}.`,
+          amount: Number(fee.remainingAmount || 0),
+          feeType: fee.name,
+          dueDate: fee.dueDate,
+          unread: true,
+          type: 'fee-due',
+        });
+      });
+
+      if (summary.outstandingBalance > 0) {
+        notifications.push({
+          id: `summary-${entry._id}`,
+          title: `${entry.name} needs a fee payment`,
+          message: `Outstanding balance is ₹${summary.outstandingBalance.toLocaleString()}. Please make the pending payment before the due date.`,
+          amount: summary.outstandingBalance,
+          feeType: 'Fee Summary',
+          dueDate: null,
+          unread: true,
+          type: 'fee-overview',
+        });
+      }
+    });
+
+    return notifications;
+  }
+
+  if (!student) {
+    return notifications;
+  }
+
+  const studentPayments = payments.filter((payment) => payment.student?._id === student._id || payment.student === student._id);
+  const summary = calculateFeeSummary(student, fees, studentPayments);
+  const balances = getFeeBalances(student, fees, studentPayments);
+
+  balances.forEach((fee) => {
+    if (!fee?.active || fee.remainingAmount <= 0) return;
+    notifications.push({
+      id: `due-${student._id}-${fee._id}`,
+      title: `${fee.name} payment due`,
+      message: `Please pay ₹${Number(fee.remainingAmount || 0).toLocaleString()} for ${fee.name}. Deadline: ${formatDate(fee.dueDate)}.`,
+      amount: Number(fee.remainingAmount || 0),
+      feeType: fee.name,
+      dueDate: fee.dueDate,
+      unread: true,
+      type: 'fee-due',
+    });
+  });
+
+  if (summary.outstandingBalance > 0) {
+    notifications.push({
+      id: `summary-${student._id}`,
+      title: 'Fee payment still pending',
+      message: `₹${summary.outstandingBalance.toLocaleString()} is still pending across your active fee records.`,
+      amount: summary.outstandingBalance,
+      feeType: 'Balance due',
+      dueDate: null,
+      unread: true,
+      type: 'fee-overview',
+    });
+  }
+
+  const latestPayment = [...studentPayments].sort((first, second) => new Date(second.paidAt || 0) - new Date(first.paidAt || 0))[0];
+  if (latestPayment) {
+    notifications.push({
+      id: `receipt-${latestPayment._id}`,
+      title: 'Latest payment receipt available',
+      message: `Receipt generated for ₹${Number(latestPayment.amount || 0).toLocaleString()} via ${latestPayment.method || 'Online payment'}. Visit the receipts page to view it.`,
+      amount: Number(latestPayment.amount || 0),
+      feeType: latestPayment.feeType,
+      dueDate: null,
+      unread: true,
+      type: 'payment-receipt',
+    });
+  }
+
+  return notifications;
+};
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -9,7 +124,7 @@ export const AuthProvider = ({ children }) => {
   const [fees, setFees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState('');
-  const [notifications, setNotifications] = useState([]);
+  const [readNotificationIds, setReadNotificationIds] = useState([]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
@@ -29,6 +144,14 @@ export const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   }, []);
+
+  const notifications = useMemo(() => {
+    const items = buildNotifications({ user, students, payments, fees });
+    return items.map((item) => ({
+      ...item,
+      unread: !readNotificationIds.includes(item.id),
+    }));
+  }, [fees, payments, readNotificationIds, students, user]);
 
   useEffect(() => { loadData(); }, [loadData]);
 
@@ -78,7 +201,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const markNotificationAsRead = (id) => {
-    setNotifications((current) => current.map((item) => item.id === id ? { ...item, unread: false } : item));
+    setReadNotificationIds((current) => (current.includes(id) ? current : [...current, id]));
   };
 
   return (
