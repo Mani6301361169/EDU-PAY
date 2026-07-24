@@ -1,0 +1,66 @@
+/* Student Fee Details Page */
+
+.payNowBtn {
+  align-self: flex-start;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+  color: #060606;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payNowBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.payNowBtn:active {
+  transform: translateY(0);
+}
+
+.summaryBox {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  color: #f7f1d0;
+}
+
+.feeLabel {
+  font-size: 0.9rem;
+}
+
+.feeValue {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.breakdownGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.breakdownItem {
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.breakdownName {
+  color: #f7f1d0;
+  font-weight: 600;
+}
+
+.breakdownAmount {
+  color: #d4af37;
+  font-weight: 700;
+}

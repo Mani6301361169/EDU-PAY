@@ -1,0 +1,67 @@
+/* Student Settings Page */
+
+.settingsSection {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.settingsCard {
+  padding: 1.5rem;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.settingsTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #d4af37;
+}
+
+.settingsItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+}
+
+.settingsItem:last-child {
+  border-bottom: none;
+}
+
+.settingsLabel {
+  color: #f7f1d0;
+  font-weight: 600;
+}
+
+.settingsValue {
+  color: #d4af37;
+}
+
+.settingsBtn {
+  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+  color: #060606;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.settingsBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.dangerBtn {
+  background: #e74c3c;
+  color: white;
+}
+
+.dangerBtn:hover {
+  background: #c0392b;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}

@@ -1,0 +1,60 @@
+/* Student Receipts Page */
+
+.receiptsGrid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.receiptItem {
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.receiptHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.receiptId {
+  color: #d4af37;
+  font-weight: 700;
+}
+
+.receiptDate {
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.receiptAmount {
+  color: #27ae60;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.downloadBtn {
+  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+  color: #060606;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.downloadBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.emptyMessage {
+  text-align: center;
+  color: #999;
+  padding: 2rem 0;
+}

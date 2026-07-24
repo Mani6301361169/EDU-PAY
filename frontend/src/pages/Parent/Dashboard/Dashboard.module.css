@@ -1,0 +1,22 @@
+/* Parent Dashboard Page */
+
+.payNowBtn {
+  margin-top: 0.8rem;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
+  color: #060606;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payNowBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.payNowBtn:active {
+  transform: translateY(0);
+}

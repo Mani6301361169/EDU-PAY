@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
 import PaymentSuccess from '../../../components/PaymentSuccess/PaymentSuccess';
-import '../../Payments/Payments.module.css';
+import styles from './Payment.module.css';
 
 const qrPattern = Array.from({ length: 36 }, (_, index) => {
   // Define a simple pattern for the QR code cells (1 for filled, 0 for empty)
@@ -81,18 +81,18 @@ export default function Payment() {
       <h1>Pay Your Fees</h1>
       <p>Record a fee payment for your student account.</p>
 
-      <div className="summaryGrid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '1rem', margin: '1rem 0' }}>
-        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
-          <div style={{ fontSize: '0.9rem', color: '#666' }}>Total Fees</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.totalFees.toLocaleString()}</div>
+      <div className={styles.summaryGrid}>
+        <div className={styles.summaryCard}>
+          <div className={styles.summaryLabel}>Total Fees</div>
+          <div className={styles.summaryValue}>₹{summary.totalFees.toLocaleString()}</div>
         </div>
-        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
-          <div style={{ fontSize: '0.9rem', color: '#666' }}>Paid So Far</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.paidAmount.toLocaleString()}</div>
+        <div className={styles.summaryCard}>
+          <div className={styles.summaryLabel}>Paid So Far</div>
+          <div className={styles.summaryValue}>₹{summary.paidAmount.toLocaleString()}</div>
         </div>
-        <div style={{ padding: '0.75rem', borderRadius: '8px', background: '#fff' }}>
-          <div style={{ fontSize: '0.9rem', color: '#666' }}>Remaining</div>
-          <div style={{ fontSize: '1.25rem', fontWeight: 700 }}>₹{summary.outstandingBalance.toLocaleString()}</div>
+        <div className={styles.summaryCard}>
+          <div className={styles.summaryLabel}>Remaining</div>
+          <div className={styles.summaryValue}>₹{summary.outstandingBalance.toLocaleString()}</div>
         </div>
       </div>
 
@@ -102,7 +102,7 @@ export default function Payment() {
             <div className="item">
               <strong>Fee Summary</strong>
               <div className="amount">₹{Number(form.amount || 0).toLocaleString()}</div>
-              <div style={{ marginTop: '0.35rem', color: '#e2c46b' }}>{form.feeType}</div>
+              <div className={styles.feeTypeLabel}>{form.feeType}</div>
             </div>
             <button className="button" type="button" onClick={() => setIsReviewing(false)}>Proceed to Pay</button>
           </div>
