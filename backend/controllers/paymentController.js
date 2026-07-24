@@ -2,15 +2,20 @@
 import Student from '../models/Student.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
-export const listPayments = asyncHandler(async (_request, response) => {
-  const payments = await Payment.find().populate('student', 'studentId name email').sort({ paidAt: -1 });
+export const listPayments = asyncHandler(
+  async (_request, response) => {
+  const payments = await Payment.find().populate(
+    'student', 'studentId name email').sort({ 
+      paidAt: -1 });
   response.json(payments);
 });
 
 export const createPayment = asyncHandler(async (request, response) => {
   const { student: studentId, amount, feeType, method, status } = request.body;
+  const normalizedAmount = Math.abs(Number(amount || 0));
+  const normalizedStatus = status === 'Success' ? 'Success' : 'Pending';
 
-  if (!studentId || !amount || !feeType) {
+  if (!studentId || !normalizedAmount || !feeType) {
     const error = new Error('student, amount, and feeType are required.');
     error.statusCode = 400;
     throw error;
@@ -24,17 +29,20 @@ export const createPayment = asyncHandler(async (request, response) => {
   }
 
   const payment = await Payment.create({
+    transactionId: `TXN-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`,
     student: studentId,
-    amount,
+    amount: normalizedAmount,
     feeType,
     method: method || 'Cash',
-    status: status || 'Pending',
-    paidAt: status === 'Success' ? new Date() : undefined,
+    status: normalizedStatus,
+    paidAt: normalizedStatus === 'Success' ? new Date() : undefined,
   });
 
   if (payment.status === 'Success') {
-    student.paidAmount += Number(payment.amount || 0);
-    student.pendingAmount = Math.max(0, student.pendingAmount - Number(payment.amount || 0));
+    const currentPaidAmount = Number(student.paidAmount || 0);
+    const currentPendingAmount = Number(student.pendingAmount || 0);
+    student.paidAmount = currentPaidAmount + normalizedAmount;
+    student.pendingAmount = Math.max(0, currentPendingAmount - normalizedAmount);
     student.feeStatus = student.pendingAmount === 0 ? 'Paid' : 'Pending';
     await student.save();
   }

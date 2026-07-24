@@ -13,7 +13,7 @@ const qrPattern = Array.from({ length: 36 }, (_, index) => {
 export default function Payment() {
   const location = useLocation();
   const { payments, fees, loading, recordPayment, user, students } = useAuth();
-  const [form, setForm] = useState({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
+  const [form, setForm] = useState({ amount: '', feeType: 'Tuition Fee' });
   const [message, setMessage] = useState('');
   const [isReviewing, setIsReviewing] = useState(true);
   const [paymentDetails, setPaymentDetails] = useState(null);
@@ -50,7 +50,7 @@ export default function Payment() {
       const savedPayment = await recordPayment({
         student: student._id,
         amount,
-        method: form.method,
+        method: 'UPI',
         status: 'Success',
         feeType: form.feeType,
         paidAt: new Date().toISOString(),
@@ -59,15 +59,15 @@ export default function Payment() {
       setPaymentDetails({
         amount,
         feeType: form.feeType,
-        method: form.method,
+        method: 'UPI',
         holder: 'College Fees Portal',
         accountNumber: '1234567890',
         ifsc: 'SBIN0001234',
         upi: 'collegefees@upi',
         paymentId: savedPayment._id,
       });
-      setMessage('Payment recorded successfully. Please use the details below to complete the transfer.');
-      setForm({ amount: '', method: 'UPI', feeType: 'Tuition Fee' });
+      setMessage('Payment recorded successfully.');
+      setForm({ amount: '', feeType: 'Tuition Fee' });
       setIsReviewing(true);
     } catch (error) {
       console.error(error);
@@ -95,14 +95,7 @@ export default function Payment() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="form">
-            <input className="input" type="number" min="1" max={summary.outstandingBalance} value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="Amount" required />
-            <select className="select" value={form.method} onChange={(e) => setForm({ ...form, method: e.target.value })}>
-              <option value="UPI">UPI</option>
-              <option value="Net Banking">Net Banking</option>
-              <option value="Credit Card">Credit Card</option>
-              <option value="Debit Card">Debit Card</option>
-              <option value="Cash">Cash</option>
-            </select>
+            <input className="input" type="number" min="1" max={summary.outstandingBalance} value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="Enter fee amount" required />
             <input className="input" type="text" value={form.feeType} onChange={(e) => setForm({ ...form, feeType: e.target.value })} placeholder="Fee type" required />
             <button className="button" type="submit" disabled={loading || isSubmitting}>{isSubmitting ? 'Processing...' : 'Confirm Payment'}</button>
           </form>
