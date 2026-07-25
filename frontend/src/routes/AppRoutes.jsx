@@ -32,6 +32,7 @@ import AdminStudents from '../pages/Admin/Students/Students';
 import AdminFees from '../pages/Admin/Fees/Fees';
 import AdminReports from '../pages/Admin/Reports/Reports';
 import AdminSettings from '../pages/Admin/Settings/Settings';
+import PaymentSuccessPage from '../pages/PaymentSuccess/PaymentSuccessPage';
 
 const AppRoutes = () => {
   return (
@@ -62,6 +63,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<StudentDashboard />} />
         <Route path="fees" element={<StudentFeeDetails />} />
         <Route path="payments" element={<StudentPayment />} />
+        <Route path="payments/success" element={<PaymentSuccessPage />} />
         <Route path="receipts" element={<StudentReceipts />} />
         <Route path="notifications" element={<StudentNotifications />} />
         <Route path="profile" element={<StudentProfile />} />
@@ -82,6 +84,7 @@ const AppRoutes = () => {
         <Route path="dashboard" element={<ParentDashboard />} />
         <Route path="details" element={<ParentStudentDetails />} />
         <Route path="payments" element={<ParentPayment />} />
+        <Route path="payments/success" element={<PaymentSuccessPage />} />
         <Route path="receipts" element={<ParentReceipts />} />
         <Route path="profile" element={<ParentProfile />} />
         <Route path="*" element={<NotFound />} />

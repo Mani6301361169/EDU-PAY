@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
-import PaymentSuccess from '../../../components/PaymentSuccess/PaymentSuccess';
 import '../../Payments/Payments.module.css';
 
 const qrPattern = Array.from({ length: 36 }, (_, index) => {
@@ -16,8 +15,8 @@ export default function Payment() {
   const [form, setForm] = useState({ amount: '', feeType: 'Tuition Fee' });
   const [message, setMessage] = useState('');
   const [isReviewing, setIsReviewing] = useState(true);
-  const [paymentDetails, setPaymentDetails] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.state?.amount !== undefined) {
@@ -56,22 +55,17 @@ export default function Payment() {
         paidAt: new Date().toISOString(),
       });
 
-      setPaymentDetails({
-        amount,
-        feeType: form.feeType,
-        method: 'UPI',
-        holder: 'College Fees Portal',
-        accountNumber: '1234567890',
-        ifsc: 'SBIN0001234',
-        upi: 'collegefees@upi',
-        paymentId: savedPayment._id,
+      navigate('success', {
+        replace: true,
+        state: {
+          amount,
+          feeType: form.feeType,
+          method: 'UPI',
+          paymentId: savedPayment._id,
+        },
       });
-      setMessage('Payment recorded successfully.');
-      setForm({ amount: '', feeType: 'Tuition Fee' });
-      setIsReviewing(true);
     } catch (error) {
       console.error(error);
-      setPaymentDetails(null);
       setMessage(error.response?.data?.message || error.message || 'Payment could not be recorded. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -104,27 +98,6 @@ export default function Payment() {
 
       {message && <p className="message">{message}</p>}
 
-      {paymentDetails && <PaymentSuccess amount={paymentDetails.amount} feeType={paymentDetails.feeType} method={paymentDetails.method} />}
-
-      {paymentDetails && (
-        <div className="paymentCard">
-          <div className="qrGrid" aria-label="QR code placeholder">
-            {qrPattern.map((cell, index) => (
-              <span key={index} className={cell ? 'qrCell qrCellFilled' : 'qrCell'} />
-            ))}
-          </div>
-
-          <div className="paymentDetailsList">
-            <div className="detailRow"><span>Amount</span><strong>₹{paymentDetails.amount.toLocaleString()}</strong></div>
-            <div className="detailRow"><span>Fee Type</span><strong>{paymentDetails.feeType}</strong></div>
-            <div className="detailRow"><span>Method</span><strong>{paymentDetails.method}</strong></div>
-            <div className="detailRow"><span>Account Holder</span><strong>{paymentDetails.holder}</strong></div>
-            <div className="detailRow"><span>Account No.</span><strong>{paymentDetails.accountNumber}</strong></div>
-            <div className="detailRow"><span>IFSC</span><strong>{paymentDetails.ifsc}</strong></div>
-            <div className="detailRow"><span>UPI</span><strong>{paymentDetails.upi}</strong></div>
-          </div>
-        </div>
-      )}
 
       {loading ? (
         <p>Loading payments...</p>
