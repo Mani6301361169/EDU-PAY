@@ -4,7 +4,18 @@ import { useAuth } from '../../context/AuthContext';
 import styles from './Register.module.css';
 import Button from '../../components/Button/Button';
 import Navbar from '../../components/Navbar/Navbar';
-import { FiUser, FiMail, FiPhone, FiHash, FiBook, FiCalendar, FiLock, FiBookOpen } from 'react-icons/fi';
+import {
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiHash,
+  FiBook,
+  FiCalendar,
+  FiLock,
+  FiBookOpen,
+  FiEye,
+  FiEyeOff,
+} from 'react-icons/fi';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,16 +26,18 @@ const Register = () => {
     dept: 'Computer Science',
     year: '1st Year',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const { registerStudent } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -42,7 +55,10 @@ const Register = () => {
       alert('Registration successful! You can now log in.');
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration could not be saved. Check that the backend API is running and try again.');
+      setError(
+        err.response?.data?.message ||
+          'Registration could not be saved. Check that the backend API is running and try again.'
+      );
     }
   };
 
@@ -129,10 +145,17 @@ const Register = () => {
                 <label>Department</label>
                 <div className={styles.inputWrapper}>
                   <FiBook className={styles.inputIcon} />
-                  <select name="dept" value={formData.dept} onChange={handleChange} className={styles.select}>
+                  <select
+                    name="dept"
+                    value={formData.dept}
+                    onChange={handleChange}
+                    className={styles.select}
+                  >
                     <option value="Computer Science">Computer Science</option>
                     <option value="ARTIFICIAL INTELLIGENCE">ARTIFICIAL INTELLIGENCE</option>
-                    <option value="ELECTRONICS AND COMMUNICATION">ELECTRONICS AND COMMUNICATION</option>
+                    <option value="ELECTRONICS AND COMMUNICATION">
+                      ELECTRONICS AND COMMUNICATION
+                    </option>
                     <option value="CIVIL">CIVIL</option>
                   </select>
                 </div>
@@ -142,7 +165,12 @@ const Register = () => {
                 <label>Academic Year</label>
                 <div className={styles.inputWrapper}>
                   <FiCalendar className={styles.inputIcon} />
-                  <select name="year" value={formData.year} onChange={handleChange} className={styles.select}>
+                  <select
+                    name="year"
+                    value={formData.year}
+                    onChange={handleChange}
+                    className={styles.select}
+                  >
                     <option value="1st Year">1st Year</option>
                     <option value="2nd Year">2nd Year</option>
                     <option value="3rd Year">3rd Year</option>
@@ -158,13 +186,21 @@ const Register = () => {
                 <div className={styles.inputWrapper}>
                   <FiLock className={styles.inputIcon} />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="Password"
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={styles.eyeBtn}
+                    aria-label="Toggle Password Visibility"
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
               </div>
 
@@ -173,13 +209,21 @@ const Register = () => {
                 <div className={styles.inputWrapper}>
                   <FiLock className={styles.inputIcon} />
                   <input
-                    type="password"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     placeholder="Confirm Password"
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className={styles.eyeBtn}
+                    aria-label="Toggle Confirm Password Visibility"
+                  >
+                    {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                  </button>
                 </div>
               </div>
             </div>

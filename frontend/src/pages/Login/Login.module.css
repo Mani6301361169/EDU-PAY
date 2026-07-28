@@ -143,7 +143,7 @@
 
 .inputWrapper input {
   width: 100%;
-  padding: 12px 12px 12px 42px;
+  padding: 12px 42px 12px 42px;
   border-radius: var(--radius-sm);
   background: var(--bg-glass);
   border: 1px solid var(--border-glass);
@@ -156,6 +156,25 @@
 .inputWrapper input:focus {
   border-color: var(--accent-blue);
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.eyeBtn:hover {
+  color: var(--accent-blue);
 }
 
 .flexRow {

@@ -1,0 +1,62 @@
+/* Mobile Floating Bottom Navigation Bar CSS Module */
+
+.bottomNavContainer {
+  display: none; /* Hidden on desktop and tablet by default */
+}
+
+@media (max-width: 768px) {
+  .bottomNavContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 220px;
+    height: 60px;
+    background: rgba(22, 22, 22, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 160, 23, 0.35);
+    border-radius: 999px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), 0 4px 15px rgba(212, 160, 23, 0.2);
+    padding: 0 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .navBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    color: #F5F1E6;
+    font-size: 1.3rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .navBtn:hover {
+    color: #D4A017;
+    transform: translateY(-2px);
+  }
+
+  .activeBtn {
+    background: #D4A017 !important;
+    color: #161616 !important;
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 6px 18px rgba(212, 160, 23, 0.45);
+  }
+
+  .activeBtn:hover {
+    color: #161616 !important;
+  }
+}

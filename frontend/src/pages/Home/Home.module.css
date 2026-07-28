@@ -373,6 +373,10 @@ npm.wrapper {
 }
 
 @media (max-width: 768px) {
+  .wrapper {
+    padding-bottom: 90px;
+  }
+
   .heroContent h1 {
     font-size: 2.5rem;
   }

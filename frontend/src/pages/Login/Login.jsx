@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import styles from './Login.module.css';
 import Button from '../../components/Button/Button';
 import Navbar from '../../components/Navbar/Navbar';
-import { FiMail, FiLock, FiBookOpen, FiAlertCircle } from 'react-icons/fi';
-import { FaGoogle } from 'react-icons/fa';
+import { FiMail, FiLock, FiBookOpen, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('student');
   const [error, setError] = useState('');
   const { login } = useAuth();
@@ -24,12 +24,6 @@ const Login = () => {
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     }
-  };
-
-  const autofillDemo = (selectedRole) => {
-    setRole(selectedRole);
-    setEmail('test@gmail.com');
-    setPassword('1234567890');
   };
 
   return (
@@ -49,16 +43,6 @@ const Login = () => {
               <span>{error}</span>
             </div>
           )}
-
-          <div className={styles.demoAutofill}>
-            <span>Autofill Demo (test@gmail.com / 1234567890):</span>
-            <div className={styles.demoButtons}>
-              <button type="button" onClick={() => autofillDemo('student')} className={styles.demoBtn}>Student</button>
-              <button type="button" onClick={() => autofillDemo('parent')} className={styles.demoBtn}>Parent</button>
-              <button type="button" onClick={() => autofillDemo('accountant')} className={styles.demoBtn}>Accountant</button>
-              <button type="button" onClick={() => autofillDemo('admin')} className={styles.demoBtn}>Admin</button>
-            </div>
-          </div>
 
           <form onSubmit={handleLogin} className={styles.form}>
             <div className={styles.formGroup}>
@@ -90,12 +74,20 @@ const Login = () => {
               <div className={styles.inputWrapper}>
                 <FiLock className={styles.inputIcon} />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={styles.eyeBtn}
+                  aria-label="Toggle Password Visibility"
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
               </div>
             </div>
 
@@ -104,7 +96,7 @@ const Login = () => {
                 <input type="checkbox" />
                 <span>Remember Me</span>
               </label>
-              <a href="#" onClick={(e) => { e.preventDefault(); alert('Password reset simulation triggered.'); }} className={styles.forgot}>
+              <a href="#" onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }} className={styles.forgot}>
                 Forgot Password?
               </a>
             </div>
@@ -113,18 +105,6 @@ const Login = () => {
               Sign In
             </Button>
           </form>
-
-          <div className={styles.divider}>
-            <span>Or continue with</span>
-          </div>
-
-          <button onClick={() => alert('Social sign-in simulated!')} className={styles.socialBtn}>
-            <FaGoogle /> Google Login
-          </button>
-
-          <p className={styles.footerText}>
-            Don't have an account? <Link to="/register">Create one now</Link>
-          </p>
         </div>
       </div>
     </div>

@@ -3,50 +3,7 @@ import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import asyncHandler from '../utils/asyncHandler.js';
 
-const SAMPLE_STUDENTS = [
-  {
-    _id: 's100',
-    studentId: 'STU2026000',
-    name: 'Demo Student',
-    email: 'test@gmail.com',
-    mobile: '+91 9876543210',
-    rollNo: 'CS2026-001',
-    department: 'Computer Science',
-    year: '3rd Year',
-    admissionYear: '2023',
-    paidAmount: 85000,
-    pendingAmount: 15000,
-    feeStatus: 'Pending',
-  },
-  {
-    _id: 's101',
-    studentId: 'STU2026001',
-    name: 'Aarav Sharma',
-    email: 'aarav.sharma@college.edu',
-    mobile: '+91 9876543210',
-    rollNo: 'CS2026-042',
-    department: 'Computer Science',
-    year: '3rd Year',
-    admissionYear: '2023',
-    paidAmount: 85000,
-    pendingAmount: 15000,
-    feeStatus: 'Pending',
-  },
-  {
-    _id: 's102',
-    studentId: 'STU2026002',
-    name: 'Priya Patel',
-    email: 'priya.patel@college.edu',
-    mobile: '+91 9876543211',
-    rollNo: 'ECE2026-018',
-    department: 'Electronics & Communication',
-    year: '2nd Year',
-    admissionYear: '2024',
-    paidAmount: 95000,
-    pendingAmount: 0,
-    feeStatus: 'Paid',
-  },
-];
+const SAMPLE_STUDENTS = [];
 
 let inMemoryStudents = [...SAMPLE_STUDENTS];
 
