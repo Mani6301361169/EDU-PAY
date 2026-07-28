@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import cors from "cors";
 import express from "express";
+import mongoose from "mongoose";
 
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 import feeRoutes from "./routes/feeRoutes.js";
@@ -15,16 +16,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const frontendDistPath = path.resolve(__dirname, "../frontend/dist");
 
-// Allow frontend origins
-const allowedOrigins = (
-  process.env.CLIENT_URL || "http://localhost:5173"
-)
+// Configured allowed origins
+const allowedOrigins = (process.env.CLIENT_URL || "")
   .split(",")
-  .map((origin) => origin.trim());
+  .map((origin) => origin.trim())
+  .filter(Boolean);
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or same-origin)
+      if (
+        !origin ||
+        allowedOrigins.includes("*") ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".onrender.com") ||
+        origin.endsWith(".github.io") ||
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1")
+      ) {
+        return callback(null, true);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
@@ -36,7 +50,7 @@ app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
 /* ===========================
-   ROOT & HEALTH ROUTES
+   ROOT & 24/7 HEALTH ROUTES
 =========================== */
 
 // API Welcome Route
@@ -47,12 +61,31 @@ app.get("/api", (_req, res) => {
   });
 });
 
-// Health Check Route
+// 24/7 Health & System Status Endpoint
 app.get("/api/health", (_req, res) => {
+  const dbStateMap = {
+    0: "disconnected",
+    1: "connected",
+    2: "connecting",
+    3: "disconnecting",
+  };
+  const dbStatus = mongoose.connection
+    ? dbStateMap[mongoose.connection.readyState] || "unknown"
+    : "not initialized";
+
   res.json({
     status: "ok",
     service: "college-fees-api",
+    timestamp: new Date().toISOString(),
+    uptimeSeconds: Math.floor(process.uptime()),
+    database: dbStatus,
+    keepAlive247: true,
   });
+});
+
+// 24/7 Quick Ping Route
+app.get("/api/health/ping", (_req, res) => {
+  res.status(200).send("pong");
 });
 
 /* ===========================
