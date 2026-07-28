@@ -22,7 +22,7 @@ const MobileBottomNav = () => {
 
   const getNavButtons = () => {
     if (!user) {
-      // Visitor (not logged in) - Exactly 4 buttons
+      // Visitor (not logged in) - Exactly 4 buttons: Home, About, Contact, Login
       return [
         { to: '/', exact: true, icon: FiHome, label: 'Home' },
         { to: '/about', exact: false, icon: FiInfo, label: 'About' },
@@ -33,12 +33,13 @@ const MobileBottomNav = () => {
 
     switch (user.role) {
       case 'student':
-        // Logged-in Student - Exactly 4 buttons
+        // Logged-in Student - 5 buttons including Fee Details
         return [
           { to: '/student/dashboard', exact: false, icon: FiHome, label: 'Home' },
-          { to: '/student/profile', exact: false, icon: FiUser, label: 'Profile' },
-          { to: '/student/settings', exact: false, icon: FiSettings, label: 'Settings' },
+          { to: '/student/fees', exact: false, icon: FiLayers, label: 'Fee Details' },
           { to: '/student/receipts', exact: false, icon: FiFileText, label: 'Receipts' },
+          { to: '/student/settings', exact: false, icon: FiSettings, label: 'Settings' },
+          { to: '/student/profile', exact: false, icon: FiUser, label: 'Profile' },
         ];
       case 'parent':
         // Logged-in Parent

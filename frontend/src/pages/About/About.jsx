@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import styles from './About.module.css';
-import { FiShield, FiCpu, FiTrendingUp, FiCheckCircle } from 'react-icons/fi';
+import { FiShield, FiCpu, FiTrendingUp, FiCheckCircle, FiChevronDown } from 'react-icons/fi';
 
 export default function About() {
+  const [activeFaq, setActiveFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setActiveFaq(activeFaq === index ? null : index);
+  };
+
+  const faqs = [
+    {
+      q: 'How secure is the online fee payment?',
+      a: 'We use industry-standard encryption protocols. All transactions are processed through certified, highly secure gateways (like Razorpay) with PCI-DSS compliance.',
+    },
+    {
+      q: 'Can I pay fees in installments?',
+      a: 'Yes, our portal supports semester-wise and custom installment payments as configured by the administration.',
+    },
+    {
+      q: 'What happens if a payment fails?',
+      a: 'If a payment fails, any debited amount is usually refunded automatically by your bank within 5-7 working days. You can also raise a support ticket inside the dashboard.',
+    },
+    {
+      q: 'How do I download my payment receipts?',
+      a: 'Once a payment is successful, your digital receipt is generated instantly. You can view, download, or print it from the "Receipts" page in your dashboard.',
+    },
+  ];
+
   return (
     <div className={styles.wrapper}>
       <Navbar />
@@ -57,6 +82,49 @@ export default function About() {
               <h3>Institutional Reporting</h3>
               <p>Real-time financial analytics, monthly audit trails, and department-wise recovery reports for admins.</p>
             </div>
+          </div>
+        </div>
+
+        {/* Testimonials (What Users Say) */}
+        <div className={styles.testimonialsSection}>
+          <h2 className={styles.sectionTitle}>What Users Say</h2>
+          <div className={styles.testimonialsGrid}>
+            <div className={`${styles.testimonialCard} glass-panel`}>
+              <p>"No more long queues! I paid my semester fees in under a minute using EduPay UPI."</p>
+              <div className={styles.author}>
+                <strong>Rahul Mehta</strong>
+                <span>CSE Student</span>
+              </div>
+            </div>
+            <div className={`${styles.testimonialCard} glass-panel`}>
+              <p>"Extremely helpful. I can easily monitor my son's dues and download payment logs instantly."</p>
+              <div className={styles.author}>
+                <strong>Sanjay Sharma</strong>
+                <span>Parent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className={styles.faqSection}>
+          <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
+          <div className={styles.faqContainer}>
+            {faqs.map((faq, index) => (
+              <div key={index} className={`${styles.faqItem} glass-panel`} onClick={() => toggleFaq(index)}>
+                <div className={styles.faqHeader}>
+                  <h4>{faq.q}</h4>
+                  <FiChevronDown
+                    className={`${styles.faqChevron} ${activeFaq === index ? styles.faqChevronRotate : ''}`}
+                  />
+                </div>
+                {activeFaq === index && (
+                  <div className={styles.faqBody}>
+                    <p>{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
 
