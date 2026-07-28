@@ -22,9 +22,9 @@ const Home = () => {
         <div className={styles.heroOverlay}></div>
         <div className={styles.heroContent}>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             className={styles.heroText}
           >
             <span className={styles.badge}>Next-Gen Academic Finance</span>
@@ -32,12 +32,11 @@ const Home = () => {
               Simplify Your <span className="text-gradient">College Fee</span> Payments
             </h1>
             <p>
-              A premium, secure, and completely digital fees management platform designed for modern
-              educational institutions. Pay instantly, generate digital receipts, and track analytics.
+              A premium digital fee platform for modern colleges. Pay fees securely, generate instant digital receipts, and track academic financial records in real-time.
             </p>
             <div className={styles.heroActions}>
               <Link to="/login">
-                <Button variant="primary" size="large" icon={FiArrowRight}>
+                <Button variant="primary" size="medium" icon={FiArrowRight}>
                   Get Started
                 </Button>
               </Link>
@@ -71,12 +70,12 @@ const Home = () => {
           <div className={`${styles.featureCard} glass-panel`}>
             <FiShield className={styles.featureIcon} />
             <h3>Secure Gateways</h3>
-            <p>Simulated integration with industry leaders ensures fast and fully encrypted transfers.</p>
+            <p>Encrypted transfer protocols with certified gateway integrations ensure fast, safe payments.</p>
           </div>
           <div className={`${styles.featureCard} glass-panel`}>
             <FiCpu className={styles.featureIcon} />
             <h3>Smart Reminders</h3>
-            <p>Automated alerts ensure you never miss a semester due date.</p>
+            <p>Automated notifications ensure you never miss upcoming semester fee due dates.</p>
           </div>
           <div className={`${styles.featureCard} glass-panel`}>
             <FiTrendingUp className={styles.featureIcon} />

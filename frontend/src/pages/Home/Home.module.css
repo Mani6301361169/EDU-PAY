@@ -1,13 +1,14 @@
-npm.wrapper {
-  padding-top: 100px;
+.wrapper {
+  padding-top: 80px;
   background-color: var(--bg-primary);
+  min-height: 100vh;
 }
 
 /* Hero Section */
 .hero {
   position: relative;
-  padding: 100px 24px;
-  min-height: 80vh;
+  padding: 80px 24px 60px;
+  min-height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,42 +22,44 @@ npm.wrapper {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 40%, rgba(212, 160, 23, 0.08) 0%, transparent 60%);
   pointer-events: none;
 }
 
 .heroContent {
-  max-width: 800px;
+  max-width: 720px;
   z-index: 10;
+  margin: 0 auto;
 }
 
 .badge {
   display: inline-block;
-  padding: 6px 16px;
-  background: rgba(139, 92, 246, 0.12);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  color: var(--accent-purple);
+  padding: 5px 14px;
+  background: rgba(212, 160, 23, 0.14);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   letter-spacing: 0.05em;
 }
 
 .heroContent h1 {
-  font-size: 3.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   color: var(--text-primary);
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .heroContent p {
-  font-size: 1.15rem;
+  font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.6;
-  margin-bottom: 40px;
+  margin: 0 auto 30px;
+  max-width: 640px;
 }
 
 .heroActions {
@@ -67,24 +70,24 @@ npm.wrapper {
 
 /* Stats Section */
 .stats {
-  padding: 60px 24px;
+  padding: 40px 24px;
 }
 
 .statsGrid {
-  max-width: 1000px;
+  max-width: 950px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 20px;
 }
 
 .statCard {
-  padding: 30px;
+  padding: 24px 20px;
   text-align: center;
 }
 
 .statCard h3 {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 800;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
@@ -92,106 +95,69 @@ npm.wrapper {
 }
 
 .statCard p {
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  margin-top: 8px;
+  margin-top: 6px;
   font-weight: 600;
-}
-
-/* About Section */
-.about {
-  padding: 80px 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.aboutText h2 {
-  font-size: 2.2rem;
-  font-weight: 800;
-  margin-bottom: 20px;
-}
-
-.aboutText p {
-  color: var(--text-secondary);
-  line-height: 1.7;
-  font-size: 1.05rem;
-  margin-bottom: 30px;
-}
-
-.aboutList {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.aboutList li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-weight: 600;
-  font-size: 1rem;
-}
-
-.aboutIcon {
-  color: var(--accent-blue);
-  font-size: 1.3rem;
 }
 
 /* Features */
 .features {
-  padding: 80px 24px;
-  max-width: 1200px;
+  padding: 60px 24px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
 .sectionTitle {
-  font-size: 2.2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
+  color: var(--text-primary);
 }
 
 .featuresGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .featureCard {
-  padding: 40px 30px;
+  padding: 32px 24px;
   text-align: center;
+  border-radius: 16px;
 }
 
 .featureIcon {
-  font-size: 2.5rem;
-  color: var(--accent-blue);
-  margin-bottom: 24px;
+  font-size: 2.2rem;
+  color: #D4A017;
+  margin-bottom: 18px;
 }
 
 .featureCard h3 {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
 }
 
 .featureCard p {
   color: var(--text-secondary);
   line-height: 1.6;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 /* How It Works */
 .howItWorks {
-  padding: 80px 24px;
-  max-width: 1000px;
+  padding: 60px 24px;
+  max-width: 950px;
   margin: 0 auto;
 }
 
 .stepsGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: 28px;
 }
 
 .step {
@@ -200,176 +166,30 @@ npm.wrapper {
 }
 
 .stepNum {
-  width: 60px;
-  height: 60px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: var(--gradient-primary);
-  color: white;
+  color: #060606;
   font-weight: 800;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 auto 16px;
 }
 
 .step h4 {
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
 }
 
 .step p {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-/* Testimonials */
-.testimonials {
-  padding: 80px 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.testimonialsGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-}
-
-.testimonialCard {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.testimonialCard p {
-  font-style: italic;
-  line-height: 1.6;
-  color: var(--text-secondary);
-  font-size: 1rem;
-}
-
-.author {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-}
-
-.author strong {
-  color: var(--text-primary);
-  font-weight: 700;
-}
-
-.author span {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* FAQ */
-.faq {
-  padding: 80px 24px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.faqContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.faqItem {
-  padding: 20px 24px;
-  cursor: pointer;
-}
-
-.faqHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.faqHeader h4 {
-  font-size: 1.05rem;
-  font-weight: 700;
-}
-
-.faqChevron {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  transition: var(--transition-smooth);
-}
-
-.faqChevronRotate {
-  transform: rotate(180deg);
-}
-
-.faqBody {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-glass);
-}
-
-.faqBody p {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* Contact */
-.contact {
-  padding: 80px 24px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.contactContainer {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 32px;
-}
-
-.contactCard {
-  padding: 40px 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contactCard h3 {
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.contactCard p {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.95rem;
-}
-
-.contactForm {
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.input, .textarea {
-  background: var(--bg-glass);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-sm);
-  padding: 12px;
-  color: var(--text-primary);
-  font-family: var(--font-primary);
-}
-
-.input:focus, .textarea:focus {
-  outline: none;
-  border-color: var(--accent-blue);
+  line-height: 1.55;
 }
 
 @media (max-width: 768px) {
@@ -377,29 +197,27 @@ npm.wrapper {
     padding-bottom: 90px;
   }
 
+  .hero {
+    padding: 60px 16px 40px;
+    min-height: auto;
+  }
+
   .heroContent h1 {
-    font-size: 2.5rem;
+    font-size: 2.1rem;
   }
   
+  .heroContent p {
+    font-size: 0.925rem;
+    line-height: 1.55;
+  }
+
   .statsGrid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .stepsGrid {
     grid-template-columns: 1fr;
-    gap: 30px;
-  }
-  
-  .testimonialsGrid {
-    grid-template-columns: 1fr;
-  }
-  
-  .contactContainer {
-    grid-template-columns: 1fr;
-  }
-  
-  .heroActions {
-    flex-direction: column;
-    align-items: stretch;
+    gap: 24px;
   }
 }
