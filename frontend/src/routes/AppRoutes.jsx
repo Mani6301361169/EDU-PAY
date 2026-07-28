@@ -26,6 +26,9 @@ import ParentPayment from '../pages/Parent/Payment/Payment';
 import ParentReceipts from '../pages/Parent/Receipts/Receipts';
 import ParentProfile from '../pages/Parent/Profile/Profile';
 
+// Accountant pages
+import AccountantDashboard from '../pages/Accountant/Dashboard/Dashboard';
+
 // Admin pages
 import AdminDashboard from '../pages/Admin/Dashboard/Dashboard';
 import AdminStudents from '../pages/Admin/Students/Students';
@@ -87,6 +90,20 @@ const AppRoutes = () => {
         <Route path="payments/success" element={<PaymentSuccessPage />} />
         <Route path="receipts" element={<ParentReceipts />} />
         <Route path="profile" element={<ParentProfile />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+
+      {/* Accountant Private Routes */}
+      <Route
+        path="/accountant/*"
+        element={
+          <ProtectedRoute allowedRoles={['accountant']}>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<AccountantDashboard />} />
         <Route path="*" element={<NotFound />} />
       </Route>
 

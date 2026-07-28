@@ -39,6 +39,13 @@ const Sidebar = ({ isOpen, onClose }) => {
           { to: '/parent/payments', label: 'Payments', icon: FiCreditCard },
           { to: '/parent/receipts', label: 'Receipts', icon: FiFileText }
         ];
+      case 'accountant':
+        return [
+          { to: '/accountant/dashboard', label: 'Financial Overview', icon: FiGrid },
+          { to: '/admin/students', label: 'Student Records', icon: FiUsers },
+          { to: '/admin/payments', label: 'Ledger Logs', icon: FiClock },
+          { to: '/admin/reports', label: 'Financial Reports', icon: FiTrendingUp }
+        ];
       case 'admin':
         return [
           { to: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },

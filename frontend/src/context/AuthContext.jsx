@@ -163,6 +163,11 @@ export const AuthProvider = ({ children }) => {
       setUser(admin);
       return admin;
     }
+    if (role === 'accountant' && (targetEmail === 'accountant@college.edu' || targetEmail === 'test@gmail.com')) {
+      const accountant = { uid: 'ACC1', name: 'Mrs. Sharma (Accountant)', email: targetEmail, role: 'accountant' };
+      setUser(accountant);
+      return accountant;
+    }
     if (role === 'parent' && (targetEmail === 'parent@college.edu' || targetEmail === 'test@gmail.com')) {
       const parent = { uid: 'P1', name: 'Sanjay Sharma', email: targetEmail, role: 'parent' };
       setUser(parent);

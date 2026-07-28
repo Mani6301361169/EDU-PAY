@@ -55,6 +55,7 @@ const Login = () => {
             <div className={styles.demoButtons}>
               <button type="button" onClick={() => autofillDemo('student')} className={styles.demoBtn}>Student</button>
               <button type="button" onClick={() => autofillDemo('parent')} className={styles.demoBtn}>Parent</button>
+              <button type="button" onClick={() => autofillDemo('accountant')} className={styles.demoBtn}>Accountant</button>
               <button type="button" onClick={() => autofillDemo('admin')} className={styles.demoBtn}>Admin</button>
             </div>
           </div>
@@ -65,6 +66,7 @@ const Login = () => {
               <select value={role} onChange={(e) => setRole(e.target.value)} className={styles.select}>
                 <option value="student">Student</option>
                 <option value="parent">Parent</option>
+                <option value="accountant">Accountant</option>
                 <option value="admin">Administrator</option>
               </select>
             </div>
