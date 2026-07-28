@@ -138,6 +138,10 @@
 }
 
 @media (max-width: 768px) {
+  .hideOnMobileHome {
+    display: none !important;
+  }
+
   .footer {
     padding: 40px 16px 110px 16px;
   }

@@ -1,13 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styles from './Footer.module.css';
 import { FiTwitter, FiGithub, FiLinkedin, FiMail, FiPhone } from 'react-icons/fi';
 
 const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg';
 
 const Footer = () => {
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   return (
-    <footer className={styles.footer}>
+    <footer className={`${styles.footer} ${isHomePage ? styles.hideOnMobileHome : ''}`}>
       <div className={styles.container}>
         <div className={styles.info}>
           <div className={styles.logo}>
@@ -30,7 +33,7 @@ const Footer = () => {
             <ul className={styles.list}>
               <li><Link to="/" className={styles.link}>Home</Link></li>
               <li><Link to="/about" className={styles.link}>About Us</Link></li>
-              <li><Link to="/about" className={styles.link}>Features</Link></li>
+              <li><Link to="/explore" className={styles.link}>Features</Link></li>
               <li><Link to="/contact" className={styles.link}>Contact</Link></li>
             </ul>
           </div>
@@ -38,10 +41,10 @@ const Footer = () => {
           <div className={styles.linksSection}>
             <h4 className={styles.title}>Resources</h4>
             <ul className={styles.list}>
-              <li><Link to="/about" className={styles.link}>Help Center</Link></li>
+              <li><Link to="/explore" className={styles.link}>Help Center</Link></li>
               <li><Link to="/about" className={styles.link}>Privacy Policy</Link></li>
               <li><Link to="/about" className={styles.link}>Terms of Service</Link></li>
-              <li><Link to="/about" className={styles.link}>FAQs</Link></li>
+              <li><Link to="/explore" className={styles.link}>FAQs</Link></li>
             </ul>
           </div>
         </div>

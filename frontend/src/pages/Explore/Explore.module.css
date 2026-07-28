@@ -1,0 +1,201 @@
+/* Explore Page CSS Module */
+
+.wrapper {
+  background: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.container {
+  padding: 100px 20px 120px;
+  max-width: 1050px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-sizing: border-box;
+}
+
+.heroHeader {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(16px);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 14px;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.highlight {
+  color: #D4A017;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #e2c46b;
+  max-width: 680px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+}
+
+.cardIcon {
+  font-size: 1.8rem;
+  color: #D4A017;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.card p {
+  font-size: 0.875rem;
+  color: #e2c46b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.processList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.stepCard {
+  background: rgba(15, 20, 30, 0.65);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.stepBadge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  color: #060606;
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepCard h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.stepCard p {
+  font-size: 0.85rem;
+  color: #e2c46b;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.faqItem {
+  padding: 1.25rem;
+  border-radius: 12px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+}
+
+.faqItem h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin-bottom: 0.5rem;
+}
+
+.faqItem p {
+  font-size: 0.875rem;
+  color: #e2c46b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 90px 16px 120px;
+    gap: 1.5rem;
+  }
+
+  .heroHeader {
+    padding: 1.35rem 1rem;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.65rem;
+  }
+
+  .card {
+    padding: 1.15rem;
+  }
+}

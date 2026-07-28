@@ -212,8 +212,24 @@
   }
 
   .statsGrid {
-    grid-template-columns: 1fr;
-    gap: 16px;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 14px;
+    padding: 0 4px 10px 4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .statsGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .statCard {
+    flex: 0 0 240px;
+    min-width: 240px;
+    scroll-snap-align: center;
+    padding: 20px 16px;
   }
   
   .stepsGrid {

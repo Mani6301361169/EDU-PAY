@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import styles from './MobileBottomNav.module.css';
 import {
   FiHome,
+  FiCompass,
   FiInfo,
   FiMail,
   FiUser,
@@ -22,9 +23,10 @@ const MobileBottomNav = () => {
 
   const getNavButtons = () => {
     if (!user) {
-      // Visitor (not logged in) - Exactly 4 buttons: Home, About, Contact, Login
+      // Visitor (not logged in) - 5 buttons: Home, Explore, About, Contact, Login
       return [
         { to: '/', exact: true, icon: FiHome, label: 'Home' },
+        { to: '/explore', exact: false, icon: FiCompass, label: 'Explore' },
         { to: '/about', exact: false, icon: FiInfo, label: 'About' },
         { to: '/contact', exact: false, icon: FiMail, label: 'Contact' },
         { to: '/login', exact: false, icon: FiUser, label: 'Login' },
@@ -68,6 +70,7 @@ const MobileBottomNav = () => {
       default:
         return [
           { to: '/', exact: true, icon: FiHome, label: 'Home' },
+          { to: '/explore', exact: false, icon: FiCompass, label: 'Explore' },
           { to: '/about', exact: false, icon: FiInfo, label: 'About' },
           { to: '/contact', exact: false, icon: FiMail, label: 'Contact' },
           { to: '/login', exact: false, icon: FiUser, label: 'Login' },

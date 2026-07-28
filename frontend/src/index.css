@@ -77,6 +77,15 @@ body {
   transition: var(--transition-smooth);
 }
 
+@media (max-width: 768px) {
+  .glass-panel {
+    border-radius: 16px;
+    padding: 18px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 .glass-panel-hover:hover {
   background: var(--bg-glass-hover);
   transform: translateY(-4px);

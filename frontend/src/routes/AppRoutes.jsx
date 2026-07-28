@@ -6,6 +6,7 @@ import DashboardLayout from '../layouts/DashboardLayout';
 
 // Public pages
 import Home from '../pages/Home/Home';
+import Explore from '../pages/Explore/Explore';
 import About from '../pages/About/About';
 import Contact from '../pages/Contact/Contact';
 import Login from '../pages/Login/Login';
@@ -47,6 +48,7 @@ const AppRoutes = () => {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={
