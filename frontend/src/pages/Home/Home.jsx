@@ -27,7 +27,6 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className={styles.heroText}
           >
-            <span className={styles.badge}>Next-Gen Academic Finance</span>
             <h1>
               Simplify Your <span className="text-gradient">College Fee</span> Payments
             </h1>
@@ -45,20 +44,36 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Statistics Section */}
+      {/* Statistics Section (Infinite Auto-Scrolling Marquee) */}
       <section className={styles.stats}>
-        <div className={styles.statsGrid}>
-          <div className={`${styles.statCard} glass-panel`}>
-            <h3>99.9%</h3>
-            <p>Transaction Success Rate</p>
-          </div>
-          <div className={`${styles.statCard} glass-panel`}>
-            <h3>15K+</h3>
-            <p>Active Students</p>
-          </div>
-          <div className={`${styles.statCard} glass-panel`}>
-            <h3>₹50Cr+</h3>
-            <p>Fees Collected Securely</p>
+        <div className={styles.marqueeContainer}>
+          <div className={styles.marqueeTrack}>
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>99.9%</h3>
+              <p>Transaction Success Rate</p>
+            </div>
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>15K+</h3>
+              <p>Active Students</p>
+            </div>
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>₹50Cr+</h3>
+              <p>Fees Collected Securely</p>
+            </div>
+
+            {/* Duplicated set for seamless loop */}
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>99.9%</h3>
+              <p>Transaction Success Rate</p>
+            </div>
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>15K+</h3>
+              <p>Active Students</p>
+            </div>
+            <div className={`${styles.statCard} glass-panel`}>
+              <h3>₹50Cr+</h3>
+              <p>Fees Collected Securely</p>
+            </div>
           </div>
         </div>
       </section>

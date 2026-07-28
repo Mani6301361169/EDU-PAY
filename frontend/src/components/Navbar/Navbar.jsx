@@ -24,6 +24,7 @@ const Navbar = () => {
           <span className={styles.logoText}>
             Edu<span className={styles.logoSub}>Pay</span>
           </span>
+          <span className={styles.headerBadge}>Next-Gen Academic Finance</span>
         </Link>
 
         {/* Desktop Navigation */}

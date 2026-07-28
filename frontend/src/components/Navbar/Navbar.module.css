@@ -44,6 +44,29 @@
   color: #D4A017;
 }
 
+.headerBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  background: rgba(22, 22, 22, 0.9);
+  border: 1px solid rgba(212, 160, 23, 0.45);
+  color: #D4A017;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  margin-left: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 576px) {
+  .headerBadge {
+    display: none;
+  }
+}
+
 .navLinks {
   display: flex;
   align-items: center;

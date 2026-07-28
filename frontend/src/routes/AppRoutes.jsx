@@ -41,10 +41,12 @@ import AdminReports from '../pages/Admin/Reports/Reports';
 import AdminSettings from '../pages/Admin/Settings/Settings';
 import LandingEditor from '../pages/Admin/LandingEditor/LandingEditor';
 import PaymentSuccessPage from '../pages/PaymentSuccess/PaymentSuccessPage';
+import ScrollToTop from '../components/ScrollToTop';
 
 const AppRoutes = () => {
   return (
     <>
+      <ScrollToTop />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Home />} />
