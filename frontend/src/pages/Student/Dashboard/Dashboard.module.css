@@ -1,22 +1,369 @@
-/* Student Dashboard Page */
+/* Student Dashboard Page CSS Module */
+
+.dashboardPage {
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Header Banner */
+.headerBanner {
+  background: var(--bg-card, rgba(20, 24, 33, 0.7));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.bannerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.badgeYear {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary, #94a3b8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.badgeActive {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.welcomeTitle {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.subDetails {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0;
+}
+
+.bannerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
 
 .payNowBtn {
-  margin-top: 0.8rem;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
-  color: #060606;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  font-size: 0.9rem;
   font-weight: 700;
+  padding: 0.75rem 1.4rem;
+  border-radius: 10px;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 .payNowBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
 }
 
-.payNowBtn:active {
-  transform: translateY(0);
+.downloadReceiptBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary, #e2e8f0);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.75rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.downloadReceiptBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.metricCard {
+  background: var(--bg-card, rgba(20, 24, 33, 0.7));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.35rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.metricCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.metricHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.metricTitle {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0;
+}
+
+.metricIcon {
+  font-size: 1.1rem;
+  opacity: 0.85;
+}
+
+.metricValue {
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0.2rem 0;
+}
+
+.valueNeutral {
+  color: var(--text-primary, #ffffff);
+}
+
+.valueSuccess {
+  color: #10b981;
+}
+
+.valueWarning {
+  color: #f59e0b;
+}
+
+.valueInfo {
+  color: #3b82f6;
+}
+
+.metricSubtext {
+  font-size: 0.775rem;
+  color: var(--text-muted, #64748b);
+  margin: 0;
+}
+
+/* Main Content Split */
+.contentSplit {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+  .contentSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Sections */
+.cardSection {
+  background: var(--bg-card, rgba(20, 24, 33, 0.7));
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.sectionSubtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #94a3b8);
+}
+
+/* Fee Breakdown List */
+.feeList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.feeItem {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 1rem 1.15rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.feeMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.feeName {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary, #f1f5f9);
+}
+
+.feeDescription {
+  font-size: 0.75rem;
+  color: var(--text-muted, #64748b);
+}
+
+.feeAmounts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
+}
+
+.feeTotal {
+  font-size: 0.925rem;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+}
+
+.feeStatusTag {
+  font-size: 0.725rem;
+  font-weight: 700;
+}
+
+.tagPaid {
+  color: #10b981;
+}
+
+.tagDue {
+  color: #f59e0b;
+}
+
+/* Ledger Table */
+.tableContainer {
+  overflow-x: auto;
+}
+
+.ledgerTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+.ledgerTable th {
+  padding: 0.85rem 1rem;
+  color: var(--text-secondary, #94a3b8);
+  font-weight: 600;
+  font-size: 0.775rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.ledgerTable td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary, #e2e8f0);
+}
+
+.ledgerTable tr:last-child td {
+  border-bottom: none;
+}
+
+.receiptNo {
+  font-family: monospace;
+  font-weight: 600;
+  color: #60a5fa;
+}
+
+.amountGreen {
+  font-weight: 700;
+  color: #10b981;
+}
+
+.methodBadge {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.viewBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #60a5fa;
+  font-weight: 600;
+  font-size: 0.8rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.viewBtn:hover {
+  color: #93c5fd;
+  text-decoration: underline;
 }
