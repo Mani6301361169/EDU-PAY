@@ -33,7 +33,7 @@ const Login = () => {
         <div className={`${styles.loginCard} glass-panel`}>
           <div className={styles.header}>
             <img
-              src="https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg"
+              src="https://res.cloudinary.com/q2uo4xk0/image/upload/v1785232560/EDU_PAY_khxzp6.jpg"
               alt="EduPay Logo"
               className={styles.logoImg}
             />

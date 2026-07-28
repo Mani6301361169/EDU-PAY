@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import styles from './Footer.module.css';
 import { FiTwitter, FiGithub, FiLinkedin, FiMail, FiPhone } from 'react-icons/fi';
 
-const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg';
+const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785232560/EDU_PAY_khxzp6.jpg';
 
 const Footer = () => {
   const location = useLocation();

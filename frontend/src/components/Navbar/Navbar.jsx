@@ -5,7 +5,7 @@ import { FiHome } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../Button/Button';
 
-const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg';
+const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785232560/EDU_PAY_khxzp6.jpg';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
