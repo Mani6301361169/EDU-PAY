@@ -40,3 +40,13 @@
     display: block;
   }
 }
+
+@media (max-width: 768px) {
+  .layout {
+    padding: 12px 12px 95px 12px;
+  }
+
+  .content {
+    padding-bottom: 95px;
+  }
+}

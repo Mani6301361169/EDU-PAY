@@ -1,21 +1,21 @@
-/* Pinterest-Inspired Mobile Bottom Navigation Bar */
+/* Mobile Floating Bottom Navigation Bar - Dynamic 4 Icons */
 
 .bottomNavContainer {
-  display: none; /* Hidden on desktop and tablet */
+  display: none; /* Hidden on desktop and tablet by default */
 }
 
 @media (max-width: 768px) {
   .bottomNavContainer {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     position: fixed;
-    bottom: 20px;
+    bottom: 18px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 9999;
-    width: 210px;
-    height: 58px;
+    width: 268px;
+    height: 60px;
     background: rgba(22, 22, 22, 0.92);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
@@ -29,16 +29,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
     width: 44px;
     height: 44px;
     border-radius: 50%;
     background: transparent;
     color: #F5F1E6;
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     border: none;
     cursor: pointer;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     outline: none;
     -webkit-tap-highlight-color: transparent;
   }
