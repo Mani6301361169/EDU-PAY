@@ -5,6 +5,20 @@ import asyncHandler from '../utils/asyncHandler.js';
 
 const SAMPLE_STUDENTS = [
   {
+    _id: 's100',
+    studentId: 'STU2026000',
+    name: 'Demo Student',
+    email: 'test@gmail.com',
+    mobile: '+91 9876543210',
+    rollNo: 'CS2026-001',
+    department: 'Computer Science',
+    year: '3rd Year',
+    admissionYear: '2023',
+    paidAmount: 85000,
+    pendingAmount: 15000,
+    feeStatus: 'Pending',
+  },
+  {
     _id: 's101',
     studentId: 'STU2026001',
     name: 'Aarav Sharma',
@@ -108,6 +122,12 @@ export const createStudent = asyncHandler(async (request, response) => {
 export const loginStudent = asyncHandler(async (request, response) => {
   const { email, password } = request.body;
   const targetEmail = email?.toLowerCase();
+
+  // Test account fallback
+  if (targetEmail === 'test@gmail.com') {
+    const testStudent = inMemoryStudents.find((s) => s.email === 'test@gmail.com') || SAMPLE_STUDENTS[0];
+    return response.json(testStudent);
+  }
 
   if (!isDbConnected()) {
     const student = inMemoryStudents.find((s) => s.email?.toLowerCase() === targetEmail);

@@ -28,14 +28,8 @@ const Login = () => {
 
   const autofillDemo = (selectedRole) => {
     setRole(selectedRole);
-    if (selectedRole === 'student') {
-      setEmail('aarav.sharma@college.edu');
-    } else if (selectedRole === 'parent') {
-      setEmail('parent@college.edu');
-    } else if (selectedRole === 'admin') {
-      setEmail('admin@college.edu');
-    }
-    setPassword('password');
+    setEmail('test@gmail.com');
+    setPassword('1234567890');
   };
 
   return (
@@ -57,7 +51,7 @@ const Login = () => {
           )}
 
           <div className={styles.demoAutofill}>
-            <span>Autofill Demo:</span>
+            <span>Autofill Demo (test@gmail.com / 1234567890):</span>
             <div className={styles.demoButtons}>
               <button type="button" onClick={() => autofillDemo('student')} className={styles.demoBtn}>Student</button>
               <button type="button" onClick={() => autofillDemo('parent')} className={styles.demoBtn}>Parent</button>
