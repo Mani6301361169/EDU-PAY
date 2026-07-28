@@ -61,32 +61,18 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
   text-decoration: none;
 }
 
-.homeGlossyBtn:hover {
-  color: #161616;
-  background: #D4A017;
-  border-color: #D4A017;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(212, 160, 23, 0.45);
-}
-
 .homeGlossyBtn:active {
-  transform: translateY(0);
+  transform: scale(0.97);
 }
 
 .link {
   font-size: 0.95rem;
   font-weight: 600;
   color: #F5F1E6;
-  transition: var(--transition-smooth);
-}
-
-.link:hover {
-  color: #D4A017;
 }
 
 .authGroup {
