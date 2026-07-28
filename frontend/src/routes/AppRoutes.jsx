@@ -38,6 +38,7 @@ import AdminStudents from '../pages/Admin/Students/Students';
 import AdminFees from '../pages/Admin/Fees/Fees';
 import AdminReports from '../pages/Admin/Reports/Reports';
 import AdminSettings from '../pages/Admin/Settings/Settings';
+import LandingEditor from '../pages/Admin/LandingEditor/LandingEditor';
 import PaymentSuccessPage from '../pages/PaymentSuccess/PaymentSuccessPage';
 
 const AppRoutes = () => {
@@ -130,6 +131,7 @@ const AppRoutes = () => {
           <Route path="reports" element={<AdminReports />} />
           <Route path="notifications" element={<StudentNotifications />} />
           <Route path="settings" element={<AdminSettings />} />
+          <Route path="landing" element={<LandingEditor />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 

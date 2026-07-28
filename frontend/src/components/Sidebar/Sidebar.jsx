@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { 
   FiGrid, FiCreditCard, FiClock, FiFileText, 
   FiBell, FiUser, FiSettings, FiLogOut, 
-  FiUsers, FiLayers, FiTrendingUp, FiBookOpen 
+  FiUsers, FiLayers, FiTrendingUp, FiBookOpen, FiEdit3
 } from 'react-icons/fi';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -51,6 +51,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           { to: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
           { to: '/admin/students', label: 'Students', icon: FiUsers },
           { to: '/admin/fees', label: 'Fees Config', icon: FiLayers },
+          { to: '/admin/landing', label: 'Landing Editor', icon: FiEdit3 },
           { to: '/admin/payments', label: 'Payments History', icon: FiClock },
           { to: '/admin/reports', label: 'Reports', icon: FiTrendingUp },
           { to: '/admin/notifications', label: 'Notifications', icon: FiBell },

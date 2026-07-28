@@ -1,21 +1,46 @@
-.container {
-  padding: 120px 24px 100px;
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+.wrapper {
+  background: var(--bg-primary);
+  min-height: 100vh;
 }
 
-.contactCard {
-  background: var(--bg-card, rgba(20, 24, 33, 0.75));
-  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
-  backdrop-filter: blur(14px);
-  border-radius: 20px;
+.container {
+  padding: 110px 24px 100px;
+  max-width: 1050px;
+  margin: 0 auto;
+}
+
+/* Single Unified Glassmorphism Container */
+.unifiedGlassContainer {
+  background: var(--bg-glass);
+  border: 1px solid var(--border-glass);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
   padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
+}
+
+.headerArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+  padding-bottom: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  color: #D4A017;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .title {
@@ -29,36 +54,157 @@
   color: #D4A017;
 }
 
-.infoGrid {
+.supportDesc {
+  font-size: 1.05rem;
+  color: #e2c46b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.unifiedContentGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr 1.25fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.contactDetailsColumn {
+  display: flex;
+  flex-direction: column;
   gap: 1.25rem;
 }
 
 .infoBox {
   background: rgba(15, 20, 30, 0.6);
   border: 1px solid rgba(212, 160, 23, 0.2);
-  border-radius: 14px;
-  padding: 1.35rem;
+  border-radius: 16px;
+  padding: 1.25rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.1rem;
+}
+
+.iconCircle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .icon {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   color: #D4A017;
 }
 
 .infoTitle {
-  font-size: 0.8rem;
-  color: #94a3b8;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #b2973b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
 .infoText {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: #F5F1E6;
-  margin-top: 0.15rem;
+  margin: 2px 0 0;
+}
+
+.infoSubtext {
+  font-size: 0.8rem;
+  color: #e2c46b;
+  margin: 2px 0 0;
+}
+
+.formColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: rgba(10, 14, 22, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1.75rem;
+}
+
+.formTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.inputGroup label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #e2c46b;
+}
+
+.input, .textarea {
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  color: #F5F1E6;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.input:focus, .textarea:focus {
+  border-color: #D4A017;
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.15);
+}
+
+@media (max-width: 868px) {
+  .unifiedContentGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 100px 16px 100px;
+  }
+
+  .unifiedGlassContainer {
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .formColumn {
+    padding: 1.25rem;
+  }
 }
