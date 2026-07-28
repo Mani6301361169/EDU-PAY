@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { 
   FiGrid, FiCreditCard, FiClock, FiFileText, 
   FiBell, FiUser, FiSettings, FiLogOut, 
-  FiUsers, FiLayers, FiTrendingUp, FiBookOpen, FiEdit3
+  FiUsers, FiLayers, FiTrendingUp, FiEdit3
 } from 'react-icons/fi';
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -67,7 +67,11 @@ const Sidebar = ({ isOpen, onClose }) => {
   return (
     <aside className={`${styles.sidebar} glass-panel ${isOpen ? styles.open : ''}`}>
       <div className={styles.logoWrapper}>
-        <FiBookOpen className={styles.logoIcon} />
+        <img
+          src="https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg"
+          alt="EduPay Logo"
+          className={styles.logoImg}
+        />
         <span className={styles.logoText}>EduPay</span>
       </div>
 

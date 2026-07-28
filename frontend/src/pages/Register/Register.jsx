@@ -12,7 +12,6 @@ import {
   FiBook,
   FiCalendar,
   FiLock,
-  FiBookOpen,
   FiEye,
   FiEyeOff,
 } from 'react-icons/fi';
@@ -68,7 +67,11 @@ const Register = () => {
       <div className={styles.container}>
         <div className={`${styles.card} glass-panel`}>
           <div className={styles.header}>
-            <FiBookOpen className={styles.logoIcon} />
+            <img
+              src="https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg"
+              alt="EduPay Logo"
+              className={styles.logoImg}
+            />
             <h2>Create Account</h2>
             <p>Register as a new student</p>
           </div>

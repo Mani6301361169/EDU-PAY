@@ -19,9 +19,12 @@
   margin-bottom: 40px;
 }
 
-.logoIcon {
-  font-size: 1.8rem;
-  color: var(--accent-blue);
+.logoImg {
+  height: 38px;
+  width: 38px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(212, 160, 23, 0.4);
 }
 
 .logoText {

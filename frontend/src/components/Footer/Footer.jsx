@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
-import { FiBookOpen, FiTwitter, FiGithub, FiLinkedin, FiMail, FiPhone } from 'react-icons/fi';
+import { FiTwitter, FiGithub, FiLinkedin, FiMail, FiPhone } from 'react-icons/fi';
+
+const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg';
 
 const Footer = () => {
   return (
@@ -9,7 +11,7 @@ const Footer = () => {
       <div className={styles.container}>
         <div className={styles.info}>
           <div className={styles.logo}>
-            <FiBookOpen className={styles.logoIcon} />
+            <img src={LOGO_URL} alt="EduPay Logo" className={styles.logoImg} />
             <span className={styles.logoText}>EduPay</span>
           </div>
           <p className={styles.description}>

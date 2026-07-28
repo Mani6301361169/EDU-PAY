@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import styles from './Login.module.css';
 import Button from '../../components/Button/Button';
 import Navbar from '../../components/Navbar/Navbar';
-import { FiMail, FiLock, FiBookOpen, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -32,7 +32,11 @@ const Login = () => {
       <div className={styles.container}>
         <div className={`${styles.loginCard} glass-panel`}>
           <div className={styles.header}>
-            <FiBookOpen className={styles.logoIcon} />
+            <img
+              src="https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg"
+              alt="EduPay Logo"
+              className={styles.logoImg}
+            />
             <h2>Welcome Back</h2>
             <p>Access your EduPay dashboard</p>
           </div>

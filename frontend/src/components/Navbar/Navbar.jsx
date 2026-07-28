@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Navbar.module.css';
-import { FiBookOpen, FiHome } from 'react-icons/fi';
+import { FiHome } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import Button from '../Button/Button';
+
+const LOGO_URL = 'https://res.cloudinary.com/q2uo4xk0/image/upload/v1785231750/EDU_PAY_pzdzl1.jpg';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -18,7 +20,7 @@ const Navbar = () => {
     <nav className={`${styles.navbar} glass-panel`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
-          <FiBookOpen className={styles.logoIcon} />
+          <img src={LOGO_URL} alt="EduPay Logo" className={styles.logoImg} />
           <span className={styles.logoText}>
             Edu<span className={styles.logoSub}>Pay</span>
           </span>
