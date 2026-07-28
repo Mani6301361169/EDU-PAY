@@ -31,7 +31,7 @@ const Home = () => {
               Simplify Your <span className="text-gradient">College Fee</span> Payments
             </h1>
             <p>
-              A premium digital fee platform for modern colleges. Pay fees securely, generate instant digital receipts, and track academic financial records in real-time.
+              Pay your college fees securely in minutes. Get instant digital receipts, track every payment, and manage your academic fee records anytime, anywhere.
             </p>
             <div className={styles.heroActions}>
               <Link to="/login">

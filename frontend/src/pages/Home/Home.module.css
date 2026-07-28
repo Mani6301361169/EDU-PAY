@@ -49,17 +49,18 @@
 .heroContent h1 {
   font-size: 2.75rem;
   font-weight: 800;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-primary);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .heroContent p {
-  font-size: 1rem;
+  font-size: 1rem; /* 16px font size */
   color: var(--text-secondary);
   line-height: 1.6;
-  margin: 0 auto 30px;
-  max-width: 640px;
+  margin: 0 auto 24px;
+  max-width: 580px;
+  text-align: center;
 }
 
 .heroActions {
@@ -226,17 +227,21 @@
   }
 
   .hero {
-    padding: 60px 16px 40px;
+    padding: 50px 16px 36px;
     min-height: auto;
   }
 
   .heroContent h1 {
-    font-size: 2.1rem;
+    font-size: 2.05rem;
+    line-height: 1.25;
+    margin-bottom: 14px;
   }
   
   .heroContent p {
-    font-size: 0.925rem;
-    line-height: 1.55;
+    font-size: 0.95rem; /* ~15-16px readable font size */
+    line-height: 1.6;
+    max-width: 360px; /* Limits description to 2-3 lines on mobile */
+    margin: 0 auto 22px;
   }
 
   .statsGrid {
