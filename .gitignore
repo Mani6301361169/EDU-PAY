@@ -31,3 +31,4 @@ backend/.git
 *.swp
 *~
 deploy-temp/
+render.env
