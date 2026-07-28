@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://edu-pay-nsuf.onrender.com/api",
+    "/api",
 });
 
 export default api;

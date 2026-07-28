@@ -30,3 +30,4 @@ backend/.git
 *.tmp
 *.swp
 *~
+deploy-temp/

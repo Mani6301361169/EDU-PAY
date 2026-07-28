@@ -4,14 +4,9 @@ import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
 import '../../Payments/Payments.module.css';
 
-const qrPattern = Array.from({ length: 36 }, (_, index) => {
-  const pattern = [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0];
-  return pattern[index % pattern.length];
-});
-
 export default function Payment() {
   const location = useLocation();
-  const { payments, fees, loading, recordPayment, user, students } = useAuth();
+  const { payments, fees, loading, recordPayment, students } = useAuth();
   const [form, setForm] = useState({ amount: '', feeType: 'Tuition Fee' });
   const [message, setMessage] = useState('');
   const [isReviewing, setIsReviewing] = useState(true);

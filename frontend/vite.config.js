@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/EDU-PAY/',
+  base: process.env.VITE_BASE_URL || '/',
   plugins: [react()],
   server: {
     proxy: {
@@ -11,3 +11,4 @@ export default defineConfig({
     },
   },
 })
+

@@ -5,11 +5,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
 import styles from './Payment.module.css';
 
-const qrPattern = Array.from({ length: 36 }, (_, index) => {
-  // Define a simple pattern for the QR code cells (1 for filled, 0 for empty)
-  const pattern = [1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0];
-  return pattern[index % pattern.length];
-});
+
 
 export default function Payment() {
   const location = useLocation();

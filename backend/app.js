@@ -39,11 +39,6 @@ app.use(express.json());
    ROOT & HEALTH ROUTES
 =========================== */
 
-// Root Route
-app.get("/", (_req, res) => {
-  res.send("🚀 EDU-PAY Backend is Running");
-});
-
 // API Welcome Route
 app.get("/api", (_req, res) => {
   res.json({
@@ -77,6 +72,11 @@ if (existsSync(frontendDistPath)) {
 
   app.get(/^\/(?!api).*/, (_req, res) => {
     res.sendFile(path.join(frontendDistPath, "index.html"));
+  });
+} else {
+  // Fallback root endpoint when frontend dist is not built
+  app.get("/", (_req, res) => {
+    res.send("🚀 EDU-PAY Backend is Running");
   });
 }
 
