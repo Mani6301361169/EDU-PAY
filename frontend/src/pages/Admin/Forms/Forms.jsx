@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './Forms.module.css';
 import {
   FiCheckCircle,
@@ -9,9 +10,12 @@ import {
   FiEye,
   FiShield,
   FiLayers,
+  FiExternalLink,
 } from 'react-icons/fi';
 
 export default function Forms() {
+  const navigate = useNavigate();
+
   const [formState, setFormState] = useState(() => {
     const saved = localStorage.getItem('edupay_single_form');
     return saved ? JSON.parse(saved) : { active: true };
@@ -27,8 +31,13 @@ export default function Forms() {
     setFormState((prev) => ({ ...prev, active: !prev.active }));
   };
 
+  const getFullUrl = (path) => {
+    const prefix = window.location.pathname.startsWith('/EDU-PAY') ? '/EDU-PAY' : '';
+    return `${window.location.origin}${prefix}${path}`;
+  };
+
   const copyUrl = (path, key) => {
-    const url = `${window.location.origin}${path}`;
+    const url = getFullUrl(path);
     navigator.clipboard.writeText(url);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
@@ -82,7 +91,7 @@ export default function Forms() {
         <div className={styles.linksSection}>
           <h3>Permanent Public Registration Links</h3>
           <div className={styles.linkRow}>
-            <code>{`${window.location.origin}/register`}</code>
+            <code>{getFullUrl('/register')}</code>
             <button
               type="button"
               className={styles.copyBtn}
@@ -92,7 +101,7 @@ export default function Forms() {
             </button>
           </div>
           <div className={styles.linkRow}>
-            <code>{`${window.location.origin}/forms/details`}</code>
+            <code>{getFullUrl('/forms/details')}</code>
             <button
               type="button"
               className={styles.copyBtn}
@@ -120,14 +129,21 @@ export default function Forms() {
           </div>
         </div>
 
-        {/* Preview Action Button */}
+        {/* Action Buttons: Navigate Directly & New Tab */}
         <div className={styles.actionRow}>
           <button
             type="button"
             className={styles.previewBtn}
-            onClick={() => window.open('/forms/details', '_blank')}
+            onClick={() => navigate('/forms/details')}
           >
             <FiEye /> Open Registration Form Page
+          </button>
+          <button
+            type="button"
+            className={styles.secondaryBtn}
+            onClick={() => window.open(getFullUrl('/forms/details'), '_blank')}
+          >
+            <FiExternalLink /> Open in New Tab
           </button>
         </div>
       </div>

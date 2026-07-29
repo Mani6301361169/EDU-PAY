@@ -1,20 +1,27 @@
 import React from 'react';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import AppRoutes from './routes/AppRoutes';
 import './App.css';
 
+const getBasename = () => {
+  if (typeof window !== 'undefined' && window.location.pathname.startsWith('/EDU-PAY')) {
+    return '/EDU-PAY';
+  }
+  return '';
+};
+
 function App() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <HashRouter>
+        <BrowserRouter basename={getBasename()}>
           <AppRoutes />
-        </HashRouter>
+        </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
   );
 }
 
-export default App; 
+export default App;

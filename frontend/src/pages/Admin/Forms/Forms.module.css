@@ -179,6 +179,8 @@
 
 .actionRow {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-top: 0.5rem;
 }
 
@@ -192,6 +194,21 @@
   background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
   border: 1px solid rgba(255, 223, 118, 0.4);
   color: #060606;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  background: rgba(212, 160, 23, 0.12);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
   font-weight: 800;
   font-size: 0.9rem;
   cursor: pointer;
