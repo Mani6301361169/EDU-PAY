@@ -9,7 +9,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const { user, payments, fees, students } = useAuth();
 
-  // Linked child / student data using Roll Number & Father's Name
+  // Dynamically resolve linked student record
   const parentEmail = user?.email?.toLowerCase();
   const parentName = user?.name?.toLowerCase();
   const parentFatherName = user?.fatherName?.toLowerCase();
@@ -34,15 +34,15 @@ export default function Dashboard() {
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
 
-  const childName = student?.name || 'Mani Kanta';
-  const childRollNo = student?.rollNo || '21631A0501';
-  const childFatherName = student?.fatherName || 'Sanjay Sharma';
+  const childName = student?.name || 'Registered Student';
+  const childRollNo = student?.rollNo || student?.studentId || 'N/A';
+  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Registered Parent/Guardian';
   const childDept = student?.department || 'Computer Science Engineering';
 
-  const totalFees = summary.totalFees > 0 ? summary.totalFees : 125000;
+  const totalFees = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 125000);
   const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
   const pendingAmount = summary.outstandingBalance >= 0 ? summary.outstandingBalance : (student?.pendingAmount || 0);
-  const completionPercentage = Math.round((paidAmount / totalFees) * 100) || 0;
+  const completionPercentage = totalFees > 0 ? Math.round((paidAmount / totalFees) * 100) : 0;
 
   const handlePayPending = () => {
     navigate('/parent/payments', {
@@ -64,7 +64,7 @@ export default function Dashboard() {
               Child: {childName} (Roll No: {childRollNo})
             </h1>
             <p className={styles.institutionSubtitle}>
-              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Father: {childFatherName} • {childDept}
+              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Father's Name: {childFatherName} • {childDept}
             </p>
           </div>
 

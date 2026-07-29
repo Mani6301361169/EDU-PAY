@@ -244,7 +244,16 @@ export const AuthProvider = ({ children }) => {
       return accountant;
     }
     if (role === 'parent') {
-      const parent = { uid: 'P1', name: 'Parent User', email: targetEmail, role: 'parent' };
+      const matchedStudent = students.find((s) => s.email?.toLowerCase() === targetEmail || (s.fatherName && s.fatherName.trim() !== '')) || students[0];
+      const parentFatherName = matchedStudent?.fatherName || 'Registered Parent/Guardian';
+      const parent = {
+        uid: 'P1',
+        name: parentFatherName,
+        fatherName: parentFatherName,
+        email: targetEmail,
+        role: 'parent',
+        childRollNo: matchedStudent?.rollNo,
+      };
       setUser(parent);
       return parent;
     }
