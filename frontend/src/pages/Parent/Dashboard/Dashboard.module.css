@@ -8,6 +8,45 @@
   width: 100%;
 }
 
+.parentOverviewHeader {
+  background: var(--bg-card, rgba(20, 24, 33, 0.75));
+  border: 1px solid var(--border-color, rgba(212, 175, 55, 0.3));
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 1.5rem 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.parentBadge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  background: rgba(212, 160, 23, 0.15);
+  color: #D4A017;
+  border: 1px solid rgba(212, 160, 23, 0.3);
+}
+
+.parentFatherName {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary, #ffffff);
+  margin: 0.25rem 0 0 0;
+  line-height: 1.2;
+}
+
+.parentEmailText {
+  font-size: 0.925rem;
+  color: var(--text-secondary, #94a3b8);
+  margin: 0;
+}
+
 .portalCard {
   background: var(--bg-card, rgba(20, 24, 33, 0.75));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));

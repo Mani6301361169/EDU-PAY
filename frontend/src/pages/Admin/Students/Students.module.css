@@ -1,6 +1,6 @@
 /* Users & Roles Management CSS Module */
 
-.page {
+.container, .page {
   padding: 1.5rem 0;
   display: flex;
   flex-direction: column;
@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.topHeader {
+.header, .topHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,7 +22,7 @@
   gap: 0.25rem;
 }
 
-.mainTitle {
+.title, .mainTitle {
   font-size: 1.75rem;
   font-weight: 800;
   color: var(--text-primary, #ffffff);
@@ -35,7 +35,7 @@
   margin: 0;
 }
 
-.addUserBtn {
+.addBtn, .addUserBtn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -51,11 +51,40 @@
   transition: all 0.25s ease;
 }
 
-.addUserBtn:hover {
+.addBtn:hover, .addUserBtn:hover {
   transform: translateY(-2px);
 }
 
-.filterCard {
+.statsBar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.statCard {
+  background: rgba(20, 24, 33, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statNumber {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #D4A017;
+}
+
+.statLabel {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.controls, .filterCard {
   background: var(--bg-card, rgba(20, 24, 33, 0.7));
   border: 1px solid var(--border-color, rgba(255, 255, 255, 0.08));
   backdrop-filter: blur(12px);
@@ -68,7 +97,7 @@
   gap: 1rem;
 }
 
-.searchBox {
+.searchWrapper, .searchBox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -78,6 +107,11 @@
   padding: 0.5rem 0.85rem;
   flex: 1;
   min-width: 240px;
+}
+
+.searchIcon {
+  color: #94a3b8;
+  font-size: 1rem;
 }
 
 .searchInput {
@@ -157,6 +191,16 @@
   color: var(--text-muted, #64748b);
 }
 
+.deptText {
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.yearText {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
 .roleBadge {
   padding: 0.25rem 0.65rem;
   border-radius: 6px;
@@ -170,29 +214,19 @@
 .roleAccountant { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
 .roleAdmin { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-.statusToggle {
-  cursor: pointer;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  font-size: 0.725rem;
-  font-weight: 700;
-  border: none;
-}
+.statusActive { background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700; font-size: 0.75rem; }
 
-.statusActive { background: rgba(16, 185, 129, 0.2); color: #10b981; }
-.statusInactive { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-
-.actionsCell {
+.actionGroup, .actionsCell {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.iconBtn {
+.iconBtn, .iconBtnEdit, .iconBtnDelete {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-secondary, #94a3b8);
-  padding: 0.4rem;
+  padding: 0.45rem;
   border-radius: 6px;
   cursor: pointer;
   display: flex;
@@ -201,19 +235,19 @@
   transition: all 0.2s ease;
 }
 
-.iconBtn:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+.iconBtnEdit:hover {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.15);
 }
 
-.btnDanger:hover {
+.iconBtnDelete:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.15);
   border-color: rgba(239, 68, 68, 0.3);
 }
 
 /* Modal Styling */
-.modalBackdrop {
+.modalOverlay, .modalBackdrop {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.75);
@@ -227,10 +261,10 @@
 
 .modalContent {
   background: #141821;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 16px;
   width: 100%;
-  max-width: 540px;
+  max-width: 560px;
   padding: 1.75rem;
   display: flex;
   flex-direction: column;
@@ -244,7 +278,7 @@
   align-items: center;
 }
 
-.modalTitle {
+.modalHeader h2, .modalTitle {
   font-size: 1.2rem;
   font-weight: 700;
   color: #ffffff;
@@ -277,7 +311,7 @@
   color: #94a3b8;
 }
 
-.input {
+.formGroup input, .formGroup select, .input {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -287,13 +321,34 @@
   outline: none;
 }
 
-.input:focus {
-  border-color: #6366f1;
+.formGroup input:focus, .formGroup select:focus, .input:focus {
+  border-color: #D4A017;
 }
 
-.modalFooter {
+.modalActions, .modalFooter {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
   margin-top: 0.5rem;
+}
+
+.cancelBtn {
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, #D4A017 0%, #B8860B 100%);
+  color: #000000;
+  border: none;
+  padding: 0.55rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
 }

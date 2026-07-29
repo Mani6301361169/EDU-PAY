@@ -13,6 +13,7 @@ const studentSchema = new mongoose.Schema(
     year: { type: String, trim: true },
     admissionYear: { type: String, trim: true },
     scholarship: { type: Number, default: 0, min: 0 },
+    attendance: { type: Number, default: 92, min: 0, max: 100 },
     paidAmount: { type: Number, default: 0, min: 0 },
     pendingAmount: { type: Number, default: 0, min: 0 },
     feeStatus: { type: String, enum: ['Paid', 'Pending', 'Overdue'], default: 'Pending' },

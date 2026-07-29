@@ -15,11 +15,12 @@ export default function Students() {
   const initialUsers = [
     {
       id: 'u1',
-      rollNo: '21631A0501',
-      name: 'Mani Kanta',
+      rollNo: '23HT1A4309',
+      name: 'KISHORE',
+      fatherName: 'Sanjay Sharma',
       email: 'test@gmail.com',
       role: 'student',
-      department: 'CSE',
+      department: 'Artificial Intelligence',
       year: '3rd Year',
       status: 'Active',
       mobile: '+91 9876543210',
@@ -28,6 +29,7 @@ export default function Students() {
       id: 'u2',
       rollNo: '21631A0502',
       name: 'Priya Sharma',
+      fatherName: 'Ramesh Sharma',
       email: 'priya.sharma@college.edu',
       role: 'student',
       department: 'CSE',
@@ -39,9 +41,10 @@ export default function Students() {
       id: 'u3',
       rollNo: 'PAR-001',
       name: 'Sanjay Sharma',
+      fatherName: 'Sanjay Sharma',
       email: 'parent@college.edu',
       role: 'parent',
-      department: 'CSE',
+      department: 'Artificial Intelligence',
       year: 'N/A',
       status: 'Active',
       mobile: '+91 9876500001',
@@ -50,6 +53,7 @@ export default function Students() {
       id: 'u4',
       rollNo: 'ACC-001',
       name: 'Mrs. Sharma',
+      fatherName: 'N/A',
       email: 'accountant@college.edu',
       role: 'accountant',
       department: 'Finance',
@@ -61,6 +65,7 @@ export default function Students() {
       id: 'u5',
       rollNo: 'ADM-001',
       name: 'Dr. V.K. Rao',
+      fatherName: 'N/A',
       email: 'admin@college.edu',
       role: 'admin',
       department: 'Administration',
@@ -79,9 +84,10 @@ export default function Students() {
 
   const [formData, setFormData] = useState({
     name: '',
+    fatherName: '',
     email: '',
     role: 'student',
-    department: 'CSE',
+    department: 'Artificial Intelligence',
     year: '1st Year',
     mobile: '',
     rollNo: '',
@@ -91,6 +97,7 @@ export default function Students() {
   const filteredUsers = usersList.filter((user) => {
     const matchesSearch =
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (user.fatherName && user.fatherName.toLowerCase().includes(searchTerm.toLowerCase())) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.rollNo.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === 'All' || user.role === selectedRole;
@@ -98,58 +105,32 @@ export default function Students() {
     return matchesSearch && matchesRole && matchesDept;
   });
 
-  const handleToggleStatus = (id) => {
-    setUsersList((prev) =>
-      prev.map((user) =>
-        user.id === id ? { ...user, status: user.status === 'Active' ? 'Inactive' : 'Active' } : user
-      )
-    );
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleDeleteUser = (id, name) => {
-    if (window.confirm(`Are you sure you want to delete user record for "${name}"?`)) {
-      setUsersList((prev) => prev.filter((user) => user.id !== id));
-    }
-  };
-
-  const handleResetPassword = (name, email) => {
-    alert(`Password reset link dispatched to ${name} (${email}).`);
-  };
-
-  const handleSaveUser = (e) => {
+  const handleCreateUser = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) return;
-
-    if (editingUser) {
-      setUsersList((prev) =>
-        prev.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u))
-      );
-      setEditingUser(null);
-    } else {
-      const newUser = {
-        id: `u${Date.now()}`,
-        ...formData,
-        status: 'Active',
-      };
-      setUsersList([newUser, ...usersList]);
+    if (!formData.name || !formData.email) {
+      alert('Name and Email are required!');
+      return;
     }
-
-    setFormData({
-      name: '',
-      email: '',
-      role: 'student',
-      department: 'CSE',
-      year: '1st Year',
-      mobile: '',
-      rollNo: '',
-    });
+    const newUser = {
+      id: `u-${Date.now()}`,
+      ...formData,
+      status: 'Active',
+    };
+    setUsersList([newUser, ...usersList]);
     setShowAddModal(false);
+    resetForm();
   };
 
-  const openEditModal = (user) => {
+  const handleEditClick = (user) => {
     setEditingUser(user);
     setFormData({
       name: user.name,
+      fatherName: user.fatherName || '',
       email: user.email,
       role: user.role,
       department: user.department,
@@ -157,48 +138,90 @@ export default function Students() {
       mobile: user.mobile,
       rollNo: user.rollNo,
     });
-    setShowAddModal(true);
+  };
+
+  const handleUpdateUser = (e) => {
+    e.preventDefault();
+    setUsersList(
+      usersList.map((u) => (u.id === editingUser.id ? { ...u, ...formData } : u))
+    );
+    setEditingUser(null);
+    resetForm();
+  };
+
+  const handleDeleteUser = (id) => {
+    if (window.confirm('Are you sure you want to delete this account?')) {
+      setUsersList(usersList.filter((u) => u.id !== id));
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      fatherName: '',
+      email: '',
+      role: 'student',
+      department: 'Artificial Intelligence',
+      year: '1st Year',
+      mobile: '',
+      rollNo: '',
+    });
   };
 
   return (
-    <div className={styles.page}>
-      {/* Header */}
-      <div className={styles.topHeader}>
-        <div className={styles.titleArea}>
-          <h1 className={styles.mainTitle}>Users & Roles Control Center</h1>
+    <div className={styles.container}>
+      {/* Header Section */}
+      <div className={styles.header}>
+        <div>
+          <h1 className={styles.title}>User Management & Directory</h1>
           <p className={styles.subtitle}>
-            Manage Students, Parents, Accountants, Admins, active statuses & system permissions
+            Manage Students, Parents, Accountants, and System Administrators in one place.
           </p>
         </div>
-
         <button
-          type="button"
           onClick={() => {
-            setEditingUser(null);
-            setFormData({
-              name: '',
-              email: '',
-              role: 'student',
-              department: 'CSE',
-              year: '1st Year',
-              mobile: '',
-              rollNo: '',
-            });
+            resetForm();
             setShowAddModal(true);
           }}
-          className={styles.addUserBtn}
+          className={styles.addBtn}
         >
           <FiUserPlus /> Add New User
         </button>
       </div>
 
-      {/* Filter Bar */}
-      <div className={styles.filterCard}>
-        <div className={styles.searchBox}>
-          <FiSearch style={{ color: '#94a3b8' }} />
+      {/* Stats Quick Bar */}
+      <div className={styles.statsBar}>
+        <div className={styles.statCard}>
+          <div className={styles.statNumber}>{usersList.length}</div>
+          <div className={styles.statLabel}>Total Accounts</div>
+        </div>
+        <div className={styles.statCard}>
+          <div className={styles.statNumber}>
+            {usersList.filter((u) => u.role === 'student').length}
+          </div>
+          <div className={styles.statLabel}>Students</div>
+        </div>
+        <div className={styles.statCard}>
+          <div className={styles.statNumber}>
+            {usersList.filter((u) => u.role === 'parent').length}
+          </div>
+          <div className={styles.statLabel}>Parents</div>
+        </div>
+        <div className={styles.statCard}>
+          <div className={styles.statNumber}>
+            {usersList.filter((u) => u.role === 'accountant').length}
+          </div>
+          <div className={styles.statLabel}>Accountants</div>
+        </div>
+      </div>
+
+      {/* Search & Filter Controls */}
+      <div className={styles.controls}>
+        <div className={styles.searchWrapper}>
+          <FiSearch className={styles.searchIcon} />
           <input
             type="text"
-            placeholder="Search by Name, Email, or ID/Roll No..."
+            placeholder="Search by Name, Father's Name, Email, or ID/Roll No..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={styles.searchInput}
@@ -224,6 +247,7 @@ export default function Students() {
             className={styles.select}
           >
             <option value="All">All Depts</option>
+            <option value="Artificial Intelligence">Artificial Intelligence</option>
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
             <option value="ME">ME</option>
@@ -242,6 +266,7 @@ export default function Students() {
               <tr>
                 <th>ID / Roll No</th>
                 <th>Name & Email</th>
+                <th>Father's Name</th>
                 <th>Role</th>
                 <th>Dept / Year</th>
                 <th>Contact</th>
@@ -259,59 +284,45 @@ export default function Students() {
                     <div className={styles.userName}>{user.name}</div>
                     <div className={styles.userEmail}>{user.email}</div>
                   </td>
+                  <td style={{ color: '#e2c46b', fontWeight: 600 }}>
+                    {user.fatherName || 'Sanjay Sharma'}
+                  </td>
                   <td>
                     <span
                       className={`${styles.roleBadge} ${
-                        user.role === 'admin'
-                          ? styles.roleAdmin
-                          : user.role === 'accountant'
-                          ? styles.roleAccountant
+                        user.role === 'student'
+                          ? styles.roleStudent
                           : user.role === 'parent'
                           ? styles.roleParent
-                          : styles.roleStudent
+                          : user.role === 'accountant'
+                          ? styles.roleAccountant
+                          : styles.roleAdmin
                       }`}
                     >
-                      {user.role}
+                      {user.role.toUpperCase()}
                     </span>
                   </td>
                   <td>
-                    {user.department} {user.year !== 'N/A' && `• ${user.year}`}
+                    <div className={styles.deptText}>{user.department}</div>
+                    <div className={styles.yearText}>{user.year}</div>
                   </td>
-                  <td>{user.mobile}</td>
+                  <td style={{ fontSize: '0.85rem' }}>{user.mobile || 'N/A'}</td>
                   <td>
-                    <button
-                      type="button"
-                      onClick={() => handleToggleStatus(user.id)}
-                      className={`${styles.statusToggle} ${
-                        user.status === 'Active' ? styles.statusActive : styles.statusInactive
-                      }`}
-                    >
-                      {user.status}
-                    </button>
+                    <span className={styles.statusActive}>● {user.status}</span>
                   </td>
                   <td>
-                    <div className={styles.actionsCell}>
+                    <div className={styles.actionGroup}>
                       <button
-                        type="button"
-                        onClick={() => openEditModal(user)}
-                        className={styles.iconBtn}
                         title="Edit User"
+                        onClick={() => handleEditClick(user)}
+                        className={styles.iconBtnEdit}
                       >
                         <FiEdit />
                       </button>
                       <button
-                        type="button"
-                        onClick={() => handleResetPassword(user.name, user.email)}
-                        className={styles.iconBtn}
-                        title="Reset Password"
-                      >
-                        <FiKey />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteUser(user.id, user.name)}
-                        className={`${styles.iconBtn} ${styles.btnDanger}`}
                         title="Delete User"
+                        onClick={() => handleDeleteUser(user.id)}
+                        className={styles.iconBtnDelete}
                       >
                         <FiTrash2 />
                       </button>
@@ -319,122 +330,240 @@ export default function Students() {
                   </td>
                 </tr>
               ))}
+              {filteredUsers.length === 0 && (
+                <tr>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '2rem' }}>
+                    No users matching search criteria.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Add / Edit User Modal */}
+      {/* Add User Modal */}
       {showAddModal && (
-        <div className={styles.modalBackdrop}>
+        <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h3 className={styles.modalTitle}>
-                {editingUser ? 'Edit User Record' : 'Add New System User'}
-              </h3>
+              <h2>Add New User Account</h2>
               <button
-                type="button"
                 onClick={() => setShowAddModal(false)}
                 className={styles.closeBtn}
               >
                 <FiX />
               </button>
             </div>
-
-            <form onSubmit={handleSaveUser} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div className={styles.formGrid}>
-                <div className={styles.formGroup}>
-                  <label>Full Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className={styles.input}
-                    placeholder="John Doe"
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Email Address</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className={styles.input}
-                    placeholder="user@college.edu"
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>System Role</label>
-                  <select
-                    value={formData.role}
-                    onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                    className={styles.input}
-                  >
-                    <option value="student">Student</option>
-                    <option value="parent">Parent</option>
-                    <option value="accountant">Accountant</option>
-                    <option value="admin">Administrator</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Department</label>
-                  <select
-                    value={formData.department}
-                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                    className={styles.input}
-                  >
-                    <option value="CSE">CSE</option>
-                    <option value="ECE">ECE</option>
-                    <option value="ME">ME</option>
-                    <option value="Civil">Civil</option>
-                    <option value="AI&DS">AI&DS</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Administration">Administration</option>
-                  </select>
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Roll No / Staff ID</label>
-                  <input
-                    type="text"
-                    value={formData.rollNo}
-                    onChange={(e) => setFormData({ ...formData, rollNo: e.target.value })}
-                    className={styles.input}
-                    placeholder="21631A0500"
-                  />
-                </div>
-
-                <div className={styles.formGroup}>
-                  <label>Mobile Number</label>
-                  <input
-                    type="text"
-                    value={formData.mobile}
-                    onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                    className={styles.input}
-                    placeholder="+91 9876543210"
-                  />
-                </div>
+            <form onSubmit={handleCreateUser} className={styles.formGrid}>
+              <div className={styles.formGroup}>
+                <label>Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="e.g. Kishore"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Father's Name *</label>
+                <input
+                  type="text"
+                  name="fatherName"
+                  required
+                  placeholder="e.g. Sanjay Sharma"
+                  value={formData.fatherName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Email Address *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="test@gmail.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Roll Number / ID</label>
+                <input
+                  type="text"
+                  name="rollNo"
+                  placeholder="e.g. 23HT1A4309"
+                  value={formData.rollNo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Role</label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                >
+                  <option value="student">Student</option>
+                  <option value="parent">Parent</option>
+                  <option value="accountant">Accountant</option>
+                  <option value="admin">Administrator</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Department</label>
+                <input
+                  type="text"
+                  name="department"
+                  placeholder="e.g. Artificial Intelligence"
+                  value={formData.department}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Year / Semester</label>
+                <input
+                  type="text"
+                  name="year"
+                  placeholder="e.g. 3rd Year"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Mobile Number</label>
+                <input
+                  type="text"
+                  name="mobile"
+                  placeholder="+91 9876543210"
+                  value={formData.mobile}
+                  onChange={handleInputChange}
+                />
               </div>
 
-              <div className={styles.modalFooter}>
+              <div className={styles.modalActions}>
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className={styles.input}
-                  style={{ cursor: 'pointer' }}
+                  className={styles.cancelBtn}
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className={styles.addUserBtn}
+                <button type="submit" className={styles.submitBtn}>
+                  Save & Create User
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {editingUser && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <h2>Edit User: {editingUser.name}</h2>
+              <button
+                onClick={() => setEditingUser(null)}
+                className={styles.closeBtn}
+              >
+                <FiX />
+              </button>
+            </div>
+            <form onSubmit={handleUpdateUser} className={styles.formGrid}>
+              <div className={styles.formGroup}>
+                <label>Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Father's Name *</label>
+                <input
+                  type="text"
+                  name="fatherName"
+                  required
+                  value={formData.fatherName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Email Address *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Roll Number / ID</label>
+                <input
+                  type="text"
+                  name="rollNo"
+                  value={formData.rollNo}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Role</label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleInputChange}
                 >
-                  {editingUser ? 'Save Changes' : 'Create User'}
+                  <option value="student">Student</option>
+                  <option value="parent">Parent</option>
+                  <option value="accountant">Accountant</option>
+                  <option value="admin">Administrator</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Department</label>
+                <input
+                  type="text"
+                  name="department"
+                  value={formData.department}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Year / Semester</label>
+                <input
+                  type="text"
+                  name="year"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Mobile Number</label>
+                <input
+                  type="text"
+                  name="mobile"
+                  value={formData.mobile}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className={styles.modalActions}>
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className={styles.cancelBtn}
+                >
+                  Cancel
+                </button>
+                <button type="submit" className={styles.submitBtn}>
+                  Update User Details
                 </button>
               </div>
             </form>

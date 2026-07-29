@@ -95,9 +95,11 @@ export default function Dashboard() {
   ];
 
   // Effective display values
-  const displayName = student?.name || user?.name || 'Mani Kanta';
+  const displayName = student?.name || user?.name || 'Aarav Sharma';
+  const displayFatherName = student?.fatherName || user?.fatherName || 'Ramesh Kumar';
   const displayDept = student?.department || 'Computer Science & Engineering';
-  const displayRollNo = student?.rollNo || '21631A0501';
+  const displayRollNo = student?.rollNo || student?.studentId || 'CS202601';
+  const displayAttendance = student?.attendance || 92;
 
   const totalScheduledFee = summary.totalFees > 0 ? summary.totalFees : 125000;
   const totalPaid = summary.paidAmount > 0 ? summary.paidAmount : 85000;
@@ -116,7 +118,7 @@ export default function Dashboard() {
           </div>
           <h1 className={styles.welcomeTitle}>Welcome back, {displayName}!</h1>
           <p className={styles.subDetails}>
-            Department of {displayDept} • Roll No: {displayRollNo}
+            Department of {displayDept} • Roll No: {displayRollNo} • Father's Name: {displayFatherName}
           </p>
         </div>
         <div className={styles.bannerActions}>
@@ -161,7 +163,18 @@ export default function Dashboard() {
           <div className={`${styles.metricValue} ${styles.valueWarning}`}>
             ₹{outstandingDue.toLocaleString()}
           </div>
-          <p className={styles.metricSubtext}>Due Date: 15-Aug-2026</p>
+          <p className={styles.metricSubtext}>Due by Next Semester</p>
+        </div>
+
+        <div className={styles.metricCard}>
+          <div className={styles.metricHeader}>
+            <span className={styles.metricTitle}>Academic Attendance</span>
+            <FiAward className={`${styles.metricIcon} ${styles.valueSuccess}`} />
+          </div>
+          <div className={`${styles.metricValue} ${styles.valueSuccess}`}>
+            {displayAttendance}%
+          </div>
+          <p className={styles.metricSubtext}>Regular • Exam Eligible</p>
         </div>
 
         <div className={styles.metricCard}>

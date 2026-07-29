@@ -16,7 +16,7 @@ export default function Dashboard() {
 
   const student = students.find((item) => {
     if (!item) return false;
-    if (user?.childRollNo && item.rollNo === user.childRollNo) return true;
+    if (user?.childRollNo && (item.rollNo === user.childRollNo || item.studentId === user.childRollNo)) return true;
     if (
       item.fatherName &&
       (item.fatherName.toLowerCase() === parentName ||
@@ -43,6 +43,7 @@ export default function Dashboard() {
   const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
   const pendingAmount = summary.outstandingBalance >= 0 ? summary.outstandingBalance : (student?.pendingAmount || 0);
   const completionPercentage = totalFees > 0 ? Math.round((paidAmount / totalFees) * 100) : 0;
+  const attendance = student?.attendance || 92;
 
   const handlePayPending = () => {
     navigate('/parent/payments', {
@@ -55,6 +56,13 @@ export default function Dashboard() {
 
   return (
     <div className={styles.dashboardPage}>
+      {/* Top Parent Overview Header */}
+      <div className={styles.parentOverviewHeader}>
+        <span className={styles.parentBadge}>PARENT</span>
+        <h2 className={styles.parentFatherName}>{childFatherName}</h2>
+        <p className={styles.parentEmailText}>{parentEmail || student?.email || 'test@gmail.com'}</p>
+      </div>
+
       <div className={styles.portalCard}>
         {/* Top Header Row */}
         <div className={styles.headerRow}>
@@ -64,7 +72,7 @@ export default function Dashboard() {
               Child: {childName} (Roll No: {childRollNo})
             </h1>
             <p className={styles.institutionSubtitle}>
-              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Registered Parent/Guardian: {childFatherName} • {childDept}
+              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Father's Name: {childFatherName} • {childDept}
             </p>
           </div>
 
@@ -77,7 +85,7 @@ export default function Dashboard() {
         <div className={styles.metricsRow}>
           {/* Card 1: Attendance */}
           <div className={styles.metricCard}>
-            <div className={`${styles.badgeSquare} ${styles.badgeGreen}`}>92%</div>
+            <div className={`${styles.badgeSquare} ${styles.badgeGreen}`}>{attendance}%</div>
             <div className={styles.metricContent}>
               <span className={styles.metricLabel}>Academic Attendance</span>
               <span className={styles.metricValueText}>Regular • Eligible for Exams</span>
