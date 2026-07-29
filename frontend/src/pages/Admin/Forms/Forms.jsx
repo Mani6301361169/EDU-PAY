@@ -3,7 +3,6 @@ import styles from './Forms.module.css';
 import {
   FiFileText,
   FiPlus,
-  FiEdit,
   FiTrash2,
   FiCopy,
   FiEye,
@@ -16,6 +15,7 @@ import {
 const INITIAL_FORMS = [
   {
     id: 'form-2026-01',
+    slug: 'semester-fee-registration-2026',
     title: 'Semester Fee Registration Form 2026',
     description: 'Official online fee registration for B.Tech Computer Science & AI students.',
     active: true,
@@ -24,6 +24,7 @@ const INITIAL_FORMS = [
   },
   {
     id: 'form-2026-02',
+    slug: 'hostel-and-mess-admission',
     title: 'Hostel & Mess Admission Form',
     description: 'Application for campus hostel accommodation and meal plan subscription.',
     active: true,
@@ -51,10 +52,17 @@ export default function Forms() {
     e.preventDefault();
     if (!title.trim()) return;
 
+    const slug = title
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+
     const newForm = {
       id: `form-${Date.now()}`,
-      title,
-      description: desc || 'Custom institutional application form.',
+      slug: slug || `form-${Date.now()}`,
+      title: title.trim(),
+      description: desc.trim() || 'Official institutional registration form.',
       active: true,
       responsesCount: 0,
       createdAt: new Date().toISOString().split('T')[0],
@@ -76,21 +84,22 @@ export default function Forms() {
     }
   };
 
-  const handleDuplicateForm = (form) => {
+  const handleDuplicateForm = (formItem) => {
     const dup = {
-      ...form,
+      ...formItem,
       id: `form-${Date.now()}`,
-      title: `${form.title} (Copy)`,
+      slug: `${formItem.slug || 'form'}-copy-${Date.now()}`,
+      title: `${formItem.title} (Copy)`,
       responsesCount: 0,
       createdAt: new Date().toISOString().split('T')[0],
     };
     saveForms([dup, ...forms]);
   };
 
-  const copyPublicLink = (formId) => {
-    const url = `${window.location.origin}/form/${formId}`;
+  const copyPublicLink = (formItem) => {
+    const url = `${window.location.origin}/forms/${formItem.slug || formItem.id}`;
     navigator.clipboard.writeText(url);
-    setCopiedId(formId);
+    setCopiedId(formItem.id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
@@ -100,30 +109,30 @@ export default function Forms() {
         <div>
           <h1 className={styles.pageTitle}>Registration Forms Builder</h1>
           <p className={styles.pageSubtitle}>
-            Create, manage, activate/deactivate forms and generate public registration links.
+            Create, publish, edit, deactivate forms and generate shareable public registration URLs.
           </p>
         </div>
       </div>
 
-      {/* Create New Form Card */}
+      {/* Create & Publish New Form Card */}
       <div className={`${styles.card} glass-panel`}>
         <h3>
-          <FiPlus style={{ color: '#D4A017' }} /> Create New Registration Form
+          <FiPlus style={{ color: '#D4A017' }} /> Create & Publish Registration Form
         </h3>
         <form onSubmit={handleCreateForm} className={styles.createForm}>
           <div className={styles.inputGroup}>
-            <label>Form Title</label>
+            <label>Form Title *</label>
             <input
               type="text"
               className={styles.inputField}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="e.g. 2026 Academic Fee Registration"
+              placeholder="e.g. B.Tech Semester Fee Registration 2026"
               required
             />
           </div>
           <div className={styles.inputGroup}>
-            <label>Description / Guidelines</label>
+            <label>Description / Instructions</label>
             <input
               type="text"
               className={styles.inputField}
@@ -133,27 +142,27 @@ export default function Forms() {
             />
           </div>
           <button type="submit" className={styles.submitBtn}>
-            <FiPlus /> Create Form
+            <FiPlus /> Publish Form
           </button>
         </form>
       </div>
 
       {/* Forms List Grid */}
       <div className={styles.formsGrid}>
-        {forms.map((form) => (
-          <div key={form.id} className={`${styles.formCard} glass-panel`}>
+        {forms.map((formItem) => (
+          <div key={formItem.id} className={`${styles.formCard} glass-panel`}>
             <div className={styles.cardHeader}>
-              <span className={form.active ? styles.badgeActive : styles.badgeInactive}>
-                {form.active ? <FiCheckCircle /> : <FiXCircle />}{' '}
-                {form.active ? 'ACTIVE' : 'INACTIVE'}
+              <span className={formItem.active ? styles.badgeActive : styles.badgeInactive}>
+                {formItem.active ? <FiCheckCircle /> : <FiXCircle />}{' '}
+                {formItem.active ? 'PUBLISHED & ACTIVE' : 'INACTIVE'}
               </span>
               <button
                 type="button"
                 className={styles.toggleBtn}
-                onClick={() => toggleFormActive(form.id)}
+                onClick={() => toggleFormActive(formItem.id)}
                 title="Toggle Active Status"
               >
-                {form.active ? (
+                {formItem.active ? (
                   <FiToggleRight style={{ color: '#22c55e', fontSize: '1.5rem' }} />
                 ) : (
                   <FiToggleLeft style={{ color: '#6b7280', fontSize: '1.5rem' }} />
@@ -161,22 +170,23 @@ export default function Forms() {
               </button>
             </div>
 
-            <h3 className={styles.formTitle}>{form.title}</h3>
-            <p className={styles.formDesc}>{form.description}</p>
+            <h3 className={styles.formTitle}>{formItem.title}</h3>
+            <p className={styles.formDesc}>{formItem.description}</p>
 
             <div className={styles.metaRow}>
-              <span>Created: {form.createdAt}</span>
-              <span>Submissions: {form.responsesCount}</span>
+              <span>Created: {formItem.createdAt}</span>
+              <span>Submissions: {formItem.responsesCount || 0}</span>
             </div>
 
+            {/* Accessible Shareable Public URL */}
             <div className={styles.publicUrlBox}>
-              <code>{`${window.location.origin}/form/${form.id}`}</code>
+              <code>{`${window.location.origin}/forms/${formItem.slug || formItem.id}`}</code>
               <button
                 type="button"
                 className={styles.copyBtn}
-                onClick={() => copyPublicLink(form.id)}
+                onClick={() => copyPublicLink(formItem)}
               >
-                <FiCopy /> {copiedId === form.id ? 'Copied!' : 'Copy Link'}
+                <FiCopy /> {copiedId === formItem.id ? 'Copied!' : 'Copy URL'}
               </button>
             </div>
 
@@ -184,21 +194,21 @@ export default function Forms() {
               <button
                 type="button"
                 className={styles.actionBtn}
-                onClick={() => window.open(`/form/${form.id}`, '_blank')}
+                onClick={() => window.open(`/forms/${formItem.slug || formItem.id}`, '_blank')}
               >
                 <FiEye /> Preview Public Form
               </button>
               <button
                 type="button"
                 className={styles.actionBtn}
-                onClick={() => handleDuplicateForm(form)}
+                onClick={() => handleDuplicateForm(formItem)}
               >
                 <FiFileText /> Duplicate
               </button>
               <button
                 type="button"
                 className={styles.deleteBtn}
-                onClick={() => handleDeleteForm(form.id)}
+                onClick={() => handleDeleteForm(formItem.id)}
               >
                 <FiTrash2 /> Delete
               </button>

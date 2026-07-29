@@ -68,6 +68,7 @@ const AppRoutes = () => {
         <Route path="/fee-policies" element={<FeePolicies />} />
         <Route path="/helpdesk" element={<ContactHelpdesk />} />
         <Route path="/form/:formId" element={<PublicForm />} />
+        <Route path="/forms/:slug" element={<PublicForm />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />

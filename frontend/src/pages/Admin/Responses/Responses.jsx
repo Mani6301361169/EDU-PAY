@@ -56,7 +56,7 @@ export default function Responses() {
 
   const handleApprove = async (item) => {
     try {
-      // Auto-create student user account on approval
+      // Auto-create user account on approval with submitted role and password
       await registerStudent({
         name: item.name,
         email: item.email,
@@ -64,14 +64,15 @@ export default function Responses() {
         rollNo: item.rollNo,
         dept: item.dept,
         year: item.year,
-        password: 'Password@123',
+        role: item.role || 'student',
+        password: item.password || 'Password@123',
       });
 
       const updated = responses.map((r) =>
         r.id === item.id ? { ...r, status: 'Approved' } : r
       );
       saveResponses(updated);
-      setActionMsg(`Approved ${item.name}! Account provisioned (Default Password: Password@123)`);
+      setActionMsg(`Approved ${item.name}! Account provisioned as ${item.role || 'student'}`);
       setTimeout(() => setActionMsg(''), 4000);
     } catch (err) {
       alert(err.message || 'Approval failed.');
