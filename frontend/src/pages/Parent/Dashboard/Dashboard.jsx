@@ -34,10 +34,10 @@ export default function Dashboard() {
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
 
-  const childName = student?.name || 'Aarav Sharma';
-  const childRollNo = student?.rollNo || student?.studentId || 'CS202601';
-  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Ramesh Kumar';
-  const childDept = student?.department || 'Computer Science Engineering';
+  const childName = student?.name || 'KISHORE';
+  const childRollNo = student?.rollNo || student?.studentId || '23HT1A4309';
+  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Sanjay Sharma';
+  const childDept = student?.department || 'Artificial Intelligence';
 
   const totalFees = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 125000);
   const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
