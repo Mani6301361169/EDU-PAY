@@ -51,6 +51,8 @@ const Sidebar = ({ isOpen, onClose }) => {
           { to: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
           { to: '/admin/students', label: 'Student Records', icon: FiUsers },
           { to: '/admin/upload-excel', label: 'Upload Excel', icon: FiFileText },
+          { to: '/admin/forms', label: 'Registration Forms', icon: FiLayers },
+          { to: '/admin/responses', label: 'Form Responses', icon: FiCheckCircle },
           { to: '/admin/fees', label: 'Fees Config', icon: FiLayers },
           { to: '/admin/payments', label: 'Ledger Logs', icon: FiClock },
           { to: '/admin/reports', label: 'Financial Reports', icon: FiTrendingUp },

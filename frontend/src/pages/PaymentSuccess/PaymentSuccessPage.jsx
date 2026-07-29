@@ -1,10 +1,15 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import PaymentSuccess from '../../components/PaymentSuccess/PaymentSuccess';
+import { downloadReceiptPDF } from '../../utils/pdfGenerator';
+import styles from './PaymentSuccessPage.module.css';
+import { FiArrowLeft, FiFileText, FiDownload, FiCheckCircle } from 'react-icons/fi';
 
 export default function PaymentSuccessPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const paymentState = location.state;
 
   useEffect(() => {
@@ -17,29 +22,67 @@ export default function PaymentSuccessPage() {
     return null;
   }
 
+  const handleDownloadPDF = () => {
+    downloadReceiptPDF(paymentState, user?.studentData || user);
+  };
+
   return (
-    <section className="page">
-      <h1>Payment confirmed</h1>
-      <p>Your fee payment was completed successfully.</p>
+    <div className={styles.wrapper}>
+      <div className={`${styles.card} glass-panel`}>
+        <PaymentSuccess
+          amount={paymentState.amount}
+          feeType={paymentState.feeType}
+          method={paymentState.method}
+        />
 
-      <div className="panel" style={{ maxWidth: '640px', margin: '1.5rem auto 0' }}>
-        <PaymentSuccess amount={paymentState.amount} feeType={paymentState.feeType} method={paymentState.method} />
-
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', marginTop: '1.5rem' }}>
-          <button type="button" className="button" onClick={() => navigate('..')}>
-            Back to payments
-          </button>
-          <button type="button" className="button" onClick={() => navigate('../receipts')}>
-            View receipts
-          </button>
+        <div className={styles.detailsCard}>
+          <div className={styles.detailRow}>
+            <span>Transaction ID</span>
+            <strong>{paymentState.paymentId || `TXN-${Date.now()}`}</strong>
+          </div>
+          <div className={styles.detailRow}>
+            <span>Fee Category</span>
+            <strong>{paymentState.feeType}</strong>
+          </div>
+          <div className={styles.detailRow}>
+            <span>Amount Paid</span>
+            <strong style={{ color: '#D4A017', fontSize: '1.1rem' }}>
+              ₹{Number(paymentState.amount).toLocaleString('en-IN')}
+            </strong>
+          </div>
+          <div className={styles.detailRow}>
+            <span>Status</span>
+            <span className={styles.successBadge}>
+              <FiCheckCircle /> SUCCESS
+            </span>
+          </div>
         </div>
 
-        <div style={{ marginTop: '1rem', color: '#d1d5db', fontSize: '0.95rem' }}>
-          <p><strong>Payment ID:</strong> {paymentState.paymentId || 'N/A'}</p>
-          <p><strong>Fee type:</strong> {paymentState.feeType}</p>
-          <p><strong>Method:</strong> {paymentState.method}</p>
+        {/* Glossy Redesigned Action Buttons */}
+        <div className={styles.actionBtnGrid}>
+          <button
+            type="button"
+            className={styles.backBtn}
+            onClick={() => navigate('..')}
+          >
+            <FiArrowLeft /> Back to Payments
+          </button>
+          <button
+            type="button"
+            className={styles.viewBtn}
+            onClick={() => navigate('../receipts')}
+          >
+            <FiFileText /> View Receipts
+          </button>
+          <button
+            type="button"
+            className={styles.downloadBtn}
+            onClick={handleDownloadPDF}
+          >
+            <FiDownload /> Download Receipt (PDF)
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

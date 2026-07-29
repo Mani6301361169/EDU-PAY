@@ -1,0 +1,147 @@
+/* PublicForm CSS Module */
+
+.wrapper {
+  background: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.container {
+  padding: 100px 24px 120px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 2.25rem;
+  border-radius: 20px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.desc {
+  font-size: 0.95rem;
+  color: #e2c46b;
+  margin-top: 4px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e2c46b;
+}
+
+.inputField,
+.selectField {
+  background: rgba(12, 12, 12, 0.9);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: #F5F1E6;
+  font-family: inherit;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.selectField option {
+  background: #161616;
+  color: #F5F1E6;
+}
+
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #060606;
+  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
+  border: 1px solid rgba(255, 223, 118, 0.4);
+  box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35);
+  cursor: pointer;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+}
+
+.successMsg,
+.inactiveMsg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem 1rem;
+}
+
+.successMsg h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.successMsg p {
+  font-size: 0.95rem;
+  color: #b2973b;
+  margin: 0;
+}
+
+.homeBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  background: rgba(212, 160, 23, 0.18);
+  border: 1px solid rgba(212, 160, 23, 0.4);
+  color: #D4A017;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 90px 16px 120px;
+  }
+}

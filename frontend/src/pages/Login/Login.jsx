@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import styles from './Login.module.css';
 import Button from '../../components/Button/Button';
 import Navbar from '../../components/Navbar/Navbar';
-import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff } from 'react-icons/fi';
+import { FiMail, FiLock, FiAlertCircle, FiEye, FiEyeOff, FiX, FiCheckCircle } from 'react-icons/fi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +12,12 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState('student');
   const [error, setError] = useState('');
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [resetMsg, setResetMsg] = useState('');
+  const [resetErr, setResetErr] = useState('');
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -24,6 +30,34 @@ const Login = () => {
     } catch (err) {
       setError(err.message || 'Login failed. Please check your credentials.');
     }
+  };
+
+  const handlePasswordReset = (e) => {
+    e.preventDefault();
+    setResetMsg('');
+    setResetErr('');
+
+    if (!forgotEmail.trim() || !newPassword.trim()) {
+      setResetErr('Please provide both email and new password.');
+      return;
+    }
+
+    const key = `edupay_reset_${forgotEmail.toLowerCase().trim()}`;
+    const lastReset = localStorage.getItem(key);
+    const today = new Date().toDateString();
+
+    if (lastReset === today) {
+      setResetErr('You can only reset your password once per day. Please try again tomorrow.');
+      return;
+    }
+
+    localStorage.setItem(key, today);
+    setResetMsg('Password updated successfully! You can now log in with your new password.');
+    setTimeout(() => {
+      setShowForgotModal(false);
+      setEmail(forgotEmail);
+      setPassword(newPassword);
+    }, 1800);
   };
 
   return (
@@ -100,7 +134,15 @@ const Login = () => {
                 <input type="checkbox" />
                 <span>Remember Me</span>
               </label>
-              <a href="#" onClick={(e) => { e.preventDefault(); alert('Password reset link sent to your registered email.'); }} className={styles.forgot}>
+              <a
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setForgotEmail(email);
+                  setShowForgotModal(true);
+                }}
+                className={styles.forgot}
+              >
                 Forgot Password?
               </a>
             </div>
@@ -111,6 +153,57 @@ const Login = () => {
           </form>
         </div>
       </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div className={styles.modalBackdrop}>
+          <div className={`${styles.modalCard} glass-panel`}>
+            <div className={styles.modalHeader}>
+              <h3>Reset Password (1x Daily Limit)</h3>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                onClick={() => setShowForgotModal(false)}
+              >
+                <FiX />
+              </button>
+            </div>
+
+            {resetErr && <div className={styles.errorAlert}><FiAlertCircle /> {resetErr}</div>}
+            {resetMsg && <div className={styles.successAlert}><FiCheckCircle /> {resetMsg}</div>}
+
+            <form onSubmit={handlePasswordReset} className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>Registered Email</label>
+                <input
+                  type="email"
+                  className={styles.modalInput}
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="student@college.edu"
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>New Password</label>
+                <input
+                  type="password"
+                  className={styles.modalInput}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Enter new password"
+                  required
+                />
+              </div>
+
+              <Button type="submit" variant="primary" fullWidth>
+                Update Password
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -41,6 +41,9 @@ import AdminReports from '../pages/Admin/Reports/Reports';
 import AdminSettings from '../pages/Admin/Settings/Settings';
 import LandingEditor from '../pages/Admin/LandingEditor/LandingEditor';
 import UploadExcel from '../pages/Admin/UploadExcel/UploadExcel';
+import AdminForms from '../pages/Admin/Forms/Forms';
+import AdminResponses from '../pages/Admin/Responses/Responses';
+import PublicForm from '../pages/Form/PublicForm';
 import PaymentSuccessPage from '../pages/PaymentSuccess/PaymentSuccessPage';
 import ScrollToTop from '../components/ScrollToTop';
 
@@ -64,6 +67,7 @@ const AppRoutes = () => {
         <Route path="/student-support" element={<StudentSupport />} />
         <Route path="/fee-policies" element={<FeePolicies />} />
         <Route path="/helpdesk" element={<ContactHelpdesk />} />
+        <Route path="/form/:formId" element={<PublicForm />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />
@@ -142,6 +146,8 @@ const AppRoutes = () => {
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="students" element={<AdminStudents />} />
           <Route path="upload-excel" element={<UploadExcel />} />
+          <Route path="forms" element={<AdminForms />} />
+          <Route path="responses" element={<AdminResponses />} />
           <Route path="fees" element={<AdminFees />} />
           <Route path="payments" element={<StudentReceipts />} />
           <Route path="reports" element={<AdminReports />} />

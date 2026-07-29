@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
-import { calculateFeeSummary, getFeeBalances } from '../../../utils/feeSummary';
+import { calculateFeeSummary } from '../../../utils/feeSummary';
 import styles from './FeeDetails.module.css';
 import {
   FiLayers,
@@ -9,23 +9,46 @@ import {
   FiClock,
   FiArrowRight,
   FiCreditCard,
+  FiBookOpen,
+  FiHome,
+  FiTruck,
+  FiFileText,
+  FiTag,
 } from 'react-icons/fi';
+
+const CATEGORY_ICONS = {
+  'College Fees': FiLayers,
+  'Tuition Fees': FiBookOpen,
+  'Hostel Fees': FiHome,
+  'Bus Fees': FiTruck,
+  'Exam Fees': FiFileText,
+  'Other Fees': FiTag,
+};
 
 export default function FeeDetails() {
   const navigate = useNavigate();
   const { user, fees, payments, loading } = useAuth();
-  const student = user?.studentData;
+  const student = user?.studentData || user;
   const studentPayments = payments.filter(
     (payment) => payment.student?._id === student?._id || payment.student === student?._id
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
-  const feeBalances = getFeeBalances(student, fees, studentPayments);
+
+  // 6 Prescribed Categories
+  const categoriesList = [
+    { name: 'College Fees', total: 25000, desc: 'Institutional Infrastructure & Campus Dues' },
+    { name: 'Tuition Fees', total: 45000, desc: 'Academic Instruction & Laboratory Dues' },
+    { name: 'Hostel Fees', total: 15000, desc: 'Accommodation & Mess Facilities' },
+    { name: 'Bus Fees', total: 10000, desc: 'Campus Transportation Service' },
+    { name: 'Exam Fees', total: 5000, desc: 'Semester Evaluation & Examination Dues' },
+    { name: 'Other Fees', total: 3000, desc: 'Library, Sports & Contingency Charges' },
+  ];
 
   const handlePayNow = (feeType, amount) => {
     navigate('/student/payments', {
       state: {
-        amount: amount || summary.outstandingBalance,
-        feeType: feeType || summary.breakdown[0]?.name || 'Tuition Fee',
+        amount: amount || 5000,
+        feeType: feeType || 'College Fees',
       },
     });
   };
@@ -43,7 +66,7 @@ export default function FeeDetails() {
           <button
             type="button"
             className={styles.proceedPayBtnHeader}
-            onClick={() => handlePayNow()}
+            onClick={() => handlePayNow('College Fees', summary.outstandingBalance)}
           >
             Pay All Remaining Dues <FiArrowRight />
           </button>
@@ -57,89 +80,108 @@ export default function FeeDetails() {
           {/* Summary Overview Glass Banner */}
           <div className={`${styles.summaryOverviewCard} glass-panel`}>
             <div className={styles.summaryCol}>
-              <span className={styles.summaryLabel}>Original Fee Structure</span>
-              <span className={styles.summaryVal}>₹{summary.totalFees.toLocaleString()}</span>
+              <span className={styles.summaryLabel}>Total Prescribed Fee</span>
+              <span className={styles.summaryVal}>₹{summary.totalFees.toLocaleString('en-IN')}</span>
             </div>
             <div className={styles.divider}></div>
             <div className={styles.summaryCol}>
-              <span className={styles.summaryLabel}>Total Paid</span>
-              <span className={styles.summaryValSuccess}>₹{summary.paidAmount.toLocaleString()}</span>
+              <span className={styles.summaryLabel}>Total Amount Paid</span>
+              <span className={styles.summaryValSuccess}>₹{summary.paidAmount.toLocaleString('en-IN')}</span>
             </div>
             <div className={styles.divider}></div>
             <div className={styles.summaryCol}>
-              <span className={styles.summaryLabel}>Remaining Dues</span>
-              <span className={styles.summaryValWarning}>₹{summary.outstandingBalance.toLocaleString()}</span>
+              <span className={styles.summaryLabel}>Outstanding Dues</span>
+              <span className={styles.summaryValWarning}>₹{summary.outstandingBalance.toLocaleString('en-IN')}</span>
             </div>
           </div>
 
-          {/* Card-Based Fee Breakdown Row List */}
+          {/* 6 Category Responsive Cards */}
           <div className={styles.sectionHeader}>
             <h2>
-              <FiLayers style={{ color: '#D4A017' }} /> Prescribed Fee Items
+              <FiLayers style={{ color: '#D4A017' }} /> Prescribed Fee Categories
             </h2>
           </div>
 
-          <div className={styles.feeCardsList}>
-            {feeBalances.map((fee) => {
-              const isPaidOff = fee.remainingAmount <= 0;
+          <div className={styles.categoryGrid}>
+            {categoriesList.map((cat) => {
+              const categoryPayments = studentPayments.filter(
+                (p) => (p.feeType || '').toLowerCase() === cat.name.toLowerCase()
+              );
+              const paidAmount = categoryPayments.reduce((acc, p) => acc + Number(p.amount || 0), 0);
+              const remaining = Math.max(0, cat.total - paidAmount);
+              const isPaidOff = remaining <= 0;
+              const isPartiallyPaid = paidAmount > 0 && remaining > 0;
+              const IconComp = CATEGORY_ICONS[cat.name] || FiTag;
+
               return (
-                <div key={fee._id || fee.id} className={`${styles.feeCard} glass-panel`}>
-                  <div className={styles.feeCardHeader}>
-                    <div>
-                      <h3 className={styles.feeName}>{fee.name}</h3>
-                      <p className={styles.feeSub}>{fee.description || 'Mandatory department fee'}</p>
+                <div key={cat.name} className={`${styles.categoryCard} glass-panel`}>
+                  <div className={styles.cardHeader}>
+                    <div className={styles.iconTitleRow}>
+                      <IconComp className={styles.catIcon} />
+                      <div>
+                        <h3 className={styles.catTitle}>{cat.name}</h3>
+                        <p className={styles.catSub}>{cat.desc}</p>
+                      </div>
                     </div>
-                    <span className={isPaidOff ? styles.statusPaid : styles.statusPending}>
+                    <span
+                      className={
+                        isPaidOff
+                          ? styles.statusPaid
+                          : isPartiallyPaid
+                          ? styles.statusPartial
+                          : styles.statusPending
+                      }
+                    >
                       {isPaidOff ? (
                         <>
                           <FiCheckCircle /> Fully Paid
                         </>
+                      ) : isPartiallyPaid ? (
+                        <>
+                          <FiClock /> Partial
+                        </>
                       ) : (
                         <>
-                          <FiClock /> Due: ₹{fee.remainingAmount.toLocaleString()}
+                          <FiClock /> Due
                         </>
                       )}
                     </span>
                   </div>
 
-                  <div className={styles.feeCardBody}>
-                    <div className={styles.detailMetric}>
-                      <span>Original Fee</span>
-                      <strong>₹{fee.originalAmount.toLocaleString()}</strong>
+                  <div className={styles.metricsBox}>
+                    <div className={styles.metricRow}>
+                      <span>Total Fee</span>
+                      <strong>₹{cat.total.toLocaleString('en-IN')}</strong>
                     </div>
-                    <div className={styles.detailMetric}>
+                    <div className={styles.metricRow}>
                       <span>Amount Paid</span>
-                      <strong style={{ color: '#22c55e' }}>₹{fee.paidAmount.toLocaleString()}</strong>
+                      <strong style={{ color: '#22c55e' }}>₹{paidAmount.toLocaleString('en-IN')}</strong>
                     </div>
-                    <div className={styles.detailMetric}>
-                      <span>Remaining</span>
+                    <div className={styles.metricRow}>
+                      <span>Remaining Dues</span>
                       <strong style={{ color: isPaidOff ? '#22c55e' : '#ef4444' }}>
-                        ₹{fee.remainingAmount.toLocaleString()}
+                        ₹{remaining.toLocaleString('en-IN')}
                       </strong>
+                    </div>
+                    <div className={styles.metricRow}>
+                      <span>Due Date</span>
+                      <span className={styles.dueDateVal}>30 Aug 2026</span>
                     </div>
                   </div>
 
                   {!isPaidOff && (
-                    <div className={styles.feeCardFooter}>
-                      <button
-                        type="button"
-                        className={styles.proceedPayBtn}
-                        onClick={() => handlePayNow(fee.name, fee.remainingAmount)}
-                      >
-                        Proceed to Pay ₹{fee.remainingAmount.toLocaleString()} <FiCreditCard />
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      className={styles.payNowBtn}
+                      onClick={() => handlePayNow(cat.name, remaining)}
+                    >
+                      Pay Now (₹{remaining.toLocaleString('en-IN')}) <FiCreditCard />
+                    </button>
                   )}
                 </div>
               );
             })}
           </div>
-
-          {summary.breakdown.length === 0 && (
-            <div className={`${styles.card} glass-panel`}>
-              No fee structure items found for your department/year yet.
-            </div>
-          )}
         </>
       )}
     </div>

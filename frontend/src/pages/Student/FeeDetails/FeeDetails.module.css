@@ -1,4 +1,4 @@
-/* Student FeeDetails CSS Module */
+/* FeeDetails CSS Module */
 
 .pageContainer {
   display: flex;
@@ -32,33 +32,33 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
-  font-size: 0.925rem;
-  font-weight: 800;
-  color: #060606;
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
   background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
   border: 1px solid rgba(255, 223, 118, 0.4);
-  border-radius: 999px;
+  color: #060606;
+  font-weight: 800;
+  font-size: 0.88rem;
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(212, 160, 23, 0.35);
+  box-shadow: 0 4px 15px rgba(212, 160, 23, 0.3);
   transition: all 0.25s ease;
 }
 
 .proceedPayBtnHeader:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(212, 160, 23, 0.45);
+  box-shadow: 0 8px 24px rgba(212, 160, 23, 0.45);
 }
 
 .summaryOverviewCard {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 1.5rem;
-  border-radius: 18px;
+  padding: 1.5rem 2rem;
+  border-radius: 20px;
   background: var(--bg-glass, rgba(20, 20, 20, 0.85));
   border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .summaryCol {
@@ -70,26 +70,25 @@
 
 .summaryLabel {
   font-size: 0.8rem;
-  font-weight: 700;
   color: #b2973b;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .summaryVal {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #F5F1E6;
 }
 
 .summaryValSuccess {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #22c55e;
 }
 
 .summaryValWarning {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #ef4444;
 }
@@ -97,11 +96,7 @@
 .divider {
   width: 1px;
   height: 40px;
-  background: rgba(212, 160, 23, 0.25);
-}
-
-.sectionHeader {
-  margin-top: 0.5rem;
+  background: rgba(212, 160, 23, 0.2);
 }
 
 .sectionHeader h2 {
@@ -114,148 +109,138 @@
   margin: 0;
 }
 
-.feeCardsList {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
 }
 
-.feeCard {
+.categoryCard {
   padding: 1.5rem;
   border-radius: 18px;
   background: var(--bg-glass, rgba(20, 20, 20, 0.85));
   border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  gap: 1.25rem;
 }
 
-.feeCardHeader {
+.cardHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.feeName {
-  font-size: 1.2rem;
+.iconTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.catIcon {
+  font-size: 1.8rem;
+  color: #D4A017;
+}
+
+.catTitle {
+  font-size: 1.1rem;
   font-weight: 800;
   color: #F5F1E6;
   margin: 0;
 }
 
-.feeSub {
-  font-size: 0.85rem;
-  color: #e2c46b;
-  margin: 4px 0 0;
+.catSub {
+  font-size: 0.78rem;
+  color: #b2973b;
+  margin: 2px 0 0;
 }
 
-.statusPaid {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 6px 14px;
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  color: #22c55e;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
+.statusPaid,
+.statusPartial,
 .statusPending {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 6px 14px;
+  gap: 0.3rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.statusPaid {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #22c55e;
+}
+
+.statusPartial {
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fbbf24;
+}
+
+.statusPending {
   background: rgba(239, 68, 68, 0.15);
   border: 1px solid rgba(239, 68, 68, 0.35);
   color: #ef4444;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
 }
 
-.feeCardBody {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1rem;
+.metricsBox {
   background: rgba(10, 14, 22, 0.6);
-  padding: 1rem 1.25rem;
-  border-radius: 12px;
   border: 1px solid rgba(212, 160, 23, 0.2);
-}
-
-.detailMetric {
+  border-radius: 12px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 0.5rem;
 }
 
-.detailMetric span {
-  font-size: 0.75rem;
+.metricRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.metricRow span {
   color: #b2973b;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-weight: 700;
 }
 
-.detailMetric strong {
-  font-size: 1.1rem;
-  font-weight: 800;
+.metricRow strong {
   color: #F5F1E6;
 }
 
-.feeCardFooter {
-  display: flex;
-  justify-content: flex-end;
+.dueDateVal {
+  color: #e2c46b;
+  font-weight: 600;
 }
 
-.proceedPayBtn {
+.payNowBtn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.85rem 1.6rem;
-  font-size: 0.95rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.9rem;
   font-weight: 800;
   color: #060606;
   background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
   border: 1px solid rgba(255, 223, 118, 0.4);
-  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(212, 160, 23, 0.3);
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.35);
   transition: all 0.25s ease;
 }
 
-.proceedPayBtn:hover {
+.payNowBtn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(212, 160, 23, 0.5);
-}
-
-.proceedPayBtn:active {
-  transform: scale(0.97);
+  box-shadow: 0 8px 24px rgba(212, 160, 23, 0.45);
 }
 
 @media (max-width: 768px) {
-  .summaryOverviewCard {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-  }
-
   .divider {
-    width: 100%;
-    height: 1px;
-  }
-
-  .proceedPayBtn {
-    width: 100%;
-  }
-
-  .feeCard {
-    padding: 1.2rem;
+    display: none;
   }
 }
