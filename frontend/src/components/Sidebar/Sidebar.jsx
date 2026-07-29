@@ -5,7 +5,8 @@ import { useAuth } from '../../context/AuthContext';
 import { 
   FiGrid, FiCreditCard, FiClock, FiFileText, 
   FiBell, FiUser, FiSettings, FiLogOut, 
-  FiUsers, FiLayers, FiTrendingUp, FiEdit3
+  FiUsers, FiLayers, FiTrendingUp, FiEdit3,
+  FiCheckCircle
 } from 'react-icons/fi';
 
 const Sidebar = ({ isOpen, onClose }) => {
