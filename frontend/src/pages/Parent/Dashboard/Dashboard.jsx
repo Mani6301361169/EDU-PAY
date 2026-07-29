@@ -34,9 +34,9 @@ export default function Dashboard() {
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
 
-  const childName = student?.name || 'Registered Student';
-  const childRollNo = student?.rollNo || student?.studentId || 'N/A';
-  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Registered Parent/Guardian';
+  const childName = student?.name || 'Aarav Sharma';
+  const childRollNo = student?.rollNo || student?.studentId || 'CS202601';
+  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Ramesh Kumar';
   const childDept = student?.department || 'Computer Science Engineering';
 
   const totalFees = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 125000);

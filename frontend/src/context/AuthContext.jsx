@@ -245,7 +245,7 @@ export const AuthProvider = ({ children }) => {
     }
     if (role === 'parent') {
       const matchedStudent = students.find((s) => s.email?.toLowerCase() === targetEmail || (s.fatherName && s.fatherName.trim() !== '')) || students[0];
-      const parentFatherName = matchedStudent?.fatherName || 'Registered Parent/Guardian';
+      const parentFatherName = matchedStudent?.fatherName || 'Ramesh Kumar';
       const parent = {
         uid: 'P1',
         name: parentFatherName,
