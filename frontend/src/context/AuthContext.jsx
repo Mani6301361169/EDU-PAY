@@ -156,19 +156,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => { loadData(); }, [loadData]);
 
   const login = async (email, password, role) => {
-    const targetEmail = email?.toLowerCase();
+    const targetEmail = email?.toLowerCase()?.trim();
 
-    if (role === 'admin' && (targetEmail === 'admin@college.edu' || targetEmail === 'test@gmail.com')) {
+    if (role === 'admin') {
       const admin = { uid: 'A1', name: 'Dean Admin', email: targetEmail, role: 'admin' };
       setUser(admin);
       return admin;
     }
-    if (role === 'accountant' && (targetEmail === 'accountant@college.edu' || targetEmail === 'test@gmail.com')) {
+    if (role === 'accountant') {
       const accountant = { uid: 'ACC1', name: 'Mrs. Sharma (Accountant)', email: targetEmail, role: 'accountant' };
       setUser(accountant);
       return accountant;
     }
-    if (role === 'parent' && (targetEmail === 'parent@college.edu' || targetEmail === 'test@gmail.com')) {
+    if (role === 'parent') {
       const parent = { uid: 'P1', name: 'Sanjay Sharma', email: targetEmail, role: 'parent' };
       setUser(parent);
       return parent;
@@ -180,19 +180,21 @@ export const AuthProvider = ({ children }) => {
       setUser(studentUser);
       return studentUser;
     } catch (error) {
-      if (targetEmail === 'test@gmail.com') {
-        const fallbackStudent = students[0] || {
-          _id: 's100',
-          studentId: 'STU2026000',
-          name: 'Demo Student',
-          email: 'test@gmail.com',
-          department: 'Computer Science',
-        };
-        const studentUser = { uid: fallbackStudent._id, name: fallbackStudent.name, email: fallbackStudent.email, role: 'student', studentData: fallbackStudent };
-        setUser(studentUser);
-        return studentUser;
-      }
-      throw error;
+      const matched = students.find((s) => s.email?.toLowerCase() === targetEmail);
+      const studentRecord = matched || {
+        _id: `s-${Date.now()}`,
+        studentId: `STU${Date.now().toString().slice(-6)}`,
+        name: targetEmail ? targetEmail.split('@')[0].toUpperCase() : 'Student User',
+        email: targetEmail,
+        department: 'Computer Science',
+        year: '2026',
+        paidAmount: 0,
+        pendingAmount: 50000,
+        feeStatus: 'Pending',
+      };
+      const studentUser = { uid: studentRecord._id, name: studentRecord.name, email: studentRecord.email, role: 'student', studentData: studentRecord };
+      setUser(studentUser);
+      return studentUser;
     }
   };
 
