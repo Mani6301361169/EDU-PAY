@@ -85,14 +85,19 @@ app.use("/api/fees", feeRoutes);
 app.use("/api/payments", paymentRoutes);
 
 /* ===========================
-   SERVE FRONTEND (Production SPA Fallback)
+   SERVE FRONTEND (Production SPA Fallback with Asset Protection)
 =========================== */
 
 if (existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
 
   app.use((req, res, next) => {
-    if (req.path.startsWith("/api")) {
+    // Skip API endpoints, static assets, and file extensions from SPA index.html fallback
+    if (
+      req.path.startsWith("/api") ||
+      req.path.startsWith("/assets") ||
+      /\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot)$/i.test(req.path)
+    ) {
       return next();
     }
     res.sendFile(path.join(frontendDistPath, "index.html"));
