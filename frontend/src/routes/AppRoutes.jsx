@@ -40,8 +40,15 @@ import AdminFees from '../pages/Admin/Fees/Fees';
 import AdminReports from '../pages/Admin/Reports/Reports';
 import AdminSettings from '../pages/Admin/Settings/Settings';
 import LandingEditor from '../pages/Admin/LandingEditor/LandingEditor';
+import UploadExcel from '../pages/Admin/UploadExcel/UploadExcel';
 import PaymentSuccessPage from '../pages/PaymentSuccess/PaymentSuccessPage';
 import ScrollToTop from '../components/ScrollToTop';
+
+// Dedicated Help Pages
+import PaymentGuide from '../pages/Guide/PaymentGuide';
+import StudentSupport from '../pages/Guide/StudentSupport';
+import FeePolicies from '../pages/Guide/FeePolicies';
+import ContactHelpdesk from '../pages/Guide/ContactHelpdesk';
 
 const AppRoutes = () => {
   return (
@@ -53,6 +60,10 @@ const AppRoutes = () => {
         <Route path="/explore" element={<Explore />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/payment-guide" element={<PaymentGuide />} />
+        <Route path="/student-support" element={<StudentSupport />} />
+        <Route path="/fee-policies" element={<FeePolicies />} />
+        <Route path="/helpdesk" element={<ContactHelpdesk />} />
         <Route path="/login" element={
           <PublicRoute>
             <Login />
@@ -130,6 +141,7 @@ const AppRoutes = () => {
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="students" element={<AdminStudents />} />
+          <Route path="upload-excel" element={<UploadExcel />} />
           <Route path="fees" element={<AdminFees />} />
           <Route path="payments" element={<StudentReceipts />} />
           <Route path="reports" element={<AdminReports />} />

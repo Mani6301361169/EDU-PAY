@@ -51,10 +51,8 @@ export default function Payment() {
     setMessage('');
     const amount = Number(form.amount);
 
-    if (amount <= 0 || amount > summary.outstandingBalance) {
-      setMessage(
-        `Enter a valid amount between ₹1 and ₹${summary.outstandingBalance.toLocaleString()}.`
-      );
+    if (amount <= 0 || isNaN(amount)) {
+      setMessage('Please enter a valid payment amount greater than ₹0.');
       return;
     }
 
@@ -181,26 +179,29 @@ export default function Payment() {
                 className={styles.inputField}
                 type="number"
                 min="1"
-                max={summary.outstandingBalance}
                 value={form.amount}
                 onChange={(e) => setForm({ ...form, amount: e.target.value })}
-                placeholder="Enter fee amount"
+                placeholder="Enter fee amount (e.g. 5000)"
                 required
               />
             </div>
 
             <div className={styles.inputGroup}>
               <label>
-                <FiTag /> Fee Type / Purpose
+                <FiTag /> Fee Category / Purpose
               </label>
-              <input
-                className={styles.inputField}
-                type="text"
+              <select
+                className={styles.selectField}
                 value={form.feeType}
                 onChange={(e) => setForm({ ...form, feeType: e.target.value })}
-                placeholder="Fee category"
                 required
-              />
+              >
+                <option value="College Fees">College Fees</option>
+                <option value="Tuition Fees">Tuition Fees</option>
+                <option value="Hostel Fees">Hostel Fees</option>
+                <option value="Exam Fees">Exam Fees</option>
+                <option value="Bus Fees">Bus Fees</option>
+              </select>
             </div>
 
             {message && <div className={styles.errorAlert}>{message}</div>}

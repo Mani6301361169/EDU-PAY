@@ -1,0 +1,241 @@
+/* UploadExcel CSS Module */
+
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 90px;
+}
+
+.headerBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pageTitle {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: #e2c46b;
+  margin-top: 4px;
+}
+
+.sampleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sampleBtn:hover {
+  background: rgba(212, 160, 23, 0.25);
+}
+
+.uploadCard {
+  padding: 2rem;
+  border-radius: 20px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dropZone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed rgba(212, 160, 23, 0.4);
+  border-radius: 16px;
+  background: rgba(10, 14, 22, 0.5);
+  text-align: center;
+}
+
+.uploadIcon {
+  font-size: 3rem;
+  color: #D4A017;
+}
+
+.dropZone h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.dropZone p {
+  font-size: 0.85rem;
+  color: #b2973b;
+  margin: 0;
+}
+
+.fileInput {
+  display: none;
+}
+
+.selectFileBtn {
+  display: inline-block;
+  padding: 0.8rem 1.75rem;
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.2) 0%, rgba(22, 22, 22, 0.9) 100%);
+  border: 1px solid rgba(212, 160, 23, 0.45);
+  color: #D4A017;
+  font-weight: 800;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.textPasteArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.textPasteArea label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e2c46b;
+}
+
+.textarea {
+  background: rgba(12, 12, 12, 0.9);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  border-radius: 12px;
+  padding: 14px;
+  color: #F5F1E6;
+  font-family: monospace;
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.processBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.75rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #060606;
+  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
+  border: 1px solid rgba(255, 223, 118, 0.4);
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(212, 160, 23, 0.35);
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+}
+
+.processBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(212, 160, 23, 0.5);
+}
+
+.reportCard {
+  padding: 2rem;
+  border-radius: 20px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reportHeader h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.metricsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.metricBox {
+  background: rgba(10, 14, 22, 0.6);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metricBox span {
+  font-size: 0.75rem;
+  color: #b2973b;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.metricBox strong {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F5F1E6;
+}
+
+.detailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.detailsList h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.logRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background: rgba(12, 12, 12, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(212, 160, 23, 0.15);
+  font-size: 0.875rem;
+  color: #F5F1E6;
+}
+
+.logSuccess {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.logWarn {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .uploadCard, .reportCard {
+    padding: 1.25rem;
+  }
+}

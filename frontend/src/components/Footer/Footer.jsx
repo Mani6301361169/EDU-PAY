@@ -41,10 +41,10 @@ const Footer = () => {
           <div className={styles.linksSection}>
             <h4 className={styles.title}>Resources</h4>
             <ul className={styles.list}>
-              <li><Link to="/explore" className={styles.link}>Help Center</Link></li>
-              <li><Link to="/about" className={styles.link}>Privacy Policy</Link></li>
-              <li><Link to="/about" className={styles.link}>Terms of Service</Link></li>
-              <li><Link to="/explore" className={styles.link}>FAQs</Link></li>
+              <li><Link to="/payment-guide" className={styles.link}>Payment Guide</Link></li>
+              <li><Link to="/student-support" className={styles.link}>Student Support</Link></li>
+              <li><Link to="/fee-policies" className={styles.link}>Fee Policies</Link></li>
+              <li><Link to="/helpdesk" className={styles.link}>Contact Helpdesk</Link></li>
             </ul>
           </div>
         </div>

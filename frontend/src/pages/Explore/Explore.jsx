@@ -125,19 +125,31 @@ export default function Explore() {
           </div>
         </div>
 
-        {/* Quick FAQs */}
+        {/* Quick FAQs & Official Guides */}
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>
-            <FiHelpCircle style={{ color: '#D4A017' }} /> Helpful FAQs & Resources
+            <FiHelpCircle style={{ color: '#D4A017' }} /> Official Guides & Documentation
           </h2>
-          <div className={styles.faqList}>
-            <div className={styles.faqItem}>
-              <h4>Where can I find my transaction receipts?</h4>
-              <p>All completed payment receipts are permanently stored in your dashboard under the "Receipts" section for instant PDF download.</p>
+          <div className={styles.grid}>
+            <div className={`${styles.card} glass-panel`} style={{ cursor: 'pointer' }} onClick={() => window.location.href = '/payment-guide'}>
+              <h3>Payment Guide</h3>
+              <p>Learn step-by-step payment instructions, fee category options, and receipt downloads.</p>
+              <span style={{ color: '#D4A017', fontWeight: 700, fontSize: '0.85rem' }}>Read Guide →</span>
             </div>
-            <div className={styles.faqItem}>
-              <h4>Can parents make payments directly?</h4>
-              <p>Yes! Parents have a dedicated portal to view student fee structures and make online payments securely.</p>
+            <div className={`${styles.card} glass-panel`} style={{ cursor: 'pointer' }} onClick={() => window.location.href = '/student-support'}>
+              <h3>Student Support</h3>
+              <p>Get instant technical assistance for login, payment verification, and receipts.</p>
+              <span style={{ color: '#D4A017', fontWeight: 700, fontSize: '0.85rem' }}>View Support →</span>
+            </div>
+            <div className={`${styles.card} glass-panel`} style={{ cursor: 'pointer' }} onClick={() => window.location.href = '/fee-policies'}>
+              <h3>Fee Policies</h3>
+              <p>Review institution fee guidelines, audit trails, and refund policy procedures.</p>
+              <span style={{ color: '#D4A017', fontWeight: 700, fontSize: '0.85rem' }}>Read Policies →</span>
+            </div>
+            <div className={`${styles.card} glass-panel`} style={{ cursor: 'pointer' }} onClick={() => window.location.href = '/helpdesk'}>
+              <h3>Contact Helpdesk</h3>
+              <p>Direct contact helpline, email support desk, office hours, and campus address.</p>
+              <span style={{ color: '#D4A017', fontWeight: 700, fontSize: '0.85rem' }}>Contact Us →</span>
             </div>
           </div>
         </div>

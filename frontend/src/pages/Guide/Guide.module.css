@@ -1,0 +1,141 @@
+/* Dedicated Help & Guide Pages CSS Module */
+
+.wrapper {
+  background: var(--bg-primary);
+  min-height: 100vh;
+}
+
+.container {
+  padding: 100px 24px 120px;
+  max-width: 950px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: 2.5rem;
+  border-radius: 20px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.35);
+}
+
+.badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 14px;
+  background: rgba(212, 160, 23, 0.15);
+  border: 1px solid rgba(212, 160, 23, 0.35);
+  color: #D4A017;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.highlight {
+  color: #D4A017;
+}
+
+.lead {
+  font-size: 1.05rem;
+  color: #e2c46b;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.highlightsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(212, 160, 23, 0.2);
+}
+
+.highlightBox {
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: 14px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.icon {
+  font-size: 1.6rem;
+  color: #D4A017;
+}
+
+.highlightBox h4 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.highlightBox p {
+  font-size: 0.875rem;
+  color: #b2973b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.contactDetailsCard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.detailRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detailRow strong {
+  font-size: 0.95rem;
+  color: #F5F1E6;
+  display: block;
+}
+
+.detailRow p {
+  font-size: 0.9rem;
+  color: #e2c46b;
+  margin: 2px 0 0;
+}
+
+.link {
+  color: #D4A017;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 90px 16px 120px;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+}

@@ -49,11 +49,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       case 'admin':
         return [
           { to: '/admin/dashboard', label: 'Dashboard', icon: FiGrid },
-          { to: '/admin/students', label: 'Students', icon: FiUsers },
+          { to: '/admin/students', label: 'Student Records', icon: FiUsers },
+          { to: '/admin/upload-excel', label: 'Upload Excel', icon: FiFileText },
           { to: '/admin/fees', label: 'Fees Config', icon: FiLayers },
+          { to: '/admin/payments', label: 'Ledger Logs', icon: FiClock },
+          { to: '/admin/reports', label: 'Financial Reports', icon: FiTrendingUp },
           { to: '/admin/landing', label: 'Landing Editor', icon: FiEdit3 },
-          { to: '/admin/payments', label: 'Payments History', icon: FiClock },
-          { to: '/admin/reports', label: 'Reports', icon: FiTrendingUp },
           { to: '/admin/notifications', label: 'Notifications', icon: FiBell },
           { to: '/admin/settings', label: 'Settings', icon: FiSettings }
         ];

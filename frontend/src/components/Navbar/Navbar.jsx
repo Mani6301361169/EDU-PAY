@@ -51,13 +51,8 @@ const Navbar = () => {
           ) : (
             <div className={styles.authGroup}>
               <Link to="/login">
-                <Button variant="secondary" size="small">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/register">
                 <Button variant="primary" size="small">
-                  Register
+                  Sign In
                 </Button>
               </Link>
             </div>
