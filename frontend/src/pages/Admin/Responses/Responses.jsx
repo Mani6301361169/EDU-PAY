@@ -56,9 +56,10 @@ export default function Responses() {
 
   const handleApprove = async (item) => {
     try {
-      // Auto-create user account on approval with submitted role and password
+      // Auto-create user account on approval with submitted role, fatherName, and password
       await registerStudent({
         name: item.name,
+        fatherName: item.fatherName || '',
         email: item.email,
         mobile: item.mobile,
         rollNo: item.rollNo,
@@ -89,12 +90,13 @@ export default function Responses() {
   };
 
   const exportCSV = () => {
-    const headers = ['ID,Form Title,Name,Email,Mobile,Roll No,Department,Year,Date,Status'];
+    const headers = ['ID,Form Title,Name,Father Name,Email,Mobile,Roll No,Department,Year,Date,Status'];
     const rows = filteredResponses.map((r) =>
       [
         r.id,
         `"${r.formTitle}"`,
         `"${r.name}"`,
+        `"${r.fatherName || ''}"`,
         r.email,
         r.mobile,
         r.rollNo,
@@ -116,6 +118,7 @@ export default function Responses() {
   const filteredResponses = responses.filter((r) => {
     const matchesSearch =
       r.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (r.fatherName && r.fatherName.toLowerCase().includes(searchTerm.toLowerCase())) ||
       r.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       r.rollNo.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'All' || r.status === filterStatus;
@@ -145,7 +148,7 @@ export default function Responses() {
           <input
             type="text"
             className={styles.searchInput}
-            placeholder="Search responses by name, email, roll no..."
+            placeholder="Search responses by name, father's name, email, roll no..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -188,6 +191,7 @@ export default function Responses() {
                   <tr key={item.id}>
                     <td>
                       <strong>{item.name}</strong>
+                      {item.fatherName && <div className={styles.subText}>Father: {item.fatherName}</div>}
                     </td>
                     <td>
                       <div>{item.email}</div>

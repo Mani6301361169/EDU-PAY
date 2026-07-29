@@ -3,14 +3,32 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
 import styles from './Dashboard.module.css';
-import { FiAlertTriangle } from 'react-icons/fi';
+import { FiAlertTriangle, FiUser } from 'react-icons/fi';
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const { payments, fees, students } = useAuth();
-  
-  // Selected child / student data
-  const student = students.find((item) => item.email === 'aarav.sharma@college.edu') || students[0];
+  const { user, payments, fees, students } = useAuth();
+
+  // Linked child / student data using Roll Number & Father's Name
+  const parentEmail = user?.email?.toLowerCase();
+  const parentName = user?.name?.toLowerCase();
+  const parentFatherName = user?.fatherName?.toLowerCase();
+
+  const student = students.find((item) => {
+    if (!item) return false;
+    if (user?.childRollNo && item.rollNo === user.childRollNo) return true;
+    if (
+      item.fatherName &&
+      (item.fatherName.toLowerCase() === parentName ||
+        item.fatherName.toLowerCase() === parentFatherName ||
+        parentName?.includes(item.fatherName.toLowerCase()))
+    ) {
+      return true;
+    }
+    if (item.email && parentEmail && item.email.split('@')[0] === parentEmail.split('@')[0]) return true;
+    return false;
+  }) || students[0];
+
   const studentPayments = payments.filter(
     (payment) => payment.student?._id === student?._id || payment.student === student?._id
   );
@@ -18,18 +36,19 @@ export default function Dashboard() {
 
   const childName = student?.name || 'Mani Kanta';
   const childRollNo = student?.rollNo || '21631A0501';
+  const childFatherName = student?.fatherName || 'Sanjay Sharma';
   const childDept = student?.department || 'Computer Science Engineering';
 
   const totalFees = summary.totalFees > 0 ? summary.totalFees : 125000;
-  const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : 85000;
-  const pendingAmount = summary.outstandingBalance > 0 ? summary.outstandingBalance : 40000;
-  const completionPercentage = Math.round((paidAmount / totalFees) * 100) || 68;
+  const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
+  const pendingAmount = summary.outstandingBalance >= 0 ? summary.outstandingBalance : (student?.pendingAmount || 0);
+  const completionPercentage = Math.round((paidAmount / totalFees) * 100) || 0;
 
   const handlePayPending = () => {
     navigate('/parent/payments', {
       state: {
         amount: pendingAmount,
-        feeType: 'Tuition Fee - Semester VI',
+        feeType: 'College Fees',
       },
     });
   };
@@ -45,7 +64,7 @@ export default function Dashboard() {
               Child: {childName} (Roll No: {childRollNo})
             </h1>
             <p className={styles.institutionSubtitle}>
-              Mother Teresa Institute of Tech • {childDept}
+              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Father: {childFatherName} • {childDept}
             </p>
           </div>
 
@@ -86,7 +105,7 @@ export default function Dashboard() {
             <div className={styles.metricContent}>
               <span className={styles.metricLabel}>Next Installment Due</span>
               <span className={`${styles.metricValueText} ${styles.textOrange}`}>
-                ₹{pendingAmount.toLocaleString()} by 15-Aug-2026
+                ₹{pendingAmount.toLocaleString()} Outstanding Balance
               </span>
             </div>
           </div>

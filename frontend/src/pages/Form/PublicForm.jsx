@@ -9,7 +9,6 @@ import {
   FiPhone,
   FiHash,
   FiBook,
-  FiCalendar,
   FiLock,
   FiEye,
   FiEyeOff,
@@ -27,6 +26,7 @@ export default function PublicForm() {
   const [formData, setFormData] = useState({
     rollNo: '',
     name: '',
+    fatherName: '',
     email: '',
     role: 'student',
     dept: 'Computer Science',
@@ -63,6 +63,11 @@ export default function PublicForm() {
     e.preventDefault();
     setError('');
 
+    if (!formData.fatherName.trim()) {
+      setError("Father's Name is a mandatory required field.");
+      return;
+    }
+
     // Password Match Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match. Please re-enter identical passwords.');
@@ -96,6 +101,7 @@ export default function PublicForm() {
       formTitle: form.title,
       rollNo: targetRoll,
       name: formData.name.trim(),
+      fatherName: formData.fatherName.trim(),
       email: targetEmail,
       role: formData.role,
       dept: formData.dept,
@@ -108,13 +114,6 @@ export default function PublicForm() {
 
     const updatedResponses = [newResponse, ...existingResponses];
     localStorage.setItem('edupay_responses', JSON.stringify(updatedResponses));
-
-    // Increment submission count on form
-    const savedForms = JSON.parse(localStorage.getItem('edupay_forms') || '[]');
-    const updatedForms = savedForms.map((f) =>
-      f.id === form.id ? { ...f, responsesCount: (f.responsesCount || 0) + 1 } : f
-    );
-    localStorage.setItem('edupay_forms', JSON.stringify(updatedForms));
 
     setSubmitted(true);
   };
@@ -214,10 +213,26 @@ export default function PublicForm() {
                 </div>
               </div>
 
-              {/* Row 2: Email Address & Role */}
+              {/* Row 2: Father's Name & Email Address */}
               <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>3. Email Address *</label>
+                  <label>3. Father's Name *</label>
+                  <div className={styles.inputWrapper}>
+                    <FiUser className={styles.inputIcon} />
+                    <input
+                      type="text"
+                      name="fatherName"
+                      className={styles.inputField}
+                      value={formData.fatherName}
+                      onChange={handleChange}
+                      placeholder="Enter father's full name"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label>4. Email Address *</label>
                   <div className={styles.inputWrapper}>
                     <FiMail className={styles.inputIcon} />
                     <input
@@ -231,9 +246,12 @@ export default function PublicForm() {
                     />
                   </div>
                 </div>
+              </div>
 
+              {/* Row 3: Role & Department / Year */}
+              <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>4. Institutional Role *</label>
+                  <label>5. Institutional Role *</label>
                   <div className={styles.inputWrapper}>
                     <FiUser className={styles.inputIcon} />
                     <select
@@ -250,12 +268,9 @@ export default function PublicForm() {
                     </select>
                   </div>
                 </div>
-              </div>
 
-              {/* Row 3: Department / Year & Contact Number */}
-              <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>5. Department / Academic Year *</label>
+                  <label>6. Department / Academic Year *</label>
                   <div className={styles.inputWrapper}>
                     <FiBook className={styles.inputIcon} />
                     <select
@@ -271,9 +286,12 @@ export default function PublicForm() {
                     </select>
                   </div>
                 </div>
+              </div>
 
+              {/* Row 4: Contact Number & Password */}
+              <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>6. Contact Number *</label>
+                  <label>7. Contact Number *</label>
                   <div className={styles.inputWrapper}>
                     <FiPhone className={styles.inputIcon} />
                     <input
@@ -287,12 +305,9 @@ export default function PublicForm() {
                     />
                   </div>
                 </div>
-              </div>
 
-              {/* Row 4: Password & Confirm Password */}
-              <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>7. Password *</label>
+                  <label>8. Password *</label>
                   <div className={styles.inputWrapper}>
                     <FiLock className={styles.inputIcon} />
                     <input
@@ -314,9 +329,12 @@ export default function PublicForm() {
                     </button>
                   </div>
                 </div>
+              </div>
 
+              {/* Row 5: Confirm Password */}
+              <div className={styles.row}>
                 <div className={styles.formGroup}>
-                  <label>8. Confirm Password *</label>
+                  <label>9. Confirm Password *</label>
                   <div className={styles.inputWrapper}>
                     <FiLock className={styles.inputIcon} />
                     <input

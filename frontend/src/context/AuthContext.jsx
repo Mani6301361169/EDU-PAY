@@ -14,11 +14,42 @@ const getRoleStudent = (user, students) => {
   if (!user) return null;
 
   if (user.role === 'student') {
-    return students.find((student) => student._id === user.uid || student.email === user.email || student._id === user?.studentData?._id) || user.studentData || null;
+    return (
+      students.find(
+        (student) =>
+          student._id === user.uid ||
+          student.email === user.email ||
+          (user.rollNo && student.rollNo === user.rollNo) ||
+          student._id === user?.studentData?._id
+      ) || user.studentData || null
+    );
   }
 
   if (user.role === 'parent') {
-    return students.find((student) => student.email === 'aarav.sharma@college.edu') || students[0] || null;
+    const parentEmail = user.email?.toLowerCase();
+    const parentName = user.name?.toLowerCase();
+    const parentFatherName = user.fatherName?.toLowerCase();
+
+    return (
+      students.find((student) => {
+        if (!student) return false;
+        // Match by student Roll Number if assigned
+        if (user.childRollNo && student.rollNo === user.childRollNo) return true;
+        // Match by Father's Name
+        if (
+          student.fatherName &&
+          (student.fatherName.toLowerCase() === parentName ||
+            student.fatherName.toLowerCase() === parentFatherName ||
+            parentName?.includes(student.fatherName.toLowerCase()))
+        ) {
+          return true;
+        }
+        // Match by linked email
+        if (student.parentEmail && student.parentEmail.toLowerCase() === parentEmail) return true;
+        if (student.email && parentEmail && student.email.split('@')[0] === parentEmail.split('@')[0]) return true;
+        return false;
+      }) || students[0] || null
+    );
   }
 
   return null;
@@ -54,10 +85,10 @@ const buildNotifications = ({ user, students, payments, fees }) => {
           title: `${entry.name} needs a fee payment`,
           message: `Outstanding balance is ₹${summary.outstandingBalance.toLocaleString()}. Please make the pending payment before the due date.`,
           amount: summary.outstandingBalance,
-          feeType: 'Fee Summary',
-          dueDate: null,
+          feeType: 'Total Outstanding Balance',
+          dueDate: summary.nextDueDate,
           unread: true,
-          type: 'fee-overview',
+          type: 'fee-due',
         });
       }
     });
@@ -65,20 +96,20 @@ const buildNotifications = ({ user, students, payments, fees }) => {
     return notifications;
   }
 
-  if (!student) {
-    return notifications;
-  }
+  if (!student) return [];
 
-  const studentPayments = payments.filter((payment) => payment.student?._id === student._id || payment.student === student._id);
+  const studentPayments = payments.filter(
+    (payment) => payment.student?._id === student._id || payment.student === student._id
+  );
   const summary = calculateFeeSummary(student, fees, studentPayments);
   const balances = getFeeBalances(student, fees, studentPayments);
 
   balances.forEach((fee) => {
     if (!fee?.active || fee.remainingAmount <= 0) return;
     notifications.push({
-      id: `due-${student._id}-${fee._id}`,
-      title: `${fee.name} payment due`,
-      message: `Please pay ₹${Number(fee.remainingAmount || 0).toLocaleString()} for ${fee.name}. Deadline: ${formatDate(fee.dueDate)}.`,
+      id: `due-${fee._id}`,
+      title: `${fee.name} pending`,
+      message: `₹${Number(fee.remainingAmount || 0).toLocaleString()} remaining for ${fee.name}. Due date: ${formatDate(fee.dueDate)}.`,
       amount: Number(fee.remainingAmount || 0),
       feeType: fee.name,
       dueDate: fee.dueDate,
@@ -89,69 +120,113 @@ const buildNotifications = ({ user, students, payments, fees }) => {
 
   if (summary.outstandingBalance > 0) {
     notifications.push({
-      id: `summary-${student._id}`,
-      title: 'Fee payment still pending',
-      message: `₹${summary.outstandingBalance.toLocaleString()} is still pending across your active fee records.`,
+      id: 'summary-balance',
+      title: 'Outstanding Fee Balance',
+      message: `Total remaining balance to clear is ₹${summary.outstandingBalance.toLocaleString()}. Due by ${formatDate(summary.nextDueDate)}.`,
       amount: summary.outstandingBalance,
-      feeType: 'Balance due',
-      dueDate: null,
+      feeType: 'Total Outstanding Balance',
+      dueDate: summary.nextDueDate,
       unread: true,
-      type: 'fee-overview',
+      type: 'fee-due',
     });
   }
 
-  const latestPayment = [...studentPayments].sort((first, second) => new Date(second.paidAt || 0) - new Date(first.paidAt || 0))[0];
-  if (latestPayment) {
+  studentPayments.slice(0, 3).forEach((payment) => {
     notifications.push({
-      id: `receipt-${latestPayment._id}`,
-      title: 'Latest payment receipt available',
-      message: `Receipt generated for ₹${Number(latestPayment.amount || 0).toLocaleString()} via ${latestPayment.method || 'Online payment'}. Visit the receipts page to view it.`,
-      amount: Number(latestPayment.amount || 0),
-      feeType: latestPayment.feeType,
-      dueDate: null,
-      unread: true,
-      type: 'payment-receipt',
+      id: `payment-${payment._id || payment.transactionId}`,
+      title: 'Payment Confirmation',
+      message: `₹${Number(payment.amount || 0).toLocaleString()} paid for ${payment.feeType || 'College Fees'} on ${formatDate(payment.paidAt || payment.createdAt)}.`,
+      amount: Number(payment.amount || 0),
+      feeType: payment.feeType || 'College Fees',
+      paidAt: payment.paidAt || payment.createdAt,
+      unread: false,
+      type: 'payment-success',
     });
-  }
+  });
 
   return notifications;
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [students, setStudents] = useState([]);
-  const [payments, setPayments] = useState([]);
-  const [fees, setFees] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState('');
-  const [readNotificationIds, setReadNotificationIds] = useState([]);
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('edupay_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const [students, setStudents] = useState(() => {
+    const saved = localStorage.getItem('edupay_students');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [payments, setPayments] = useState(() => {
+    const saved = localStorage.getItem('edupay_payments');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [fees, setFees] = useState(() => {
+    const saved = localStorage.getItem('edupay_fees');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [readNotificationIds, setReadNotificationIds] = useState(() => {
+    const saved = localStorage.getItem('edupay_read_notifications');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('edupay_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('edupay_user');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem('edupay_students', JSON.stringify(students));
+  }, [students]);
+
+  useEffect(() => {
+    localStorage.setItem('edupay_payments', JSON.stringify(payments));
+  }, [payments]);
+
+  useEffect(() => {
+    localStorage.setItem('edupay_fees', JSON.stringify(fees));
+  }, [fees]);
+
+  useEffect(() => {
+    localStorage.setItem('edupay_read_notifications', JSON.stringify(readNotificationIds));
+  }, [readNotificationIds]);
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setApiError(null);
+
     try {
-      const [studentData, paymentData, feeData] = await Promise.all([
-        studentApi.list(),
-        paymentApi.list(),
-        feeApi.list(),
+      const [fetchedStudents, fetchedFees, fetchedPayments] = await Promise.all([
+        studentApi.list().catch(() => []),
+        feeApi.list().catch(() => []),
+        paymentApi.list().catch(() => []),
       ]);
-      setStudents(studentData);
-      setPayments(paymentData);
-      setFees(feeData);
-      setApiError('');
-    } catch (error) {
-      setApiError(error.response?.data?.message || 'Unable to reach the backend API.');
+
+      if (Array.isArray(fetchedStudents) && fetchedStudents.length > 0) {
+        setStudents(fetchedStudents);
+      }
+      if (Array.isArray(fetchedFees) && fetchedFees.length > 0) {
+        setFees(fetchedFees);
+      }
+      if (Array.isArray(fetchedPayments) && fetchedPayments.length > 0) {
+        setPayments(fetchedPayments);
+      }
+    } catch (err) {
+      console.warn('API error, using local state:', err);
+      setApiError('Operating in local state mode.');
     } finally {
       setLoading(false);
     }
   }, []);
-
-  const notifications = useMemo(() => {
-    const items = buildNotifications({ user, students, payments, fees });
-    return items.map((item) => ({
-      ...item,
-      unread: !readNotificationIds.includes(item.id),
-    }));
-  }, [fees, payments, readNotificationIds, students, user]);
 
   useEffect(() => { loadData(); }, [loadData]);
 
@@ -169,7 +244,7 @@ export const AuthProvider = ({ children }) => {
       return accountant;
     }
     if (role === 'parent') {
-      const parent = { uid: 'P1', name: 'Sanjay Sharma', email: targetEmail, role: 'parent' };
+      const parent = { uid: 'P1', name: 'Parent User', email: targetEmail, role: 'parent' };
       setUser(parent);
       return parent;
     }
@@ -179,7 +254,7 @@ export const AuthProvider = ({ children }) => {
       const studentUser = { uid: student._id, name: student.name, email: student.email, role: 'student', studentData: student };
       setUser(studentUser);
       return studentUser;
-    } catch (error) {
+    } catch (_error) {
       const matched = students.find((s) => s.email?.toLowerCase() === targetEmail);
       const studentRecord = matched || {
         _id: `s-${Date.now()}`,
@@ -201,6 +276,7 @@ export const AuthProvider = ({ children }) => {
   const registerStudent = async (data) => {
     const targetEmail = data.email?.toLowerCase()?.trim();
     const targetRoll = data.rollNo?.trim();
+    const fatherName = data.fatherName?.trim() || '';
 
     const isDuplicate = students.some(
       (s) => (s.email && s.email.toLowerCase() === targetEmail) || (targetRoll && s.rollNo === targetRoll)
@@ -213,6 +289,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const student = await studentApi.create({
         name: data.name,
+        fatherName: fatherName,
         email: targetEmail,
         mobile: data.mobile,
         rollNo: targetRoll,
@@ -230,6 +307,7 @@ export const AuthProvider = ({ children }) => {
         _id: `s${Date.now()}`,
         studentId: `STU${Date.now().toString().slice(-6)}`,
         name: data.name,
+        fatherName: fatherName,
         email: targetEmail,
         mobile: data.mobile,
         rollNo: targetRoll,
@@ -254,24 +332,23 @@ export const AuthProvider = ({ children }) => {
   const recordPayment = async (paymentData) => {
     const student = getRoleStudent(user, students);
     const studentId = paymentData.student || student?._id || user?.uid || 's100';
+    const amountNum = Number(paymentData.amount || 0);
 
     const payload = {
       student: studentId,
-      amount: Number(paymentData.amount || 0),
+      amount: amountNum,
       feeType: paymentData.feeType || 'College Fees',
       method: paymentData.method || 'UPI',
       status: 'Success',
       paidAt: paymentData.paidAt || new Date().toISOString(),
     };
 
+    let newPayment;
     try {
-      const savedPayment = await paymentApi.create(payload);
-      setPayments((current) => [savedPayment, ...current]);
-      await loadData();
-      return savedPayment;
+      newPayment = await paymentApi.create(payload);
     } catch (error) {
       console.warn('Payment API fallback to local state:', error);
-      const localPayment = {
+      newPayment = {
         _id: `txn-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
         transactionId: `TXN-${Date.now()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
         student: student || { _id: studentId, name: user?.name || 'Student', email: user?.email },
@@ -281,18 +358,50 @@ export const AuthProvider = ({ children }) => {
         status: 'Success',
         paidAt: payload.paidAt,
       };
-      setPayments((current) => [localPayment, ...current]);
-      return localPayment;
     }
+
+    // Real-time synchronization: Update payments list instantly in React state
+    setPayments((current) => [newPayment, ...current]);
+
+    // Real-time synchronization: Update student balances instantly across all active views
+    setStudents((current) =>
+      current.map((s) => {
+        if (s._id === studentId || s.studentId === studentId || s.email === student?.email) {
+          const currentPaid = Number(s.paidAmount || 0);
+          const currentPending = Number(s.pendingAmount || 0);
+          const newPaid = currentPaid + amountNum;
+          const newPending = Math.max(0, currentPending - amountNum);
+          return {
+            ...s,
+            paidAmount: newPaid,
+            pendingAmount: newPending,
+            feeStatus: newPending === 0 ? 'Paid' : 'Pending',
+          };
+        }
+        return s;
+      })
+    );
+
+    return newPayment;
   };
 
   const markNotificationAsRead = (id) => {
     setReadNotificationIds((current) => (current.includes(id) ? current : [...current, id]));
   };
 
+  const activeNotifications = useMemo(
+    () => buildNotifications({ user, students, payments, fees }),
+    [user, students, payments, fees]
+  );
+
+  const filteredNotifications = useMemo(
+    () => activeNotifications.filter((item) => !readNotificationIds.includes(item.id)),
+    [activeNotifications, readNotificationIds]
+  );
+
   return (
     <AuthContext.Provider value={{
-      user, students, payments, fees, notifications, loading, apiError,
+      user, students, payments, fees, notifications: filteredNotifications, loading, apiError,
       login, logout: () => setUser(null), registerStudent, updateProfile,
       recordPayment, markNotificationAsRead, refreshData: loadData,
     }}>

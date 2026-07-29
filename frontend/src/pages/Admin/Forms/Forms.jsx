@@ -62,7 +62,7 @@ export default function Forms() {
             <div>
               <h2 className={styles.formTitle}>Official Institutional Registration Form</h2>
               <p className={styles.formDesc}>
-                Fixed structure user credential creation form with 8 mandatory fields.
+                Fixed structure user credential creation form with 9 mandatory fields.
               </p>
             </div>
           </div>
@@ -112,20 +112,21 @@ export default function Forms() {
           </div>
         </div>
 
-        {/* Fixed 8 Required Fields Summary */}
+        {/* Fixed 9 Required Fields Summary */}
         <div className={styles.fieldsSummary}>
           <h3>
-            <FiLayers style={{ color: '#D4A017' }} /> Fixed Registration Structure (8 Mandatory Fields)
+            <FiLayers style={{ color: '#D4A017' }} /> Fixed Registration Structure (9 Mandatory Fields)
           </h3>
           <div className={styles.fieldsGrid}>
             <div className={styles.fieldBadge}>1. ID / Roll Number</div>
             <div className={styles.fieldBadge}>2. Full Name</div>
-            <div className={styles.fieldBadge}>3. Email Address</div>
-            <div className={styles.fieldBadge}>4. Role Selection</div>
-            <div className={styles.fieldBadge}>5. Department / Year</div>
-            <div className={styles.fieldBadge}>6. Contact Number</div>
-            <div className={styles.fieldBadge}>7. Password</div>
-            <div className={styles.fieldBadge}>8. Confirm Password</div>
+            <div className={styles.fieldBadge}>3. Father's Name</div>
+            <div className={styles.fieldBadge}>4. Email Address</div>
+            <div className={styles.fieldBadge}>5. Role Selection</div>
+            <div className={styles.fieldBadge}>6. Department / Year</div>
+            <div className={styles.fieldBadge}>7. Contact Number</div>
+            <div className={styles.fieldBadge}>8. Password</div>
+            <div className={styles.fieldBadge}>9. Confirm Password</div>
           </div>
         </div>
 
