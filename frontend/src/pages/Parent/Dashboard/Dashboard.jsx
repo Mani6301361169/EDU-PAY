@@ -64,7 +64,7 @@ export default function Dashboard() {
               Child: {childName} (Roll No: {childRollNo})
             </h1>
             <p className={styles.institutionSubtitle}>
-              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Father's Name: {childFatherName} • {childDept}
+              <FiUser style={{ verticalAlign: '-2px', color: '#D4A017' }} /> Registered Parent/Guardian: {childFatherName} • {childDept}
             </p>
           </div>
 
