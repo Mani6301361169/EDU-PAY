@@ -1,66 +1,261 @@
-/* Student Fee Details Page */
+/* Student FeeDetails CSS Module */
 
-.payNowBtn {
-  align-self: flex-start;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.7rem 1rem;
-  background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
-  color: #060606;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-bottom: 90px;
 }
 
-.payNowBtn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-}
-
-.payNowBtn:active {
-  transform: translateY(0);
-}
-
-.summaryBox {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-radius: 12px;
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.28);
-  color: #f7f1d0;
-}
-
-.feeLabel {
-  font-size: 0.9rem;
-}
-
-.feeValue {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.breakdownGrid {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.breakdownItem {
-  padding: 0.75rem;
-  border-radius: 8px;
-  background: rgba(212, 175, 55, 0.08);
-  border: 1px solid rgba(212, 175, 55, 0.15);
+.headerBanner {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.breakdownName {
-  color: #f7f1d0;
-  font-weight: 600;
+.pageTitle {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
 }
 
-.breakdownAmount {
-  color: #d4af37;
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: #e2c46b;
+  margin-top: 4px;
+}
+
+.proceedPayBtnHeader {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  font-size: 0.925rem;
+  font-weight: 800;
+  color: #060606;
+  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
+  border: 1px solid rgba(255, 223, 118, 0.4);
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(212, 160, 23, 0.35);
+  transition: all 0.25s ease;
+}
+
+.proceedPayBtnHeader:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(212, 160, 23, 0.45);
+}
+
+.summaryOverviewCard {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.summaryCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.summaryLabel {
+  font-size: 0.8rem;
   font-weight: 700;
+  color: #b2973b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.summaryVal {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #F5F1E6;
+}
+
+.summaryValSuccess {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #22c55e;
+}
+
+.summaryValWarning {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ef4444;
+}
+
+.divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(212, 160, 23, 0.25);
+}
+
+.sectionHeader {
+  margin-top: 0.5rem;
+}
+
+.sectionHeader h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.feeCardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.feeCard {
+  padding: 1.5rem;
+  border-radius: 18px;
+  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
+  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.feeCardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.feeName {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.feeSub {
+  font-size: 0.85rem;
+  color: #e2c46b;
+  margin: 4px 0 0;
+}
+
+.statusPaid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 6px 14px;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #22c55e;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.statusPending {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 6px 14px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #ef4444;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.feeCardBody {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  background: rgba(10, 14, 22, 0.6);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(212, 160, 23, 0.2);
+}
+
+.detailMetric {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detailMetric span {
+  font-size: 0.75rem;
+  color: #b2973b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.detailMetric strong {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #F5F1E6;
+}
+
+.feeCardFooter {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.proceedPayBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #060606;
+  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
+  border: 1px solid rgba(255, 223, 118, 0.4);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.35);
+  transition: all 0.25s ease;
+}
+
+.proceedPayBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 160, 23, 0.5);
+}
+
+.proceedPayBtn:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .summaryOverviewCard {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+  }
+
+  .proceedPayBtn {
+    width: 100%;
+  }
+
+  .feeCard {
+    padding: 1.2rem;
+  }
 }

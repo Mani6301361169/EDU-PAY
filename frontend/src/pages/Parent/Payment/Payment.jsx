@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary } from '../../../utils/feeSummary';
-import '../../Payments/Payments.module.css';
+import styles from './Payment.module.css';
+import {
+  FiCreditCard,
+  FiCheckCircle,
+  FiArrowRight,
+  FiShield,
+  FiDollarSign,
+  FiFileText,
+  FiTag,
+} from 'react-icons/fi';
 
 export default function Payment() {
   const location = useLocation();
@@ -13,6 +22,15 @@ export default function Payment() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  const student =
+    students.find((item) => item.email === 'aarav.sharma@college.edu') ||
+    students[0];
+  const studentPayments = payments.filter(
+    (payment) =>
+      payment.student?._id === student?._id || payment.student === student?._id
+  );
+  const summary = calculateFeeSummary(student, fees, studentPayments);
+
   useEffect(() => {
     if (location.state?.amount !== undefined) {
       setForm((current) => ({
@@ -20,10 +38,13 @@ export default function Payment() {
         amount: String(location.state.amount),
         feeType: location.state.feeType || current.feeType,
       }));
+    } else if (summary.outstandingBalance > 0) {
+      setForm((current) => ({
+        ...current,
+        amount: String(summary.outstandingBalance),
+      }));
     }
-  }, [location.state]);
-  const student = students.find((item) => item.email === 'aarav.sharma@college.edu') || students[0];
-  const summary = calculateFeeSummary(student, fees, payments.filter((payment) => payment.student?._id === student?._id || payment.student === student?._id));
+  }, [location.state, summary.outstandingBalance]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,14 +52,18 @@ export default function Payment() {
     const amount = Number(form.amount);
 
     if (amount <= 0 || amount > summary.outstandingBalance) {
-      setMessage(`Enter an amount between ₹1 and ₹${summary.outstandingBalance.toLocaleString()}.`);
+      setMessage(
+        `Enter a valid amount between ₹1 and ₹${summary.outstandingBalance.toLocaleString()}.`
+      );
       return;
     }
 
     setIsSubmitting(true);
     try {
       if (!student?._id) {
-        throw new Error('No student found to assign this payment. Please refresh the page or contact support.');
+        throw new Error(
+          'No student found to assign this payment. Please refresh the page or contact support.'
+        );
       }
 
       const savedPayment = await recordPayment({
@@ -61,53 +86,207 @@ export default function Payment() {
       });
     } catch (error) {
       console.error(error);
-      setMessage(error.response?.data?.message || error.message || 'Payment could not be recorded. Please try again.');
+      setMessage(
+        error.response?.data?.message ||
+          error.message ||
+          'Payment could not be recorded. Please try again.'
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="page">
-      <h1>Payments</h1>
-      <p>Make and track fee payments for your child.</p>
+    <div className={styles.pageContainer}>
+      <div className={styles.headerBanner}>
+        <div>
+          <h1 className={styles.pageTitle}>Parent Fee Portal</h1>
+          <p className={styles.pageSubtitle}>
+            Student: {student?.name || 'Aarav Sharma'} • Roll No:{' '}
+            {student?.rollNo || 'CS202601'}
+          </p>
+        </div>
+        <div className={styles.badgeShield}>
+          <FiShield style={{ color: '#D4A017' }} /> Verified Parent Access
+        </div>
+      </div>
 
-      <div className="panel">
+      {/* Summary Cards */}
+      <div className={styles.summaryGrid}>
+        <div className={`${styles.summaryCard} glass-panel`}>
+          <span className={styles.summaryLabel}>Total Prescribed Fees</span>
+          <div className={styles.summaryValue}>
+            ₹{summary.totalFees.toLocaleString()}
+          </div>
+        </div>
+
+        <div className={`${styles.summaryCard} glass-panel`}>
+          <span className={styles.summaryLabel}>Total Amount Paid</span>
+          <div className={styles.summaryValueSuccess}>
+            ₹{summary.paidAmount.toLocaleString()}
+          </div>
+        </div>
+
+        <div className={`${styles.summaryCard} glass-panel`}>
+          <span className={styles.summaryLabel}>Outstanding Dues</span>
+          <div className={styles.summaryValueWarning}>
+            ₹{summary.outstandingBalance.toLocaleString()}
+          </div>
+        </div>
+      </div>
+
+      {/* Main Payment Checkout Card */}
+      <div className={`${styles.checkoutCard} glass-panel`}>
         {isReviewing ? (
-          <div className="form">
-            <div className="item">
-              <strong>Fee Summary</strong>
-              <div className="amount">₹{Number(form.amount || 0).toLocaleString()}</div>
-              <div style={{ marginTop: '0.35rem', color: '#e2c46b' }}>{form.feeType}</div>
+          <div className={styles.reviewStep}>
+            <div className={styles.checkoutHeader}>
+              <h2>
+                <FiCreditCard style={{ color: '#D4A017' }} /> Fee Checkout Review
+              </h2>
+              <span className={styles.feeTypeBadge}>{form.feeType}</span>
             </div>
-            <button className="button" type="button" onClick={() => setIsReviewing(false)}>Proceed to Pay</button>
+
+            <div className={styles.amountDisplayCard}>
+              <span className={styles.amountLabel}>Total Payable Amount</span>
+              <div className={styles.amountLarge}>
+                ₹{Number(form.amount || 0).toLocaleString()}
+              </div>
+              <p className={styles.amountSubtext}>
+                Student: {student?.name} • Dept: {student?.department} ({student?.year})
+              </p>
+            </div>
+
+            <button
+              className={styles.proceedPayBtn}
+              type="button"
+              onClick={() => setIsReviewing(false)}
+            >
+              Proceed to Pay <FiArrowRight />
+            </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="form">
-            <input className="input" type="number" min="1" max={summary.outstandingBalance} value={form.amount} onChange={(e) => setForm({ ...form, amount: e.target.value })} placeholder="Enter fee amount" required />
-            <input className="input" type="text" value={form.feeType} onChange={(e) => setForm({ ...form, feeType: e.target.value })} placeholder="Fee type" required />
-            <button className="button" type="submit" disabled={loading || isSubmitting}>{isSubmitting ? 'Processing...' : 'Confirm Payment'}</button>
+          <form onSubmit={handleSubmit} className={styles.paymentForm}>
+            <div className={styles.checkoutHeader}>
+              <h2>
+                <FiCreditCard style={{ color: '#D4A017' }} /> Confirm Payment
+              </h2>
+              <span className={styles.feeTypeBadge}>Instant UPI Payment</span>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label>
+                <FiDollarSign /> Payment Amount (₹)
+              </label>
+              <input
+                className={styles.inputField}
+                type="number"
+                min="1"
+                max={summary.outstandingBalance}
+                value={form.amount}
+                onChange={(e) => setForm({ ...form, amount: e.target.value })}
+                placeholder="Enter fee amount"
+                required
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label>
+                <FiTag /> Fee Type / Purpose
+              </label>
+              <input
+                className={styles.inputField}
+                type="text"
+                value={form.feeType}
+                onChange={(e) => setForm({ ...form, feeType: e.target.value })}
+                placeholder="Fee category"
+                required
+              />
+            </div>
+
+            {message && <div className={styles.errorAlert}>{message}</div>}
+
+            <div className={styles.btnRow}>
+              <button
+                type="button"
+                className={styles.backBtn}
+                onClick={() => setIsReviewing(true)}
+              >
+                Back
+              </button>
+              <button
+                className={styles.proceedPayBtn}
+                type="submit"
+                disabled={loading || isSubmitting}
+              >
+                {isSubmitting ? (
+                  'Processing...'
+                ) : (
+                  <>
+                    Confirm Payment <FiCheckCircle />
+                  </>
+                )}
+              </button>
+            </div>
           </form>
         )}
       </div>
 
-      {message && <p className="message">{message}</p>}
-
+      {/* Payment History Card List (Replacing Plain Tables) */}
+      <div className={styles.sectionHeader}>
+        <h2>
+          <FiFileText style={{ color: '#D4A017' }} /> Recent Payment History
+        </h2>
+      </div>
 
       {loading ? (
-        <p>Loading payments...</p>
-      ) : payments.length === 0 ? (
-        <p>No payment records found yet.</p>
+        <div className={`${styles.historyCard} glass-panel`}>Loading payment history...</div>
+      ) : studentPayments.length === 0 ? (
+        <div className={`${styles.historyCard} glass-panel`}>
+          No payment transaction records found yet.
+        </div>
       ) : (
-        <div className="list" style={{ marginTop: '0.5rem' }}>
-          {payments.map((payment) => (
-            <div key={payment._id || payment.id} className="item">
-              <strong>₹{Number(payment.amount || 0).toLocaleString()}</strong>
-              <div className="amount">{payment.method || 'Online'} • {payment.paidAt ? new Date(payment.paidAt).toLocaleDateString() : 'N/A'}</div>
+        <div className={styles.historyList}>
+          {studentPayments.map((payment) => (
+            <div
+              key={payment._id || payment.id}
+              className={`${styles.historyItemCard} glass-panel`}
+            >
+              <div className={styles.historyCardHeader}>
+                <div className={styles.historyCardTitleGroup}>
+                  <span className={styles.historyAmount}>
+                    ₹{Number(payment.amount || 0).toLocaleString()}
+                  </span>
+                  <span className={styles.historyFeeType}>
+                    {payment.feeType || 'Tuition Fee'}
+                  </span>
+                </div>
+                <span className={styles.statusSuccess}>
+                  <FiCheckCircle /> Success
+                </span>
+              </div>
+
+              <div className={styles.historyCardBody}>
+                <div className={styles.historyDetail}>
+                  <span>Payment Method</span>
+                  <strong>{payment.method || 'UPI / Online'}</strong>
+                </div>
+                <div className={styles.historyDetail}>
+                  <span>Transaction Date</span>
+                  <strong>
+                    {payment.paidAt
+                      ? new Date(payment.paidAt).toLocaleDateString('en-IN', {
+                          day: '2-digit',
+                          month: 'short',
+                          year: 'numeric',
+                        })
+                      : 'N/A'}
+                  </strong>
+                </div>
+              </div>
             </div>
           ))}
         </div>
       )}
-    </section>
+    </div>
   );
 }

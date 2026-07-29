@@ -2,52 +2,146 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../context/AuthContext';
 import { calculateFeeSummary, getFeeBalances } from '../../../utils/feeSummary';
+import styles from './FeeDetails.module.css';
+import {
+  FiLayers,
+  FiCheckCircle,
+  FiClock,
+  FiArrowRight,
+  FiCreditCard,
+} from 'react-icons/fi';
 
 export default function FeeDetails() {
   const navigate = useNavigate();
   const { user, fees, payments, loading } = useAuth();
   const student = user?.studentData;
-  const studentPayments = payments.filter((payment) => payment.student?._id === student?._id || payment.student === student?._id);
+  const studentPayments = payments.filter(
+    (payment) => payment.student?._id === student?._id || payment.student === student?._id
+  );
   const summary = calculateFeeSummary(student, fees, studentPayments);
   const feeBalances = getFeeBalances(student, fees, studentPayments);
 
-  const handlePayNow = () => {
+  const handlePayNow = (feeType, amount) => {
     navigate('/student/payments', {
       state: {
-        amount: summary.outstandingBalance,
-        feeType: summary.breakdown[0]?.name || 'Tuition Fee',
+        amount: amount || summary.outstandingBalance,
+        feeType: feeType || summary.breakdown[0]?.name || 'Tuition Fee',
       },
     });
   };
 
   return (
-    <section>
-      <h1>Fee Structure</h1>
-      <p>Your department and year-specific fee breakdown.</p>
+    <div className={styles.pageContainer}>
+      <div className={styles.headerBanner}>
+        <div>
+          <h1 className={styles.pageTitle}>Fee Structure Breakdown</h1>
+          <p className={styles.pageSubtitle}>
+            Department: {student?.department || 'Computer Science'} • Academic Year: {student?.year || '2026'}
+          </p>
+        </div>
+        {summary.outstandingBalance > 0 && (
+          <button
+            type="button"
+            className={styles.proceedPayBtnHeader}
+            onClick={() => handlePayNow()}
+          >
+            Pay All Remaining Dues <FiArrowRight />
+          </button>
+        )}
+      </div>
 
       {loading ? (
-        <p>Loading fee structure...</p>
+        <div className={`${styles.card} glass-panel`}>Loading fee structure...</div>
       ) : (
         <>
-          <button type="button" onClick={handlePayNow} style={{ alignSelf: 'flex-start', border: 0, borderRadius: '999px', padding: '0.7rem 1rem', background: 'linear-gradient(135deg, #d4af37 0%, #a67c00 100%)', color: '#060606', fontWeight: 700, cursor: 'pointer' }}>Pay Now</button>
-          <div style={{ marginTop: '1rem', padding: '1rem', borderRadius: '12px', background: 'rgba(212, 175, 55, 0.12)', border: '1px solid rgba(212, 175, 55, 0.28)', color: '#f7f1d0' }}>
-            <strong>Total Fees Remaining: ₹{summary.outstandingBalance.toLocaleString()}</strong>
-            <div style={{ marginTop: '0.35rem' }}>Original Total: ₹{summary.totalFees.toLocaleString()} • Paid: ₹{summary.paidAmount.toLocaleString()}</div>
+          {/* Summary Overview Glass Banner */}
+          <div className={`${styles.summaryOverviewCard} glass-panel`}>
+            <div className={styles.summaryCol}>
+              <span className={styles.summaryLabel}>Original Fee Structure</span>
+              <span className={styles.summaryVal}>₹{summary.totalFees.toLocaleString()}</span>
+            </div>
+            <div className={styles.divider}></div>
+            <div className={styles.summaryCol}>
+              <span className={styles.summaryLabel}>Total Paid</span>
+              <span className={styles.summaryValSuccess}>₹{summary.paidAmount.toLocaleString()}</span>
+            </div>
+            <div className={styles.divider}></div>
+            <div className={styles.summaryCol}>
+              <span className={styles.summaryLabel}>Remaining Dues</span>
+              <span className={styles.summaryValWarning}>₹{summary.outstandingBalance.toLocaleString()}</span>
+            </div>
           </div>
-          <div style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
-            {feeBalances.map((fee) => (
-              <div key={fee._id || fee.id} style={{ padding: '1rem', borderRadius: '12px', background: 'linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 25, 10, 0.9) 100%)', border: '1px solid rgba(212, 175, 55, 0.28)', color: '#f7f1d0' }}>
-                <strong>{fee.name}</strong>
-                <div style={{ marginTop: '0.35rem' }}>Remaining: ₹{fee.remainingAmount.toLocaleString()}</div>
-                <small>Original: ₹{fee.originalAmount.toLocaleString()} • Paid: ₹{fee.paidAmount.toLocaleString()}</small>
-                <br />
-                <small>{fee.academicYear || student?.year} • {fee.description || 'Department fee'}</small>
-              </div>
-            ))}
+
+          {/* Card-Based Fee Breakdown Row List */}
+          <div className={styles.sectionHeader}>
+            <h2>
+              <FiLayers style={{ color: '#D4A017' }} /> Prescribed Fee Items
+            </h2>
           </div>
-          {summary.breakdown.length === 0 && <p>No fee structure found for your department/year yet.</p>}
+
+          <div className={styles.feeCardsList}>
+            {feeBalances.map((fee) => {
+              const isPaidOff = fee.remainingAmount <= 0;
+              return (
+                <div key={fee._id || fee.id} className={`${styles.feeCard} glass-panel`}>
+                  <div className={styles.feeCardHeader}>
+                    <div>
+                      <h3 className={styles.feeName}>{fee.name}</h3>
+                      <p className={styles.feeSub}>{fee.description || 'Mandatory department fee'}</p>
+                    </div>
+                    <span className={isPaidOff ? styles.statusPaid : styles.statusPending}>
+                      {isPaidOff ? (
+                        <>
+                          <FiCheckCircle /> Fully Paid
+                        </>
+                      ) : (
+                        <>
+                          <FiClock /> Due: ₹{fee.remainingAmount.toLocaleString()}
+                        </>
+                      )}
+                    </span>
+                  </div>
+
+                  <div className={styles.feeCardBody}>
+                    <div className={styles.detailMetric}>
+                      <span>Original Fee</span>
+                      <strong>₹{fee.originalAmount.toLocaleString()}</strong>
+                    </div>
+                    <div className={styles.detailMetric}>
+                      <span>Amount Paid</span>
+                      <strong style={{ color: '#22c55e' }}>₹{fee.paidAmount.toLocaleString()}</strong>
+                    </div>
+                    <div className={styles.detailMetric}>
+                      <span>Remaining</span>
+                      <strong style={{ color: isPaidOff ? '#22c55e' : '#ef4444' }}>
+                        ₹{fee.remainingAmount.toLocaleString()}
+                      </strong>
+                    </div>
+                  </div>
+
+                  {!isPaidOff && (
+                    <div className={styles.feeCardFooter}>
+                      <button
+                        type="button"
+                        className={styles.proceedPayBtn}
+                        onClick={() => handlePayNow(fee.name, fee.remainingAmount)}
+                      >
+                        Proceed to Pay ₹{fee.remainingAmount.toLocaleString()} <FiCreditCard />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {summary.breakdown.length === 0 && (
+            <div className={`${styles.card} glass-panel`}>
+              No fee structure items found for your department/year yet.
+            </div>
+          )}
         </>
       )}
-    </section>
+    </div>
   );
 }
