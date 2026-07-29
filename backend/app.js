@@ -85,11 +85,21 @@ app.use("/api/fees", feeRoutes);
 app.use("/api/payments", paymentRoutes);
 
 /* ===========================
-   SERVE FRONTEND (Production SPA Fallback with Asset Protection)
+   SERVE FRONTEND (Production SPA Fallback with Cache Control)
 =========================== */
 
 if (existsSync(frontendDistPath)) {
-  app.use(express.static(frontendDistPath));
+  app.use(
+    express.static(frontendDistPath, {
+      setHeaders: (res, filepath) => {
+        if (filepath.endsWith("index.html")) {
+          res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+          res.setHeader("Pragma", "no-cache");
+          res.setHeader("Expires", "0");
+        }
+      },
+    })
+  );
 
   app.use((req, res, next) => {
     // Skip API endpoints, static assets, and file extensions from SPA index.html fallback
@@ -100,6 +110,9 @@ if (existsSync(frontendDistPath)) {
     ) {
       return next();
     }
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
 } else {
