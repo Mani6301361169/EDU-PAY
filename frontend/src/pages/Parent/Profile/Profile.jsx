@@ -28,6 +28,8 @@ export default function Profile() {
   const totalPaid = studentPayments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0);
   const remaining = Math.max(totalFees - totalPaid, 0);
 
+  const fatherNameDisplay = student?.fatherName || user?.fatherName || user?.name || '';
+
   return (
     <section className={styles.profileSection}>
       <h1>Parent Profile</h1>
@@ -38,29 +40,31 @@ export default function Profile() {
       ) : (
         <div className={styles.profileCard}>
           <div className={styles.profileCardTitle}>Parent & Student Guardian Profile</div>
-          <div className={styles.profileField}>
-            <span className={styles.profileLabel}>Registered Father's Name</span>
-            <span className={styles.profileValue}>{student?.fatherName || user?.name || 'Not available'}</span>
-          </div>
+          {fatherNameDisplay && (
+            <div className={styles.profileField}>
+              <span className={styles.profileLabel}>Registered Father's Name</span>
+              <span className={styles.profileValue}>{fatherNameDisplay}</span>
+            </div>
+          )}
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Email Address</span>
-            <span className={styles.profileValue}>{user?.email || 'Not available'}</span>
+            <span className={styles.profileValue}>{user?.email || student?.email || 'N/A'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Linked Student Name</span>
-            <span className={styles.profileValue}>{student?.name || 'No linked student found'}</span>
+            <span className={styles.profileValue}>{student?.name || 'N/A'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Student Roll Number</span>
-            <span className={styles.profileValue}>{student?.rollNo || 'Not provided'}</span>
+            <span className={styles.profileValue}>{student?.rollNo || student?.studentId || 'N/A'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Department</span>
-            <span className={styles.profileValue}>{student?.department || 'Not provided'}</span>
+            <span className={styles.profileValue}>{student?.department || 'Computer Science'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Academic Year</span>
-            <span className={styles.profileValue}>{student?.year || 'Not provided'}</span>
+            <span className={styles.profileValue}>{student?.year || '1st Year'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Payable Balance</span>
