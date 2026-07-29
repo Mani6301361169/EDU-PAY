@@ -24,20 +24,8 @@ const allowedOrigins = (process.env.CLIENT_URL || "")
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or same-origin)
-      if (
-        !origin ||
-        allowedOrigins.includes("*") ||
-        allowedOrigins.includes(origin) ||
-        origin.endsWith(".onrender.com") ||
-        origin.endsWith(".github.io") ||
-        origin.includes("localhost") ||
-        origin.includes("127.0.0.1")
-      ) {
-        return callback(null, true);
-      }
-      return callback(null, true);
+    origin: (_origin, callback) => {
+      callback(null, true);
     },
     credentials: true,
   })
@@ -97,13 +85,16 @@ app.use("/api/fees", feeRoutes);
 app.use("/api/payments", paymentRoutes);
 
 /* ===========================
-   SERVE FRONTEND (Production)
+   SERVE FRONTEND (Production SPA Fallback)
 =========================== */
 
 if (existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
 
-  app.get(/^\/(?!api).*/, (_req, res) => {
+  app.use((req, res, next) => {
+    if (req.path.startsWith("/api")) {
+      return next();
+    }
     res.sendFile(path.join(frontendDistPath, "index.html"));
   });
 } else {

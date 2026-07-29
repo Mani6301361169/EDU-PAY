@@ -1,4 +1,4 @@
-/* Forms Admin CSS Module */
+/* Forms CSS Module */
 
 .pageContainer {
   display: flex;
@@ -27,99 +27,56 @@
 }
 
 .card {
-  padding: 1.75rem;
-  border-radius: 18px;
+  padding: 2.25rem;
+  border-radius: 20px;
   background: var(--bg-glass, rgba(20, 20, 20, 0.85));
   border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-}
-
-.card h3 {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #F5F1E6;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.createForm {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-  align-items: flex-end;
-}
-
-.inputGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.inputGroup label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #e2c46b;
-}
-
-.inputField {
-  background: rgba(12, 12, 12, 0.9);
-  border: 1px solid rgba(212, 160, 23, 0.35);
-  border-radius: 12px;
-  padding: 12px 14px;
-  color: #F5F1E6;
-  outline: none;
-}
-
-.submitBtn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.8rem 1.4rem;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
-  border: 1px solid rgba(255, 223, 118, 0.4);
-  color: #060606;
-  font-weight: 800;
-  font-size: 0.9rem;
-  cursor: pointer;
-  height: 44px;
-}
-
-.formsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1.25rem;
-}
-
-.formCard {
-  padding: 1.5rem;
-  border-radius: 18px;
-  background: var(--bg-glass, rgba(20, 20, 20, 0.85));
-  border: 1px solid var(--border-glass, rgba(212, 175, 55, 0.3));
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  gap: 1.75rem;
 }
 
 .cardHeader {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.titleGroup {
+  display: flex;
   align-items: center;
+  gap: 1rem;
+}
+
+.formTitle {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #F5F1E6;
+  margin: 0;
+}
+
+.formDesc {
+  font-size: 0.9rem;
+  color: #b2973b;
+  margin: 2px 0 0;
+}
+
+.statusGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .badgeActive,
 .badgeInactive {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 3px 10px;
+  gap: 0.35rem;
+  padding: 5px 14px;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 800;
 }
 
@@ -141,44 +98,36 @@
   cursor: pointer;
 }
 
-.formTitle {
-  font-size: 1.25rem;
-  font-weight: 800;
+.linksSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(212, 160, 23, 0.25);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.linksSection h3 {
+  font-size: 1rem;
+  font-weight: 700;
   color: #F5F1E6;
   margin: 0;
 }
 
-.formDesc {
-  font-size: 0.88rem;
-  color: #b2973b;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.metaRow {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: #888;
-}
-
-.publicUrlBox {
+.linkRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(10, 14, 22, 0.7);
-  border: 1px solid rgba(212, 160, 23, 0.25);
+  background: rgba(12, 12, 12, 0.8);
   border-radius: 10px;
   padding: 8px 12px;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
 }
 
-.publicUrlBox code {
+.linkRow code {
   color: #D4A017;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 200px;
+  font-weight: 700;
 }
 
 .copyBtn {
@@ -188,44 +137,62 @@
   background: rgba(212, 160, 23, 0.15);
   border: 1px solid rgba(212, 160, 23, 0.35);
   color: #D4A017;
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 8px;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   font-weight: 700;
   cursor: pointer;
+}
+
+.fieldsSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fieldsSummary h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F5F1E6;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+}
+
+.fieldBadge {
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(212, 160, 23, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #e2c46b;
+  text-align: center;
 }
 
 .actionRow {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
   margin-top: 0.5rem;
 }
 
-.actionBtn {
+.previewBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  background: rgba(22, 22, 22, 0.9);
-  border: 1px solid rgba(212, 160, 23, 0.35);
-  color: #F5F1E6;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.deleteBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba(239, 68, 68, 0.15);
-  border: 1px solid rgba(239, 68, 68, 0.35);
-  color: #ef4444;
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D4A017 0%, #A67C00 100%);
+  border: 1px solid rgba(255, 223, 118, 0.4);
+  color: #060606;
+  font-weight: 800;
+  font-size: 0.9rem;
   cursor: pointer;
 }

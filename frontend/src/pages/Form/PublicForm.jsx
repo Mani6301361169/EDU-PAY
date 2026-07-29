@@ -42,23 +42,14 @@ export default function PublicForm() {
   const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
-    const savedForms = JSON.parse(localStorage.getItem('edupay_forms') || '[]');
-    const found = savedForms.find(
-      (f) => f.id === targetKey || f.slug === targetKey || f.id === formId
-    );
-
-    if (found) {
-      setForm(found);
-    } else {
-      // Default institutional form fallback
-      setForm({
-        id: targetKey || 'default-registration',
-        slug: targetKey || 'registration',
-        title: 'Institutional Student & User Registration Form',
-        description: 'Complete the form below to register your official institutional profile.',
-        active: true,
-      });
-    }
+    const singleForm = JSON.parse(localStorage.getItem('edupay_single_form') || '{"active":true}');
+    setForm({
+      id: 'single-registration-form',
+      slug: 'details',
+      title: 'Institutional User Registration Form',
+      description: 'Official single registration form for creating user credentials across all departments.',
+      active: singleForm.active !== undefined ? singleForm.active : true,
+    });
   }, [targetKey, formId]);
 
   const handleChange = (e) => {
