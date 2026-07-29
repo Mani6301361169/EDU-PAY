@@ -1,10 +1,8 @@
 import Student from '../models/Student.js';
 import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import asyncHandler from '../utils/asyncHandler.js';
 
 const SAMPLE_STUDENTS = [];
-
 let inMemoryStudents = [...SAMPLE_STUDENTS];
 
 const isDbConnected = () => mongoose.connection?.readyState === 1;
@@ -14,9 +12,6 @@ export const listStudents = asyncHandler(async (_request, response) => {
     return response.json(inMemoryStudents);
   }
   const students = await Student.find().sort({ createdAt: -1 });
-  if (students.length === 0) {
-    return response.json(inMemoryStudents);
-  }
   response.json(students);
 });
 
@@ -47,27 +42,51 @@ export const createStudent = asyncHandler(async (request, response) => {
     throw error;
   }
 
+  const email = request.body.email?.toLowerCase();
+  const rollNo = request.body.rollNo?.trim();
+
   if (!isDbConnected()) {
+    const duplicate = inMemoryStudents.find(
+      (s) => s.email?.toLowerCase() === email || (rollNo && s.rollNo?.toLowerCase() === rollNo.toLowerCase())
+    );
+    if (duplicate) {
+      const error = new Error('A student with this Email or Roll Number is already registered.');
+      error.statusCode = 400;
+      throw error;
+    }
+
     const newStudent = {
       _id: `s${Date.now()}`,
       studentId: request.body.studentId || `S${Date.now().toString().slice(-8)}`,
       name: request.body.name,
-      email: request.body.email?.toLowerCase(),
+      email: email,
       mobile: request.body.mobile || '',
-      rollNo: request.body.rollNo || '',
+      rollNo: rollNo || '',
       department: request.body.department || 'General',
       year: request.body.year || '1st Year',
       admissionYear: new Date().getFullYear().toString(),
       paidAmount: 0,
-      pendingAmount: 100000,
+      pendingAmount: 50000,
       feeStatus: 'Pending',
     };
     inMemoryStudents.unshift(newStudent);
     return response.status(201).json(newStudent);
   }
 
+  const existingDb = await Student.findOne({
+    $or: [{ email: email }, { rollNo: rollNo }],
+  });
+
+  if (existingDb) {
+    const error = new Error('A student with this Email or Roll Number is already registered.');
+    error.statusCode = 400;
+    throw error;
+  }
+
   const student = await Student.create({
     ...request.body,
+    email: email,
+    rollNo: rollNo,
     password: await bcrypt.hash(request.body.password, 12),
     studentId: request.body.studentId || `S${Date.now().toString().slice(-8)}`,
   });
@@ -79,12 +98,6 @@ export const createStudent = asyncHandler(async (request, response) => {
 export const loginStudent = asyncHandler(async (request, response) => {
   const { email, password } = request.body;
   const targetEmail = email?.toLowerCase();
-
-  // Test account fallback
-  if (targetEmail === 'test@gmail.com') {
-    const testStudent = inMemoryStudents.find((s) => s.email === 'test@gmail.com') || SAMPLE_STUDENTS[0];
-    return response.json(testStudent);
-  }
 
   if (!isDbConnected()) {
     const student = inMemoryStudents.find((s) => s.email?.toLowerCase() === targetEmail);
