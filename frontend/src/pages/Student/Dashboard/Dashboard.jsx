@@ -95,17 +95,17 @@ export default function Dashboard() {
   ];
 
   // Effective display values
-  const displayName = student?.name || user?.name || 'Aarav Sharma';
-  const displayFatherName = student?.fatherName || user?.fatherName || 'Ramesh Kumar';
-  const displayDept = student?.department || 'Computer Science & Engineering';
-  const displayRollNo = student?.rollNo || student?.studentId || 'CS202601';
-  const displayAttendance = student?.attendance || 92;
+  const displayName = student?.name || user?.name || '';
+  const displayFatherName = student?.fatherName || user?.fatherName || '';
+  const displayDept = student?.department || '';
+  const displayRollNo = student?.rollNo || student?.studentId || '';
+  const displayAttendance = student?.attendance !== undefined ? student.attendance : 0;
 
-  const totalScheduledFee = summary.totalFees > 0 ? summary.totalFees : 125000;
-  const totalPaid = summary.paidAmount > 0 ? summary.paidAmount : 85000;
-  const outstandingDue = summary.outstandingBalance > 0 ? summary.outstandingBalance : 40000;
-  const scholarshipGrant = student?.scholarship ? student.scholarship : 20000;
-  const percentageCleared = Math.round((totalPaid / totalScheduledFee) * 100) || 68;
+  const totalScheduledFee = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 0);
+  const totalPaid = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
+  const outstandingDue = summary.outstandingBalance > 0 ? summary.outstandingBalance : (student?.pendingAmount || 0);
+  const scholarshipGrant = student?.scholarship ? student.scholarship : 0;
+  const percentageCleared = totalScheduledFee > 0 ? Math.round((totalPaid / totalScheduledFee) * 100) : 0;
 
   return (
     <div className={styles.dashboardPage}>

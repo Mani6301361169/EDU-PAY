@@ -34,16 +34,16 @@ export default function Dashboard() {
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
 
-  const childName = student?.name || 'KISHORE';
-  const childRollNo = student?.rollNo || student?.studentId || '23HT1A4309';
-  const childFatherName = student?.fatherName || user?.fatherName || user?.name || 'Sanjay Sharma';
-  const childDept = student?.department || 'Artificial Intelligence';
+  const childName = student?.name || user?.name || '';
+  const childRollNo = student?.rollNo || student?.studentId || '';
+  const childFatherName = student?.fatherName || user?.fatherName || user?.name || '';
+  const childDept = student?.department || '';
 
-  const totalFees = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 125000);
+  const totalFees = summary.totalFees > 0 ? summary.totalFees : (student?.totalFees || 0);
   const paidAmount = summary.paidAmount > 0 ? summary.paidAmount : (student?.paidAmount || 0);
   const pendingAmount = summary.outstandingBalance >= 0 ? summary.outstandingBalance : (student?.pendingAmount || 0);
   const completionPercentage = totalFees > 0 ? Math.round((paidAmount / totalFees) * 100) : 0;
-  const attendance = student?.attendance || 92;
+  const attendance = student?.attendance !== undefined ? student.attendance : 0;
 
   const handlePayPending = () => {
     navigate('/parent/payments', {
@@ -59,8 +59,8 @@ export default function Dashboard() {
       {/* Top Parent Overview Header */}
       <div className={styles.parentOverviewHeader}>
         <span className={styles.parentBadge}>PARENT</span>
-        <h2 className={styles.parentFatherName}>{childFatherName}</h2>
-        <p className={styles.parentEmailText}>{parentEmail || student?.email || 'test@gmail.com'}</p>
+        <h2 className={styles.parentFatherName}>{childFatherName || 'Registered Parent/Guardian'}</h2>
+        <p className={styles.parentEmailText}>{parentEmail || student?.email || ''}</p>
       </div>
 
       <div className={styles.portalCard}>

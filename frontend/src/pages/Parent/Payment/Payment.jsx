@@ -22,9 +22,24 @@ export default function Payment() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  const student =
-    students.find((item) => item.email === 'aarav.sharma@college.edu') ||
-    students[0];
+  const parentEmail = user?.email?.toLowerCase();
+  const parentName = user?.name?.toLowerCase();
+  const parentFatherName = user?.fatherName?.toLowerCase();
+
+  const student = students.find((item) => {
+    if (!item) return false;
+    if (user?.childRollNo && (item.rollNo === user.childRollNo || item.studentId === user.childRollNo)) return true;
+    if (
+      item.fatherName &&
+      (item.fatherName.toLowerCase() === parentName ||
+        item.fatherName.toLowerCase() === parentFatherName ||
+        parentName?.includes(item.fatherName.toLowerCase()))
+    ) {
+      return true;
+    }
+    if (item.email && parentEmail && item.email.split('@')[0] === parentEmail.split('@')[0]) return true;
+    return false;
+  }) || students[0];
   const studentPayments = payments.filter(
     (payment) =>
       payment.student?._id === student?._id || payment.student === student?._id

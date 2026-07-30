@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../../context/AuthContext';
 import styles from './Students.module.css';
 import {
   FiUserPlus,
@@ -10,72 +11,14 @@ import {
 } from 'react-icons/fi';
 
 export default function Students() {
-  
-  // Local full user store for comprehensive management
-  const initialUsers = [
-    {
-      id: 'u1',
-      rollNo: '23HT1A4309',
-      name: 'KISHORE',
-      fatherName: 'Sanjay Sharma',
-      email: 'test@gmail.com',
-      role: 'student',
-      department: 'Artificial Intelligence',
-      year: '3rd Year',
-      status: 'Active',
-      mobile: '+91 9876543210',
-    },
-    {
-      id: 'u2',
-      rollNo: '21631A0502',
-      name: 'Priya Sharma',
-      fatherName: 'Ramesh Sharma',
-      email: 'priya.sharma@college.edu',
-      role: 'student',
-      department: 'CSE',
-      year: '2nd Year',
-      status: 'Active',
-      mobile: '+91 9876543211',
-    },
-    {
-      id: 'u3',
-      rollNo: 'PAR-001',
-      name: 'Sanjay Sharma',
-      fatherName: 'Sanjay Sharma',
-      email: 'parent@college.edu',
-      role: 'parent',
-      department: 'Artificial Intelligence',
-      year: 'N/A',
-      status: 'Active',
-      mobile: '+91 9876500001',
-    },
-    {
-      id: 'u4',
-      rollNo: 'ACC-001',
-      name: 'Mrs. Sharma',
-      fatherName: 'N/A',
-      email: 'accountant@college.edu',
-      role: 'accountant',
-      department: 'Finance',
-      year: 'N/A',
-      status: 'Active',
-      mobile: '+91 9876500002',
-    },
-    {
-      id: 'u5',
-      rollNo: 'ADM-001',
-      name: 'Dr. V.K. Rao',
-      fatherName: 'N/A',
-      email: 'admin@college.edu',
-      role: 'admin',
-      department: 'Administration',
-      year: 'N/A',
-      status: 'Active',
-      mobile: '+91 9876500003',
-    },
-  ];
+  const { students, registerStudent, deleteStudent } = useAuth();
+  const [usersList, setUsersList] = useState(() => (students && students.length > 0 ? students : []));
 
-  const [usersList, setUsersList] = useState(initialUsers);
+  useEffect(() => {
+    if (students) {
+      setUsersList(students);
+    }
+  }, [students]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedRole, setSelectedRole] = useState('All');
   const [selectedDept, setSelectedDept] = useState('All');

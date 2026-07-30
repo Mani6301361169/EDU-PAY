@@ -10,32 +10,7 @@ import {
   FiUserCheck,
 } from 'react-icons/fi';
 
-const INITIAL_RESPONSES = [
-  {
-    id: 'resp-101',
-    formTitle: 'Semester Fee Registration Form 2026',
-    name: 'Aarav Sharma',
-    email: 'aarav.sharma@college.edu',
-    mobile: '9876543210',
-    rollNo: 'CS202601',
-    dept: 'Computer Science',
-    year: '1st Year',
-    submittedAt: '2026-07-28',
-    status: 'Pending',
-  },
-  {
-    id: 'resp-102',
-    formTitle: 'Hostel & Mess Admission Form',
-    name: 'Ananya Verma',
-    email: 'ananya.v@college.edu',
-    mobile: '9876543211',
-    rollNo: 'AI202605',
-    dept: 'Artificial Intelligence',
-    year: '2nd Year',
-    submittedAt: '2026-07-29',
-    status: 'Pending',
-  },
-];
+const INITIAL_RESPONSES = [];
 
 export default function Responses() {
   const { registerStudent } = useAuth();

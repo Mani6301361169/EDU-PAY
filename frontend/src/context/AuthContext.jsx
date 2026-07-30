@@ -155,25 +155,7 @@ export const AuthProvider = ({ children }) => {
 
   const [students, setStudents] = useState(() => {
     const saved = localStorage.getItem('edupay_students');
-    return saved && JSON.parse(saved).length > 0
-      ? JSON.parse(saved)
-      : [
-          {
-            _id: 's101',
-            studentId: '23HT1A4309',
-            rollNo: '23HT1A4309',
-            name: 'KISHORE',
-            fatherName: 'Sanjay Sharma',
-            email: 'test@gmail.com',
-            mobile: '9876543210',
-            department: 'Artificial Intelligence',
-            year: '3rd Year',
-            attendance: 92,
-            paidAmount: 85000,
-            pendingAmount: 40000,
-            feeStatus: 'Pending',
-          },
-        ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [payments, setPayments] = useState(() => {
