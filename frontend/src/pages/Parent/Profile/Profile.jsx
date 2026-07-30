@@ -60,11 +60,11 @@ export default function Profile() {
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Department</span>
-            <span className={styles.profileValue}>{student?.department || 'Computer Science'}</span>
+            <span className={styles.profileValue}>{student?.department || 'N/A'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Academic Year</span>
-            <span className={styles.profileValue}>{student?.year || '1st Year'}</span>
+            <span className={styles.profileValue}>{student?.year || 'N/A'}</span>
           </div>
           <div className={styles.profileField}>
             <span className={styles.profileLabel}>Payable Balance</span>

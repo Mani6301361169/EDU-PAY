@@ -41,8 +41,8 @@ export default function StudentDetails() {
             ) : null}
             <div><strong>Roll Number / ID:</strong> {student.rollNo || student.studentId}</div>
             <div><strong>Email Address:</strong> {student.email}</div>
-            <div><strong>Department:</strong> {student.department || 'Computer Science'}</div>
-            <div><strong>Academic Year:</strong> {student.year || '1st Year'}</div>
+            <div><strong>Department:</strong> {student.department || 'N/A'}</div>
+            <div><strong>Academic Year:</strong> {student.year || 'N/A'}</div>
             <div><strong>Fee Payment Status:</strong> <span style={{ color: student.feeStatus === 'Paid' ? '#22c55e' : '#e2c46b', fontWeight: 'bold' }}>{student.feeStatus || 'Pending'}</span></div>
           </div>
         </div>
