@@ -28,9 +28,10 @@ export default function AdminDashboard() {
   const navigate = useNavigate();
   const { students, payments, fees } = useAuth();
 
-  const totalCollected = payments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0) || 850000;
-  const totalStudentsCount = students.length || 1450;
-  const totalFeeConfigs = fees.length || 12;
+  const totalCollected = payments.reduce((sum, payment) => sum + Number(payment.amount || 0), 0);
+  const totalStudentsCount = students.length;
+  const totalFeeConfigs = fees.length;
+  const totalPendingDues = students.reduce((sum, s) => sum + Number(s.pendingAmount || 0), 0);
 
   // Monthly collection chart data
   const revenueTrendData = [

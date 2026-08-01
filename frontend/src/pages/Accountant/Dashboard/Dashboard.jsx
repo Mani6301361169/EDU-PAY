@@ -18,106 +18,27 @@ import {
   Cell,
 } from 'recharts';
 
+import { useAuth } from '../../../context/AuthContext';
+
 export default function AccountantDashboard() {
+  const { students, payments } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDept, setSelectedDept] = useState('All');
 
-  // Spline Collection Trend Data
-  const trendData = [
-    { month: 'Jan', amount: 15 },
-    { month: 'Feb', amount: 22 },
-    { month: 'Mar', amount: 18 },
-    { month: 'Apr', amount: 30 },
-    { month: 'May', amount: 25 },
-    { month: 'Jun', amount: 42 },
-    { month: 'Jul', amount: 35 },
-  ];
+  const totalCollected = payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
+  const totalStudents = students.length;
+  const totalPending = students.reduce((sum, s) => sum + Number(s.pendingAmount || 0), 0);
 
-  // Department Recovery Data
-  const deptData = [
-    { dept: 'CSE', recovery: 92, color: '#10b981' },
-    { dept: 'ECE', recovery: 82, color: '#6366f1' },
-    { dept: 'ME', recovery: 75, color: '#06b6d4' },
-    { dept: 'Civil', recovery: 80, color: '#f59e0b' },
-    { dept: 'AI&DS', recovery: 85, color: '#a855f7' },
-  ];
-
-  // Student Fee Records matching design reference
-  const studentRecords = [
-    {
-      rollNo: '21631A0501',
-      name: 'Mani Kanta',
-      dept: 'CSE',
-      totalFee: 125000,
-      paid: 85000,
-      pending: 40000,
-      status: 'Partial',
-    },
-    {
-      rollNo: '21631A0502',
-      name: 'Priya Sharma',
-      dept: 'CSE',
-      totalFee: 125000,
-      paid: 125000,
-      pending: 0,
-      status: 'Paid',
-    },
-    {
-      rollNo: '21631A0412',
-      name: 'Rahul Reddy',
-      dept: 'ECE',
-      totalFee: 110000,
-      paid: 50000,
-      pending: 60000,
-      status: 'Pending',
-    },
-    {
-      rollNo: '21631A0305',
-      name: 'Ananya Verma',
-      dept: 'ME',
-      totalFee: 95000,
-      paid: 95000,
-      pending: 0,
-      status: 'Paid',
-    },
-    {
-      rollNo: '21631A1209',
-      name: 'Vikram Singh',
-      dept: 'AI&DS',
-      totalFee: 140000,
-      paid: 70000,
-      pending: 70000,
-      status: 'Partial',
-    },
-  ];
-
-  // Audit Logs
-  const auditLogs = [
-    {
-      time: '23:25:12',
-      actor: 'Student (Mani Kanta):',
-      action: 'Paid Fee ₹40,000 via Razorpay UPI',
-      ip: '103.12.89.44',
-    },
-    {
-      time: '21:10:05',
-      actor: 'Admin (Dr. V.K. Rao):',
-      action: 'Updated Fee Structure for CSE 2026',
-      ip: '192.168.1.5',
-    },
-    {
-      time: '18:45:20',
-      actor: 'Accountant (Mrs. Sharma):',
-      action: 'Generated Monthly Revenue Report',
-      ip: '192.168.1.12',
-    },
-    {
-      time: '14:30:11',
-      actor: 'System Bot:',
-      action: 'Sent Fee Reminder SMS to 42 pending students',
-      ip: '127.0.0.1',
-    },
-  ];
+  // Dynamic Student Fee Records from context
+  const studentRecords = students.map((s) => ({
+    rollNo: s.rollNo || s.studentId || 'N/A',
+    name: s.name,
+    dept: s.department || 'N/A',
+    totalFee: Number(s.totalFees || 0),
+    paid: Number(s.paidAmount || 0),
+    pending: Number(s.pendingAmount || 0),
+    status: s.feeStatus || (s.pendingAmount === 0 ? 'Paid' : 'Pending'),
+  }));
 
   // Filtering records
   const filteredRecords = studentRecords.filter((record) => {
@@ -133,7 +54,7 @@ export default function AccountantDashboard() {
   };
 
   const handleSendReminders = () => {
-    alert('Automated SMS & Email Fee Reminders dispatched to 210 pending students!');
+    alert(`Automated Fee Reminders dispatched to ${students.filter(s => Number(s.pendingAmount || 0) > 0).length} pending students!`);
   };
 
   const handleSingleReminder = (name) => {
@@ -164,26 +85,26 @@ export default function AccountantDashboard() {
       <div className={styles.metricsGrid}>
         <div className={styles.metricCard}>
           <span className={styles.metricTitle}>Total Enrolled Students</span>
-          <div className={`${styles.metricValue} ${styles.valNeutral}`}>1,450 Students</div>
-          <p className={styles.metricSubtext}>Across 5 Departments</p>
+          <div className={`${styles.metricValue} ${styles.valNeutral}`}>{totalStudents} Students</div>
+          <p className={styles.metricSubtext}>Across All Departments</p>
         </div>
 
         <div className={styles.metricCard}>
-          <span className={styles.metricTitle}>Today&apos;s Collection</span>
-          <div className={`${styles.metricValue} ${styles.valGreen}`}>₹3,40,000</div>
-          <p className={styles.metricSubtext}>+18% vs Yesterday</p>
+          <span className={styles.metricTitle}>Total Payments Recorded</span>
+          <div className={`${styles.metricValue} ${styles.valGreen}`}>{payments.length} Payments</div>
+          <p className={styles.metricSubtext}>Recorded Transactions</p>
         </div>
 
         <div className={styles.metricCard}>
           <span className={styles.metricTitle}>YTD Revenue Collected</span>
-          <div className={`${styles.metricValue} ${styles.valPurple}`}>₹1.84 Crores</div>
-          <p className={styles.metricSubtext}>82.4% Recovery Rate</p>
+          <div className={`${styles.metricValue} ${styles.valPurple}`}>₹{totalCollected.toLocaleString()}</div>
+          <p className={styles.metricSubtext}>Institutional Treasury</p>
         </div>
 
         <div className={styles.metricCard}>
           <span className={styles.metricTitle}>Outstanding Pending Fees</span>
-          <div className={`${styles.metricValue} ${styles.valOrange}`}>₹38.5 Lakhs</div>
-          <p className={styles.metricSubtext}>210 Students Pending</p>
+          <div className={`${styles.metricValue} ${styles.valOrange}`}>₹{totalPending.toLocaleString()}</div>
+          <p className={styles.metricSubtext}>{students.filter(s => Number(s.pendingAmount || 0) > 0).length} Students Pending</p>
         </div>
       </div>
 

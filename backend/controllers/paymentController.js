@@ -109,6 +109,10 @@ export const createPayment = asyncHandler(async (request, response) => {
   }
 });
 
+export const clearInMemoryPayments = () => {
+  inMemoryPayments = [];
+};
+
 export const handleStripeWebhook = asyncHandler(async (request, response) => {
   response.status(200).json({ received: true });
 });

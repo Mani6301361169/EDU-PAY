@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import Student from '../models/Student.js';
 import bcrypt from 'bcrypt';
 import asyncHandler from '../utils/asyncHandler.js';
+import { clearInMemoryPayments } from './paymentController.js';
 
 const SAMPLE_STUDENTS = [];
 let inMemoryStudents = [...SAMPLE_STUDENTS];
@@ -247,4 +248,31 @@ export const deleteStudent = asyncHandler(async (request, response) => {
     inMemoryStudents = inMemoryStudents.filter((s) => s._id !== request.params.id);
     response.status(204).send();
   }
+});
+
+export const resetSystemData = asyncHandler(async (_request, response) => {
+  inMemoryStudents = [];
+  clearInMemoryPayments();
+  if (isDbConnected()) {
+    try {
+      await Student.deleteMany({});
+      if (mongoose.models.Payment) {
+        await mongoose.model('Payment').deleteMany({});
+      }
+      if (mongoose.models.Fee) {
+        await mongoose.model('Fee').deleteMany({});
+      }
+    } catch (err) {
+      console.error('Error resetting database collections:', err);
+    }
+  }
+  response.json({
+    success: true,
+    message: 'System reset to a clean 0 state successfully.',
+    studentsCount: 0,
+    parentsCount: 0,
+    paymentsCount: 0,
+    collectedFees: 0,
+    outstandingDues: 0,
+  });
 });

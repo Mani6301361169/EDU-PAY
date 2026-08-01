@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useAuth } from '../../../context/AuthContext';
 import styles from './Settings.module.css';
-import { FiSave, FiShield, FiSliders } from 'react-icons/fi';
+import { FiSave, FiShield, FiSliders, FiRefreshCw } from 'react-icons/fi';
 
 export default function Settings() {
+  const { resetData } = useAuth();
   const [config, setConfig] = useState({
     institutionName: 'Mother Teresa Institute of Tech',
     contactEmail: 'support@college.edu',
@@ -34,6 +36,13 @@ export default function Settings() {
   const handleSaveSettings = (e) => {
     e.preventDefault();
     alert('Application configuration and RBAC Permission Matrix saved successfully!');
+  };
+
+  const handleResetSystem = async () => {
+    if (window.confirm('Are you sure you want to reset the system to a clean state? This will delete all registered students, parents, payments, and fee balances.')) {
+      await resetData();
+      alert('System successfully reset to a clean state (0 students, 0 parents, 0 payments, ₹0 dues)!');
+    }
   };
 
   return (
@@ -108,6 +117,34 @@ export default function Settings() {
             />
           </div>
         </div>
+      </div>
+
+      {/* System Reset Section */}
+      <div className={styles.settingsCard} style={{ borderColor: 'rgba(239, 68, 68, 0.4)' }}>
+        <h3 className={styles.cardTitle} style={{ color: '#ef4444' }}>
+          <FiRefreshCw style={{ marginRight: '0.4rem' }} /> System Database Clean State Reset
+        </h3>
+        <p style={{ fontSize: '0.9rem', color: '#a0a0a0', marginBottom: '1rem' }}>
+          Reset the application database to a clean baseline (0 registered students, 0 parents, 0 payments, and ₹0 dues).
+        </p>
+        <button
+          type="button"
+          onClick={handleResetSystem}
+          style={{
+            padding: '0.65rem 1.25rem',
+            borderRadius: '8px',
+            backgroundColor: '#dc2626',
+            color: '#ffffff',
+            border: 'none',
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.5rem',
+          }}
+        >
+          <FiRefreshCw /> Reset All System Data to ₹0 Baseline
+        </button>
       </div>
 
       {/* Role-Based Access Control (RBAC) Matrix */}

@@ -398,6 +398,25 @@ export const AuthProvider = ({ children }) => {
     setReadNotificationIds((current) => (current.includes(id) ? current : [...current, id]));
   };
 
+  const resetData = async () => {
+    setStudents([]);
+    setPayments([]);
+    setFees([]);
+    setReadNotificationIds([]);
+    localStorage.removeItem('edupay_user');
+    localStorage.removeItem('edupay_students');
+    localStorage.removeItem('edupay_payments');
+    localStorage.removeItem('edupay_fees');
+    localStorage.removeItem('edupay_responses');
+    localStorage.removeItem('edupay_read_notifications');
+
+    try {
+      await fetch('/api/students/reset', { method: 'POST' });
+    } catch (err) {
+      console.warn('Backend reset API call note:', err);
+    }
+  };
+
   const activeNotifications = useMemo(
     () => buildNotifications({ user, students, payments, fees }),
     [user, students, payments, fees]
@@ -412,7 +431,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider value={{
       user, students, payments, fees, notifications: filteredNotifications, loading, apiError,
       login, logout: () => setUser(null), registerStudent, updateProfile,
-      recordPayment, markNotificationAsRead, refreshData: loadData,
+      recordPayment, markNotificationAsRead, refreshData: loadData, resetData,
     }}>
       {children}
     </AuthContext.Provider>
