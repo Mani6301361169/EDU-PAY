@@ -18,8 +18,8 @@ const Topbar = ({ onMenuToggle }) => {
       </button>
 
       <div className={styles.roleBadgeWrapper}>
-        <span className={`${styles.roleBadge} ${styles[user?.role]}`}>
-          {user?.role ? user.role.toUpperCase() : 'USER'}
+        <span className={`${styles.roleBadge} ${styles[user?.role || 'user']}`}>
+          {String(user?.role || 'USER').toUpperCase()}
         </span>
       </div>
 

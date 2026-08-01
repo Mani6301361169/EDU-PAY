@@ -233,7 +233,7 @@ export default function Students() {
                   <td>
                     <span
                       className={`${styles.roleBadge} ${
-                        user.role === 'student'
+                        (user.role || 'student') === 'student'
                           ? styles.roleStudent
                           : user.role === 'parent'
                           ? styles.roleParent
@@ -242,16 +242,16 @@ export default function Students() {
                           : styles.roleAdmin
                       }`}
                     >
-                      {user.role.toUpperCase()}
+                      {(user.role || 'student').toUpperCase()}
                     </span>
                   </td>
                   <td>
-                    <div className={styles.deptText}>{user.department}</div>
-                    <div className={styles.yearText}>{user.year}</div>
+                    <div className={styles.deptText}>{user.department || 'N/A'}</div>
+                    <div className={styles.yearText}>{user.year || 'N/A'}</div>
                   </td>
                   <td style={{ fontSize: '0.85rem' }}>{user.mobile || 'N/A'}</td>
                   <td>
-                    <span className={styles.statusActive}>● {user.status}</span>
+                    <span className={styles.statusActive}>● {user.status || 'Active'}</span>
                   </td>
                   <td>
                     <div className={styles.actionGroup}>
