@@ -11,6 +11,7 @@ import {
   FiDownload,
   FiPlusCircle,
   FiShield,
+  FiInbox,
 } from 'react-icons/fi';
 import {
   ResponsiveContainer,
@@ -32,34 +33,53 @@ export default function AdminDashboard() {
   const totalStudentsCount = students.length;
   const totalFeeConfigs = fees.length;
   const totalPendingDues = students.reduce((sum, s) => sum + Number(s.pendingAmount || 0), 0);
+  const totalScheduledFees = students.reduce((sum, s) => sum + Number(s.totalFees || 0), 0);
 
-  // Monthly collection chart data
-  const revenueTrendData = [
-    { month: 'Jan', revenue: 15 },
-    { month: 'Feb', revenue: 28 },
-    { month: 'Mar', revenue: 22 },
-    { month: 'Apr', revenue: 45 },
-    { month: 'May', revenue: 38 },
-    { month: 'Jun', revenue: 65 },
-    { month: 'Jul', revenue: 52 },
-  ];
+  const recoveryRate = totalScheduledFees > 0
+    ? (Math.round((totalCollected / totalScheduledFees) * 1000) / 10).toFixed(1)
+    : '0';
 
-  // Department collection breakdown
-  const deptBreakdown = [
-    { dept: 'CSE', amount: 92, color: '#10b981' },
-    { dept: 'ECE', amount: 82, color: '#6366f1' },
-    { dept: 'ME', amount: 75, color: '#06b6d4' },
-    { dept: 'Civil', amount: 80, color: '#f59e0b' },
-    { dept: 'AI&DS', amount: 88, color: '#a855f7' },
-  ];
+  // Dynamic Revenue Trend Chart data
+  const monthlyRevenueMap = {};
+  payments.forEach((p) => {
+    if (!p.paidAt && !p.createdAt) return;
+    const date = new Date(p.paidAt || p.createdAt);
+    const monthName = date.toLocaleString('default', { month: 'short' });
+    monthlyRevenueMap[monthName] = (monthlyRevenueMap[monthName] || 0) + Number(p.amount || 0);
+  });
 
-  // System audit logs
-  const auditLogs = [
-    { time: '11:42:05', actor: 'Admin (Dr. V.K. Rao)', action: 'Approved Fee Concession for STU2026001', ip: '192.168.1.1' },
-    { time: '10:15:30', actor: 'Accountant (Mrs. Sharma)', action: 'Verified UPI Receipt #RCP-2026-8891', ip: '192.168.1.12' },
-    { time: '09:05:12', actor: 'Student (Mani Kanta)', action: 'Paid Fee ₹40,000 via Razorpay Gateway', ip: '103.12.89.44' },
-    { time: '08:00:00', actor: 'System Auto-Cron', action: 'Executed 24/7 Keep-Alive Health Ping', ip: '127.0.0.1' },
-  ];
+  const revenueTrendData = Object.keys(monthlyRevenueMap).map((m) => ({
+    month: m,
+    revenue: Math.round(monthlyRevenueMap[m] / 100000), // in Lakhs
+  }));
+
+  // Dynamic Department Recovery Breakdown
+  const deptMap = {};
+  students.forEach((s) => {
+    const d = s.department || 'General';
+    if (!deptMap[d]) {
+      deptMap[d] = { total: 0, paid: 0 };
+    }
+    deptMap[d].total += Number(s.totalFees || 0);
+    deptMap[d].paid += Number(s.paidAmount || 0);
+  });
+
+  const colors = ['#10b981', '#6366f1', '#06b6d4', '#f59e0b', '#a855f7'];
+  const deptBreakdown = Object.keys(deptMap).map((dept, index) => {
+    const { total, paid } = deptMap[dept];
+    const rate = total > 0 ? Math.round((paid / total) * 100) : 0;
+    return {
+      dept,
+      amount: rate,
+      color: colors[index % colors.length],
+    };
+  });
+
+  // Dynamic Recent Verified Payments
+  const recentPayments = payments.slice(0, 5);
+
+  // Dynamic Audit Logs
+  const auditLogs = [];
 
   const handleExportReport = () => {
     alert('Generating Master Audit Report (Excel/CSV)...');
@@ -105,7 +125,7 @@ export default function AdminDashboard() {
             <FiUsers className={`${styles.metricIcon} ${styles.valBlue}`} />
           </div>
           <div className={`${styles.metricValue} ${styles.valNeutral}`}>{totalStudentsCount}</div>
-          <p className={styles.metricSubtext}>Across 5 Departments</p>
+          <p className={styles.metricSubtext}>0 Enrolled Students</p>
         </div>
 
         <div className={styles.metricCard}>
@@ -124,8 +144,8 @@ export default function AdminDashboard() {
             <span className={styles.metricTitle}>Outstanding Dues</span>
             <FiAlertCircle className={`${styles.metricIcon} ${styles.valOrange}`} />
           </div>
-          <div className={`${styles.metricValue} ${styles.valOrange}`}>₹38,50,000</div>
-          <p className={styles.metricSubtext}>210 Pending Accounts</p>
+          <div className={`${styles.metricValue} ${styles.valOrange}`}>₹{totalPendingDues.toLocaleString()}</div>
+          <p className={styles.metricSubtext}>{students.filter(s => Number(s.pendingAmount || 0) > 0).length} Pending Accounts</p>
         </div>
 
         <div className={styles.metricCard}>
@@ -142,8 +162,8 @@ export default function AdminDashboard() {
             <span className={styles.metricTitle}>Recovery Rate</span>
             <FiTrendingUp className={`${styles.metricIcon} ${styles.valGreen}`} />
           </div>
-          <div className={`${styles.metricValue} ${styles.valGreen}`}>82.4%</div>
-          <p className={styles.metricSubtext}>YTD Financial Health</p>
+          <div className={`${styles.metricValue} ${styles.valGreen}`}>{recoveryRate}%</div>
+          <p className={styles.metricSubtext}>Financial Health</p>
         </div>
       </div>
 
@@ -151,37 +171,44 @@ export default function AdminDashboard() {
       <div className={styles.chartsGrid}>
         {/* Revenue Spline Chart */}
         <div className={styles.chartCard}>
-          <h3 className={styles.chartTitle}>Revenue Collection Trend (2026)</h3>
+          <h3 className={styles.chartTitle}>Revenue Collection Trend</h3>
           <div className={styles.chartContainer}>
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={revenueTrendData}>
-                <defs>
-                  <linearGradient id="adminTrendGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                    <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} unit="L" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#141821',
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '8px',
-                    color: '#fff',
-                  }}
-                  formatter={(val) => [`₹${val} Lakhs`, 'Revenue']}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="revenue"
-                  stroke="#10b981"
-                  strokeWidth={3}
-                  fillOpacity={1}
-                  fill="url(#adminTrendGrad)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+            {revenueTrendData.length === 0 ? (
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                <FiInbox size={32} style={{ marginBottom: '0.5rem', opacity: 0.5 }} />
+                <span>No Data Available</span>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={revenueTrendData}>
+                  <defs>
+                    <linearGradient id="adminTrendGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" stroke="#94a3b8" fontSize={12} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} unit="L" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#141821',
+                      borderColor: 'rgba(255,255,255,0.1)',
+                      borderRadius: '8px',
+                      color: '#fff',
+                    }}
+                    formatter={(val) => [`₹${val} Lakhs`, 'Revenue']}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#10b981"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#adminTrendGrad)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
@@ -189,25 +216,32 @@ export default function AdminDashboard() {
         <div className={styles.chartCard}>
           <h3 className={styles.chartTitle}>Dept Recovery Rate (%)</h3>
           <div className={styles.chartContainer}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={deptBreakdown}>
-                <XAxis dataKey="dept" stroke="#94a3b8" fontSize={12} tickLine={false} />
-                <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} domain={[0, 100]} unit="%" />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#141821',
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '8px',
-                    color: '#fff',
-                  }}
-                />
-                <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
-                  {deptBreakdown.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            {deptBreakdown.length === 0 ? (
+              <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#94a3b8' }}>
+                <FiInbox size={32} style={{ marginBottom: '0.5rem', opacity: 0.5 }} />
+                <span>No Data Available</span>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={deptBreakdown}>
+                  <XAxis dataKey="dept" stroke="#94a3b8" fontSize={12} tickLine={false} />
+                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} domain={[0, 100]} unit="%" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#141821',
+                      borderColor: 'rgba(255,255,255,0.1)',
+                      borderRadius: '8px',
+                      color: '#fff',
+                    }}
+                  />
+                  <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
+                    {deptBreakdown.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
       </div>
@@ -217,46 +251,45 @@ export default function AdminDashboard() {
         {/* Recent Payment Settlements Table */}
         <div className={styles.sectionCard}>
           <h3 className={styles.chartTitle}>Recent Verified Payments</h3>
-          <div className={styles.tableWrapper}>
-            <table className={styles.adminTable}>
-              <thead>
-                <tr>
-                  <th>Txn ID</th>
-                  <th>Student</th>
-                  <th>Dept</th>
-                  <th>Amount</th>
-                  <th>Method</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td style={{ fontFamily: 'monospace', color: '#60a5fa' }}>RCP-2026-8891</td>
-                  <td>Mani Kanta</td>
-                  <td>CSE</td>
-                  <td style={{ fontWeight: 700, color: '#10b981' }}>₹40,000</td>
-                  <td>Razorpay UPI</td>
-                  <td><span className={`${styles.statusTag} ${styles.tagVerified}`}>Verified</span></td>
-                </tr>
-                <tr>
-                  <td style={{ fontFamily: 'monospace', color: '#60a5fa' }}>RCP-2026-4310</td>
-                  <td>Priya Sharma</td>
-                  <td>CSE</td>
-                  <td style={{ fontWeight: 700, color: '#10b981' }}>₹30,000</td>
-                  <td>Credit Card</td>
-                  <td><span className={`${styles.statusTag} ${styles.tagVerified}`}>Verified</span></td>
-                </tr>
-                <tr>
-                  <td style={{ fontFamily: 'monospace', color: '#60a5fa' }}>RCP-2026-1120</td>
-                  <td>Rahul Reddy</td>
-                  <td>ECE</td>
-                  <td style={{ fontWeight: 700, color: '#f59e0b' }}>₹15,000</td>
-                  <td>Net Banking</td>
-                  <td><span className={`${styles.statusTag} ${styles.tagPending}`}>Pending Approval</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          {recentPayments.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+              <FiInbox size={32} style={{ marginBottom: '0.5rem', opacity: 0.5 }} />
+              <p>No Data Available</p>
+            </div>
+          ) : (
+            <div className={styles.tableWrapper}>
+              <table className={styles.adminTable}>
+                <thead>
+                  <tr>
+                    <th>Txn ID</th>
+                    <th>Student</th>
+                    <th>Dept</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentPayments.map((p) => (
+                    <tr key={p._id || p.transactionId}>
+                      <td style={{ fontFamily: 'monospace', color: '#60a5fa' }}>
+                        {p.transactionId || String(p._id).slice(-8).toUpperCase()}
+                      </td>
+                      <td>{p.student?.name || 'Student'}</td>
+                      <td>{p.student?.department || 'N/A'}</td>
+                      <td style={{ fontWeight: 700, color: '#10b981' }}>₹{Number(p.amount).toLocaleString()}</td>
+                      <td>{p.method || 'UPI'}</td>
+                      <td>
+                        <span className={`${styles.statusTag} ${styles.tagVerified}`}>
+                          {p.status || 'Verified'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         {/* Audit & Security Log Tracker */}
@@ -264,17 +297,24 @@ export default function AdminDashboard() {
           <h3 className={styles.chartTitle}>
             <FiShield style={{ color: '#60a5fa', marginRight: '0.4rem' }} /> System Audit Logs
           </h3>
-          <div className={styles.auditList}>
-            {auditLogs.map((log, i) => (
-              <div key={i} className={styles.auditItem}>
-                <div>
-                  <span style={{ color: '#60a5fa', fontWeight: 600 }}>{log.time} </span>
-                  <span style={{ color: '#f1f5f9', fontWeight: 700 }}>{log.actor}: </span>
-                  <span style={{ color: '#94a3b8' }}>{log.action}</span>
+          {auditLogs.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#94a3b8' }}>
+              <FiInbox size={32} style={{ marginBottom: '0.5rem', opacity: 0.5 }} />
+              <p>No Data Available</p>
+            </div>
+          ) : (
+            <div className={styles.auditList}>
+              {auditLogs.map((log, i) => (
+                <div key={i} className={styles.auditItem}>
+                  <div>
+                    <span style={{ color: '#60a5fa', fontWeight: 600 }}>{log.time} </span>
+                    <span style={{ color: '#f1f5f9', fontWeight: 700 }}>{log.actor}: </span>
+                    <span style={{ color: '#94a3b8' }}>{log.action}</span>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
