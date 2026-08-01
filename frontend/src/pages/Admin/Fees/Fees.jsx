@@ -1,49 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../../context/AuthContext';
 import styles from './Fees.module.css';
-import { FiPlusCircle, FiEdit, FiTrash2, FiX, FiCheckCircle } from 'react-icons/fi';
+import { FiPlusCircle, FiEdit, FiTrash2, FiX, FiCheckCircle, FiInbox } from 'react-icons/fi';
 
 export default function Fees() {
+  const { fees } = useAuth();
+  const [feeConfigs, setFeeConfigs] = useState(() => (fees && fees.length > 0 ? fees : []));
 
-  const defaultFeesList = [
-    {
-      id: 'f1',
-      name: 'Semester 6 Tuition Fee',
-      department: 'CSE',
-      academicYear: '3rd Year',
-      amount: 75000,
-      description: 'Core Academic Instruction & Computer Lab Facilities',
-      active: true,
-    },
-    {
-      id: 'f2',
-      name: 'Hostel & Mess Boarding',
-      department: 'All Depts',
-      academicYear: 'All Years',
-      amount: 30000,
-      description: 'AC Accommodation, WiFi & Dining Hall Services',
-      active: true,
-    },
-    {
-      id: 'f3',
-      name: 'University Exam & Practical Lab Fee',
-      department: 'ECE',
-      academicYear: '2nd Year',
-      amount: 12000,
-      description: 'JNTUA Examination Hall Tickets & Practical Equipment',
-      active: true,
-    },
-    {
-      id: 'f4',
-      name: 'Library & E-Resources Access',
-      department: 'ME',
-      academicYear: '1st Year',
-      amount: 8000,
-      description: 'IEEE Digital Access, Central Library & Cloud Labs',
-      active: true,
-    },
-  ];
+  useEffect(() => {
+    if (fees) {
+      setFeeConfigs(fees);
+    }
+  }, [fees]);
 
-  const [feeConfigs, setFeeConfigs] = useState(defaultFeesList);
   const [showModal, setShowModal] = useState(false);
   const [editingFee, setEditingFee] = useState(null);
 
@@ -57,13 +26,13 @@ export default function Fees() {
 
   const handleToggleActive = (id) => {
     setFeeConfigs((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, active: !item.active } : item))
+      prev.map((item) => (item.id === id || item._id === id ? { ...item, active: !item.active } : item))
     );
   };
 
   const handleDelete = (id, name) => {
     if (window.confirm(`Are you sure you want to delete fee configuration "${name}"?`)) {
-      setFeeConfigs((prev) => prev.filter((item) => item.id !== id));
+      setFeeConfigs((prev) => prev.filter((item) => (item.id !== id && item._id !== id)));
     }
   };
 
@@ -73,7 +42,7 @@ export default function Fees() {
 
     if (editingFee) {
       setFeeConfigs((prev) =>
-        prev.map((f) => (f.id === editingFee.id ? { ...f, ...formData, amount: Number(formData.amount) } : f))
+        prev.map((f) => ((f.id === editingFee.id || f._id === editingFee._id) ? { ...f, ...formData, amount: Number(formData.amount) } : f))
       );
     } else {
       const newFee = {
@@ -94,10 +63,10 @@ export default function Fees() {
     setEditingFee(fee);
     setFormData({
       name: fee.name,
-      department: fee.department,
-      academicYear: fee.academicYear,
+      department: fee.department || 'CSE',
+      academicYear: fee.academicYear || '3rd Year',
       amount: fee.amount,
-      description: fee.description,
+      description: fee.description || '',
     });
     setShowModal(true);
   };
@@ -127,46 +96,54 @@ export default function Fees() {
       </div>
 
       {/* Fee Cards Grid */}
-      <div className={styles.feesGrid}>
-        {feeConfigs.map((fee) => (
-          <div key={fee.id} className={styles.feeCard}>
-            <div className={styles.cardHeader}>
-              <div>
-                <h3 className={styles.feeName}>{fee.name}</h3>
-                <div className={styles.metaRow} style={{ marginTop: '0.35rem' }}>
-                  <span className={styles.deptTag}>{fee.department}</span>
-                  <span>• {fee.academicYear}</span>
+      {feeConfigs.length === 0 ? (
+        <div style={{ padding: '3.5rem 2rem', textAlign: 'center', color: '#94a3b8', background: 'rgba(20, 20, 20, 0.6)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.1)', marginTop: '1.5rem' }}>
+          <FiInbox size={48} style={{ marginBottom: '0.75rem', opacity: 0.5, color: '#D4A017' }} />
+          <h2 style={{ color: '#f7f1d0', margin: '0 0 0.5rem 0' }}>No Data Available</h2>
+          <p style={{ margin: 0 }}>No fee structures configured yet. Click "Add Fee Structure" above to create a new fee regulation.</p>
+        </div>
+      ) : (
+        <div className={styles.feesGrid}>
+          {feeConfigs.map((fee) => (
+            <div key={fee.id || fee._id} className={styles.feeCard}>
+              <div className={styles.cardHeader}>
+                <div>
+                  <h3 className={styles.feeName}>{fee.name}</h3>
+                  <div className={styles.metaRow} style={{ marginTop: '0.35rem' }}>
+                    <span className={styles.deptTag}>{fee.department}</span>
+                    <span>• {fee.academicYear}</span>
+                  </div>
+                </div>
+                <div className={styles.feeAmount}>₹{Number(fee.amount || 0).toLocaleString()}</div>
+              </div>
+
+              <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0.3rem 0 0' }}>
+                {fee.description}
+              </p>
+
+              <div className={styles.cardFooter}>
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleToggleActive(fee.id || fee._id)}
+                  className={styles.statusActive}
+                >
+                  <FiCheckCircle style={{ marginRight: '0.3rem' }} />
+                  {fee.active !== false ? 'Active Regulation' : 'Inactive'}
+                </span>
+
+                <div className={styles.cardActions}>
+                  <button type="button" onClick={() => openEdit(fee)} className={styles.iconBtn}>
+                    <FiEdit /> Edit
+                  </button>
+                  <button type="button" onClick={() => handleDelete(fee.id || fee._id, fee.name)} className={styles.iconBtn}>
+                    <FiTrash2 /> Delete
+                  </button>
                 </div>
               </div>
-              <div className={styles.feeAmount}>₹{fee.amount.toLocaleString()}</div>
             </div>
-
-            <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: '0.3rem 0 0' }}>
-              {fee.description}
-            </p>
-
-            <div className={styles.cardFooter}>
-              <span
-                style={{ cursor: 'pointer' }}
-                onClick={() => handleToggleActive(fee.id)}
-                className={styles.statusActive}
-              >
-                <FiCheckCircle style={{ marginRight: '0.3rem' }} />
-                {fee.active ? 'Active Regulation' : 'Inactive'}
-              </span>
-
-              <div className={styles.cardActions}>
-                <button type="button" onClick={() => openEdit(fee)} className={styles.iconBtn}>
-                  <FiEdit /> Edit
-                </button>
-                <button type="button" onClick={() => handleDelete(fee.id, fee.name)} className={styles.iconBtn}>
-                  <FiTrash2 /> Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Add / Edit Fee Modal */}
       {showModal && (

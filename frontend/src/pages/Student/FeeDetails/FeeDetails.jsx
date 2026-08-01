@@ -34,15 +34,12 @@ export default function FeeDetails() {
   );
   const summary = calculateFeeSummary(student, fees, studentPayments);
 
-  // 6 Prescribed Categories
-  const categoriesList = [
-    { name: 'College Fees', total: 25000, desc: 'Institutional Infrastructure & Campus Dues' },
-    { name: 'Tuition Fees', total: 45000, desc: 'Academic Instruction & Laboratory Dues' },
-    { name: 'Hostel Fees', total: 15000, desc: 'Accommodation & Mess Facilities' },
-    { name: 'Bus Fees', total: 10000, desc: 'Campus Transportation Service' },
-    { name: 'Exam Fees', total: 5000, desc: 'Semester Evaluation & Examination Dues' },
-    { name: 'Other Fees', total: 3000, desc: 'Library, Sports & Contingency Charges' },
-  ];
+  // Dynamic Categories from database fees configuration
+  const categoriesList = fees.length > 0 ? fees.map((f) => ({
+    name: f.name || 'College Fees',
+    total: Number(f.amount || 0),
+    desc: f.description || `${f.department || 'All'} - ${f.academicYear || 'All'}`
+  })) : [];
 
   const handlePayNow = (feeType, amount) => {
     navigate('/student/payments', {
@@ -95,15 +92,21 @@ export default function FeeDetails() {
             </div>
           </div>
 
-          {/* 6 Category Responsive Cards */}
+          {/* Category Responsive Cards */}
           <div className={styles.sectionHeader}>
             <h2>
               <FiLayers style={{ color: '#D4A017' }} /> Prescribed Fee Categories
             </h2>
           </div>
 
-          <div className={styles.categoryGrid}>
-            {categoriesList.map((cat) => {
+          {categoriesList.length === 0 ? (
+            <div style={{ padding: '3.5rem 2rem', textAlign: 'center', color: '#94a3b8', background: 'rgba(20, 20, 20, 0.6)', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+              <h2 style={{ color: '#f7f1d0', margin: '0 0 0.5rem 0' }}>No Data Available</h2>
+              <p style={{ margin: 0 }}>No fee structures configured or assigned to your student record yet.</p>
+            </div>
+          ) : (
+            <div className={styles.categoryGrid}>
+              {categoriesList.map((cat) => {
               const categoryPayments = studentPayments.filter(
                 (p) => (p.feeType || '').toLowerCase() === cat.name.toLowerCase()
               );
@@ -182,6 +185,7 @@ export default function FeeDetails() {
               );
             })}
           </div>
+          )}
         </>
       )}
     </div>

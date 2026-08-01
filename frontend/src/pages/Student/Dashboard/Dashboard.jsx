@@ -109,7 +109,14 @@ export default function Dashboard() {
 
   return (
     <div className={styles.dashboardPage}>
-      {/* Top Banner */}
+      {!student && students.length === 0 ? (
+        <div style={{ padding: '3.5rem 2rem', textAlign: 'center', color: '#94a3b8', background: 'rgba(20, 20, 20, 0.6)', borderRadius: '16px', border: '1px solid rgba(212, 175, 55, 0.35)', marginTop: '1.5rem' }}>
+          <h2 style={{ color: '#D4A017', margin: '0 0 0.5rem 0' }}>No Student Data Available</h2>
+          <p style={{ margin: 0, color: '#f7f1d0' }}>0 Registered Students • 0 Active Students. Fill out the registration form to create a student profile.</p>
+        </div>
+      ) : (
+        <>
+          {/* Top Banner */}
       <div className={styles.headerBanner}>
         <div className={styles.bannerInfo}>
           <div className={styles.badges}>
@@ -269,6 +276,8 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   );
 }
