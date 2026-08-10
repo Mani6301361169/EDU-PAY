@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import styles from './Guide.module.css';
-import { FiFileText, FiShield, FiAlertTriangle, FiCheckCircle } from 'react-icons/fi';
+import { FiFileText, FiShield, FiAlertTriangle } from 'react-icons/fi';
 
 export default function FeePolicies() {
   return (

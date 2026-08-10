@@ -64,6 +64,8 @@ export default function UploadExcel() {
               email,
               role,
               rollNo,
+              dept,
+              phone,
               status: 'Account Created Successfully',
             });
           }

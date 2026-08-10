@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import styles from './Guide.module.css';
-import { FiHeadphones, FiMail, FiPhone, FiCheckCircle } from 'react-icons/fi';
+import { FiHeadphones, FiMail, FiPhone } from 'react-icons/fi';
 
 export default function StudentSupport() {
   return (

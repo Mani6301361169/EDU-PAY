@@ -6,12 +6,11 @@ import {
   FiSearch,
   FiEdit,
   FiTrash2,
-  FiKey,
   FiX,
 } from 'react-icons/fi';
 
 export default function Students() {
-  const { students, registerStudent, deleteStudent } = useAuth();
+  const { students } = useAuth();
   const [usersList, setUsersList] = useState(() => (students && students.length > 0 ? students : []));
 
   useEffect(() => {
