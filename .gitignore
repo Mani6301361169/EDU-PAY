@@ -32,3 +32,4 @@ backend/.git
 *~
 deploy-temp/
 render.env
+auto_commit.log
